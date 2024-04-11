@@ -14,7 +14,7 @@ const Projects = () => {
             key={project.id}
             imageSrc={project.imageSrc}
             projectName={project.name}
-            description={project.description}
+            description={project.name}
             techStack={project.techStacks.split(', ')}
             githubLink={project.githubLink}
             liveLink={project.liveLink}
