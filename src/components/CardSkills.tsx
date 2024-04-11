@@ -1,3 +1,11 @@
+import React from 'react';
+
+interface SkillCategory {
+  icon: React.ComponentType<{ className: string }>;
+  title: string;
+  skills: { icon: React.ComponentType<{ className: string }>; label: string }[];
+}
+
 interface SkillCardProps {
   skillCategory: SkillCategory;
 }
