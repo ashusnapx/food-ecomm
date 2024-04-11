@@ -1,9 +1,13 @@
-import Image from 'next/image';
+import { Internships, Hero, Projects, ContactForm, Skills } from '@/components';
 
 export default function Home() {
   return (
     <>
-      <h1 className='text-5xl'>ashu</h1>
+      <Hero />
+      <Internships />
+      <Projects />
+      <Skills />
+      <ContactForm />
     </>
   );
 }

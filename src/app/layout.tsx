@@ -20,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang='en' className='h-full'>
       <body
-        className={cn('relative h-full font-sans antialiased', inter.className)}
+        className={cn(
+          'relative h-full font-sans antialiased grainy',
+          inter.className
+        )}
       >
         <ThemeProvider
           attribute='class'
