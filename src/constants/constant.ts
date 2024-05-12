@@ -40,8 +40,10 @@ export const projectsData = [
     techStacks:
       'NextJS, Tailwind CSS, ClerkJS (For authentication), Swiggy API',
     // description: 'A project description goes here.',
-    githubLink: 'https://github.com/ashusnapx/genai-assignment-frontend',
-    liveLink: 'https://genai-assignment.vercel.app/',
+    githubLink:
+      'https://img.freepik.com/free-vector/neon-style-coming-soon-glowing-background-design_1017-25516.jpg',
+    liveLink:
+      'https://img.freepik.com/free-vector/neon-style-coming-soon-glowing-background-design_1017-25516.jpg',
   },
   {
     id: 0,
