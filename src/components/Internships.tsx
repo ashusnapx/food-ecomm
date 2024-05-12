@@ -4,7 +4,7 @@ import Card from './Card';
 const Internships = () => {
   return (
     <div className='mx-9 mt-5'>
-      <h1 className='text-center text-5xl text-purple-600 mb-5 font-bold tracking-widest'>
+      <h1 className='text-center text-4xl md:text-5xl text-purple-600 mb-5 font-bold tracking-widest'>
         Internships
       </h1>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-2'>

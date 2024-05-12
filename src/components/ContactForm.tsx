@@ -1,6 +1,22 @@
-import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
+import {
+  SiGithub,
+  SiHashnode,
+  SiInstagram,
+  SiLeetcode,
+  SiLinkedin,
+  SiMedium,
+  SiTwitter,
+} from 'react-icons/si';
+const socialLinks = [
+  { href: 'https://github.com/ashusnapx', icon: <SiGithub /> },
+  { href: 'https://instagram.com/ashusnapx', icon: <SiInstagram /> },
+  { href: 'https://x.com/ashusnapx', icon: <SiTwitter /> },
+  { href: 'https://linkedin.com/in/ashusnapx', icon: <SiLinkedin /> },
+  { href: 'https://medium.com/@ashusnapx', icon: <SiMedium /> },
+  { href: 'https://leetcode.com/u/dollarSign/', icon: <SiLeetcode /> },
+  { href: 'https://hashnode.com/@ashusnapx', icon: <SiHashnode /> },
+];
 
 const ContactForm = () => {
   return (
@@ -8,38 +24,17 @@ const ContactForm = () => {
       <h1 className='text-center text-5xl text-purple-600 mb-5 font-bold tracking-widest'>
         Contact Me
       </h1>
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-4'>
-        <Link
-          href='mailto:ashu.kumarexam@gmail.com'
-          className='col-span-1 p-4 rounded-xl border w-fit h-fit'
-        >
-          <p className='text-xl font-bold mb-2'>Email:</p>
-          <p className='text-lg'>ashu.kumarexam@gmail.com &rarr;</p>
-        </Link>
-
-        <Link
-          href='mailto:ashu.kumarexam@gmail.com'
-          className='col-span-1 p-4 rounded-xl border w-fit h-fit'
-        >
-          <p className='text-xl font-bold mb-2'>Twitter:</p>
-          <p className='text-lg'>ashu.kumarexam@gmail.com &rarr;</p>
-        </Link>
-
-        <Link
-          href='mailto:ashu.kumarexam@gmail.com'
-          className='col-span-1 p-4 rounded-xl border w-fit h-fit'
-        >
-          <p className='text-xl font-bold mb-2'>LinkedIn:</p>
-          <p className='text-lg'>ashu.kumarexam@gmail.com &rarr;</p>
-        </Link>
-
-        <Link
-          href='mailto:ashu.kumarexam@gmail.com'
-          className='col-span-1 p-4 rounded-xl border w-fit h-fit'
-        >
-          <p className='text-xl font-bold mb-2'>Resume:</p>
-          <p className='text-lg'>ashu.kumarexam@gmail.com &rarr;</p>
-        </Link>
+      <div className='flex flex-row items-center justify-between px-5 md:px-80'>
+        {socialLinks.map((link, index) => (
+          <Link
+            key={index}
+            href={link.href}
+            target='_blank'
+            className='text-xl md:text-2xl md:border md:rounded-full md:hover:shadow-2xl md:p-3'
+          >
+            {link.icon}
+          </Link>
+        ))}
       </div>
     </div>
   );

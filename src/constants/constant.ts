@@ -1,11 +1,6 @@
 import { AiFillDatabase } from 'react-icons/ai';
 import {
-  CakeIcon,
-  LucideGithub,
   LucideHammer,
-  LucideInstagram,
-  LucideLinkedin,
-  LucideTwitter,
 } from 'lucide-react';
 import {
   SiPandas,
@@ -28,8 +23,8 @@ import {
   SiBackendless,
   SiPeakdesign,
   SiCodepen,
+  SiNextdotjs,
 } from 'react-icons/si';
-import { TbBrandTypescript } from 'react-icons/tb';
 
 import {
   LucideBadge,
@@ -38,6 +33,48 @@ import {
 } from 'lucide-react';
 
 export const projectsData = [
+  {
+    id: 0,
+    name: "Fooder (By Ashutosh Kumar) (Frontend with Swiggy's API)",
+    imageSrc: 'https://i.postimg.cc/Z5kjQqXt/GNJ5-X53-Wc-AAps-I.jpg',
+    techStacks:
+      'NextJS, Tailwind CSS, ClerkJS (For authentication), Swiggy API',
+    // description: 'A project description goes here.',
+    githubLink: 'https://github.com/ashusnapx/genai-assignment-frontend',
+    liveLink: 'https://genai-assignment.vercel.app/',
+  },
+  {
+    id: 0,
+    name: 'GenAI Apps Generator (Frontend)',
+    imageSrc:
+      'https://i.postimg.cc/8cjDyyMk/Screenshot-2024-05-13-at-3-36-02-AM.png',
+    techStacks:
+      'NextJS, Tailwind CSS, ClerkJS (For authentication), Google Gemini Pro API',
+    // description: 'A project description goes here.',
+    githubLink: 'https://github.com/ashusnapx/genai-assignment-frontend',
+    liveLink: 'https://genai-assignment.vercel.app/',
+  },
+  {
+    id: 0,
+    name: 'Jokes Generator (Frontend)',
+    imageSrc:
+      'https://i.postimg.cc/nz9Q61v2/Screenshot-2024-05-13-at-3-34-14-AM.png',
+    techStacks:
+      'NextJS, Tailwind CSS, ClerkJS (For authentication), Google Gemini Pro API',
+    // description: 'A project description goes here.',
+    githubLink: 'https://github.com/ashusnapx/ai-joke-generator',
+    liveLink: 'https://ai-joke-generator-zeta.vercel.app/',
+  },
+  {
+    id: 0,
+    name: 'Creator tools AI (Frontend)',
+    imageSrc:
+      'https://i.postimg.cc/13WPDhLn/Screenshot-2024-05-13-at-3-30-42-AM.png',
+    techStacks: 'NextJS, Tailwind CSS, Shadcn UI',
+    description: 'A project description goes here.',
+    githubLink: 'https://github.com/ashusnapx/creator-tool-ai',
+    liveLink: 'https://creator-tool-ai.vercel.app/',
+  },
   {
     id: 0,
     name: 'Know About Your Food',
@@ -215,6 +252,7 @@ export const skillCategories = [
       { icon: SiHtml5, label: 'HTML/HTML5' },
       { icon: SiCss3, label: 'CSS/CSS3' },
       { icon: SiReact, label: 'ReactJS' },
+      { icon: SiNextdotjs, label: 'NextJS' },
       { icon: SiTailwindcss, label: 'Tailwind CSS' },
     ],
   },
@@ -250,33 +288,4 @@ export const navigationItems = [
   },
   // { to: '/qualifications', text: 'QUALIFICATIONS', icon: LucideSchool },
   { to: '/contact', text: 'CONTACT', icon: LucidePhoneCall },
-];
-
-export const socialMediaLinks = [
-  {
-    href: 'https://twitter.com/ashusnapx',
-    icon: LucideTwitter,
-    color: 'text-blue-400 hover:text-blue-500',
-  },
-  {
-    href: 'https://instagram.com/ashusnapx',
-    icon: LucideInstagram,
-    color: 'text-pink-300 hover:text-pink-400',
-  },
-  {
-    href: 'https://linkedin.com/in/ashusnapx',
-    icon: LucideLinkedin,
-    color: 'text-blue-400 hover:text-blue-500',
-  },
-  {
-    href: 'https://github.com/ashusnapx',
-    icon: LucideGithub,
-    color: 'text-gray-500 hover:text-gray-600',
-  },
-];
-
-export const introText = [
-  { text: 'MERN Developer', color: '#10B981' },
-  { text: 'C++ Programmer', color: '#3B82F6' },
-  { text: 'Problem Solver', color: '#6366F1' },
 ];
