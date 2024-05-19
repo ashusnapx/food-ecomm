@@ -33,7 +33,7 @@ const Hero = () => {
         </div>
         <div className='border-l-2 border-purple-600 tracking-tight text-2xl px-3 text-slate-700 dark:text-slate-400'>
           {' '}
-          I&apos;m a developer
+          I&apos;m a full-stack web developer
           <br /> working remotely
           <br /> from Bharat(India) 🇮🇳
         </div>
