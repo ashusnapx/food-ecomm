@@ -33,13 +33,13 @@ const CardProjects = ({
         <h1 className='text-2xl font-semibold mb-2 tracking-tighter'>
           {projectName} &rarr;
         </h1>
-        <p className='text-gray-600'>{description}</p>
+        <p className='text-gray-600 dark:text-gray-300'>{description}</p>
         <div className='mt-4 flex items-center justify-between'>
           <div>
             <h3 className='text-lg font-semibold'>Tech Stack:</h3>
             <ul className='list-disc pl-6'>
               {techStack.map((tech, index) => (
-                <li key={index} className='text-gray-600'>
+                <li key={index} className='text-gray-600 dark:text-gray-300'>
                   {tech}
                 </li>
               ))}

@@ -32,9 +32,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className='relative flex flex-col min-h-screen'>
-            <Navbar />
-            <div className='flex-1 flex-grow'>{children}</div>
+          <main className='relative flex flex-col min-h-screen bg-my-image bg-no-repeat'>
+            <div className='flex-1 flex-grow'>
+              <Navbar />
+              {children}
+            </div>
           </main>
         </ThemeProvider>
       </body>

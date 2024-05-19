@@ -23,7 +23,7 @@ const socialLinks = [
 
 const Hero = () => {
   return (
-    <div className='flex flex-col md:flex-row items-center justify-between mx-3 md:mx-9 p-9 md:p-2 min-h-screen border border-dotted mt-2 mb-2 rounded-3xl'>
+    <div className='flex flex-col md:flex-row items-center justify-between mx-3 md:mx-9 p-9 md:p-2 min-h-screen border dark:border-gray-600 border-dotted mt-2 mb-2 rounded-3xl'>
       <div className='flex flex-col space-y-9 mx-0 md:mx-3'>
         <div className='text-xl md:text-4xl text-slate-700 dark:text-slate-400 tracking-widest whitespace-nowrap'>
           FULL-STACK DEVELOPER
