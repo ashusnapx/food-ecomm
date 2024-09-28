@@ -23,27 +23,27 @@ const socialLinks = [
 
 const Hero = () => {
   return (
-    <div className='flex flex-col md:flex-row items-center justify-between mx-3 md:mx-9 p-9 md:p-2 min-h-screen border dark:border-gray-600 border-dotted mt-2 mb-2 rounded-3xl'>
+    <div className='flex flex-col md:flex-row items-center justify-between mx-3 md:mx-9 p-9 md:p-2 min-h-screen border dark:border-gray-600 border-dotted mb-2 rounded-3xl mt-2'>
       <div className='flex flex-col space-y-9 mx-0 md:mx-3'>
         <div className='text-xl md:text-4xl text-slate-700 dark:text-slate-400 tracking-widest whitespace-nowrap'>
           FULL-STACK DEVELOPER
         </div>
         <div className='text-4xl md:text-7xl tracking-tighter font-bold text-center md:text-left'>
-          Ashutosh<span className='italic text-purple-600'>Kumar </span>{' '}
+          Ashutosh<span className='italic text-purple-600'>Kumar </span>{" "}
         </div>
         <div className='border-l-2 border-purple-600 tracking-tight text-2xl px-3 text-slate-700 dark:text-slate-400'>
-          {' '}
+          {" "}
           I&apos;m a full-stack web developer
           <br /> working remotely
           <br /> from Bharat(India) 🇮🇳
         </div>
 
         <Link
-          href='https://drive.google.com/file/d/1G-TsA254RDVZIL2WamD78GyiJ0Y_sYKV/view'
+          href='https://dub.sh/ashutosh-frontend'
           target='_blank'
           className={cn(
-            buttonVariants({ variant: 'default' }),
-            'rounded-full text-xl tracking-wider w-full'
+            buttonVariants({ variant: "default" }),
+            "rounded-full text-xl tracking-wider w-full"
           )}
         >
           Resume &rarr;

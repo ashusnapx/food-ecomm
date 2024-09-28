@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 import {
   SiGithub,
   SiHashnode,
@@ -7,36 +7,41 @@ import {
   SiLinkedin,
   SiMedium,
   SiTwitter,
-} from 'react-icons/si';
+} from "react-icons/si";
+
 const socialLinks = [
-  { href: 'https://github.com/ashusnapx', icon: <SiGithub /> },
-  { href: 'https://instagram.com/ashusnapx', icon: <SiInstagram /> },
-  { href: 'https://x.com/ashusnapx', icon: <SiTwitter /> },
-  { href: 'https://linkedin.com/in/ashusnapx', icon: <SiLinkedin /> },
-  { href: 'https://medium.com/@ashusnapx', icon: <SiMedium /> },
-  { href: 'https://leetcode.com/u/dollarSign/', icon: <SiLeetcode /> },
-  { href: 'https://hashnode.com/@ashusnapx', icon: <SiHashnode /> },
+  { href: "https://github.com/ashusnapx", icon: <SiGithub /> },
+  { href: "https://instagram.com/ashusnapx", icon: <SiInstagram /> },
+  { href: "https://x.com/ashusnapx", icon: <SiTwitter /> },
+  { href: "https://linkedin.com/in/ashusnapx", icon: <SiLinkedin /> },
+  { href: "https://medium.com/@ashusnapx", icon: <SiMedium /> },
+  { href: "https://leetcode.com/u/dollarSign/", icon: <SiLeetcode /> },
+  { href: "https://hashnode.com/@ashusnapx", icon: <SiHashnode /> },
 ];
 
 const ContactForm = () => {
   return (
-    <div className='mx-4 md:mx-9 mt-9 mb-4'>
-      <h1 className='text-center text-5xl text-purple-600 mb-5 font-bold tracking-widest'>
+    <footer className='mx-4 md:mx-9 mt-9 mb-4 py-10 bg-my-image text-gray-900 dark:text-gray-100 rounded-md'>
+      <h1 className='text-center text-4xl md:text-5xl text-purple-900 dark:text-purple-400 mb-8 font-extrabold tracking-wide'>
         Contact Me
       </h1>
-      <div className='flex flex-row items-center justify-between px-5 md:px-80'>
+      <div className='flex flex-wrap justify-center gap-6 md:gap-10'>
         {socialLinks.map((link, index) => (
           <Link
             key={index}
             href={link.href}
             target='_blank'
-            className='text-xl md:text-2xl md:border md:rounded-full md:hover:shadow-2xl md:p-3'
+            rel='noopener noreferrer'
+            className='text-2xl md:text-3xl p-4 bg-white dark:bg-gray-800 rounded-full shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-110 text-purple-600 dark:text-purple-400 hover:text-purple-500 dark:hover:text-purple-300'
           >
             {link.icon}
           </Link>
         ))}
       </div>
-    </div>
+      <p className='text-center text-sm text-gray-600 tracking-tighter dark:text-gray-400 mt-8'>
+        © {new Date().getFullYear()} Ashutosh Kumar. All rights reserved.
+      </p>
+    </footer>
   );
 };
 

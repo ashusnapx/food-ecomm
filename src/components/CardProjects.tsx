@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import { SiChainlink, SiGithub } from 'react-icons/si';
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { SiChainlink, SiGithub } from "react-icons/si";
 
 interface CardProps {
   imageSrc: string; // Image source for the project
@@ -21,63 +21,74 @@ const CardProjects = ({
   liveLink,
 }: CardProps): JSX.Element => {
   return (
-    <div className='border rounded-xl p-4 w-full h-96 overflow-auto hover:border hover:border-purple-700'>
-      <div>
+    <div className='border border-gray-300 dark:border-gray-700 rounded-xl p-5 w-full h-auto hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-800'>
+      <div className='mb-4 border border-black rounded-md'>
         <Image
           src={imageSrc}
           alt={projectName}
-          className='w-full h-full object-cover mb-4 rounded-xl'
-          height={400}
+          className='w-full h-56 object-cover rounded-lg'
+          height={224}
           width={400}
         />
-        <h1 className='text-2xl font-semibold mb-2 tracking-tighter'>
-          {projectName} &rarr;
-        </h1>
-        <p className='text-gray-600 dark:text-gray-300'>{description}</p>
-        <div className='mt-4 flex items-center justify-between'>
-          <div>
-            <h3 className='text-lg font-semibold'>Tech Stack:</h3>
-            <ul className='list-disc pl-6'>
-              {techStack.map((tech, index) => (
-                <li key={index} className='text-gray-600 dark:text-gray-300'>
-                  {tech}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className='text-lg font-semibold'>Links:</h3>
-            <ul className='list-none pl-0'>
-              <li className='text-blue-600'>
+      </div>
+      <h1 className='text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100 tracking-tight'>
+        {projectName} &rarr;
+      </h1>
+      {description && (
+        <p className='text-md text-gray-600 dark:text-gray-300 mb-4 leading-relaxed'>
+          {description}
+        </p>
+      )}
+      <div className='mt-4 flex justify-between items-start'>
+        <div>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-200 mb-2'>
+            Tech Stack:
+          </h3>
+          <ul className='flex flex-wrap gap-2'>
+            {techStack.map((tech, index) => (
+              <li
+                key={index}
+                className='px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm'
+              >
+                {tech}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className='ml-4'>
+          <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-200 mb-2'>
+            Links:
+          </h3>
+          <ul className='space-y-2'>
+            <li>
+              <Link
+                href={githubLink}
+                className='text-purple-700 dark:text-purple-400 hover:underline'
+                target='_blank'
+                rel='noopener noreferrer'
+              >
+                <div className='flex items-center space-x-2'>
+                  <SiGithub className='text-xl' />
+                  <span>GitHub </span>
+                </div>
+              </Link>
+            </li>
+            {liveLink && (
+              <li>
                 <Link
-                  href={githubLink}
-                  className='text-purple-600'
+                  href={liveLink}
+                  className='text-purple-700 dark:text-purple-400 hover:underline'
                   target='_blank'
                   rel='noopener noreferrer'
                 >
                   <div className='flex items-center space-x-2'>
-                    <SiGithub />
-                    <span>GitHub &rarr;</span>
+                    <SiChainlink className='text-xl' />
+                    <span>Live </span>
                   </div>
                 </Link>
               </li>
-              {liveLink && (
-                <li className='text-blue-600'>
-                  <Link
-                    className='text-purple-600'
-                    href={liveLink}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <div className='flex items-center space-x-2'>
-                      <SiChainlink />
-                      <span>Live &rarr;</span>
-                    </div>
-                  </Link>
-                </li>
-              )}
-            </ul>
-          </div>
+            )}
+          </ul>
         </div>
       </div>
     </div>
