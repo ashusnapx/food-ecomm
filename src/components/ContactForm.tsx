@@ -21,8 +21,8 @@ const socialLinks = [
 
 const ContactForm = () => {
   return (
-    <footer className='mx-4 md:mx-9 mt-9 mb-4 py-10 bg-my-image text-gray-900 dark:text-gray-100 rounded-md'>
-      <h1 className='text-center text-4xl md:text-5xl text-purple-900 dark:text-purple-400 mb-8 font-extrabold tracking-wide'>
+    <footer className='mx-4 md:mx-9 mt-9 mb-4 py-10 bg-primary/30 text-gray-900 dark:text-gray-100 rounded-md'>
+      <h1 className='text-center text-4xl md:text-5xl text-purple-500 dark:text-purple-200 mb-8 font-bold tracking-tighter'>
         Contact Me
       </h1>
       <div className='flex flex-wrap justify-center gap-6 md:gap-10'>

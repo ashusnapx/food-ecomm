@@ -4,8 +4,17 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ContactForm, Navbar } from "@/components";
 import { ThemeProvider } from "@/components/theme-provider";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
+
+// Only run in development
+if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+  const whyDidYouRender = require("@welldone-software/why-did-you-render");
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+  });
+}
 
 export const metadata: Metadata = {
   title: "Ashutosh Kumar (@ashusnapx)",
@@ -19,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en' className='h-full'>
+    <html lang='en'>
       <body
         className={cn(
           "relative h-full font-sans antialiased grainy",
@@ -36,7 +45,7 @@ export default function RootLayout({
             <div className='flex-1 flex-grow'>
               <Navbar />
               {children}
-              <ContactForm/>
+              <ContactForm />
             </div>
           </main>
         </ThemeProvider>

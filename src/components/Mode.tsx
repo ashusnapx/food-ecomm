@@ -8,11 +8,20 @@ import { Button } from "@/components/ui/button";
 
 export function Mode() {
   const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  // Ensure the component is mounted to prevent hydration mismatch
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Toggle between light and dark themes
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
   };
+
+  // If the component is not mounted yet, return null to avoid hydration error
+  if (!mounted) return null;
 
   return (
     <Button

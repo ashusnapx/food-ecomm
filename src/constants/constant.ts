@@ -47,7 +47,7 @@ export const projectsData = [
     imageSrc: "https://i.postimg.cc/k4jTV467/Untitled-design.png",
     techStacks: "React Native, Nativewind, Appwrite",
     description:
-      "Habit.AI is designed to boost productivity by helping users organize their tasks into subjects and chapters, track their progress, and visualize their achievements. Built with a modern tech stack, it offers a seamless user experience with powerful features.",
+      "Secourse is a mobile app designed to help students manage their study schedules effectively. By organizing tasks into subjects and chapters, it tracks progress and visualizes achievements, using a smooth and intuitive UI built with cutting-edge tech.",
     githubLink: "https://github.com/ashusnapx/abhi-start-upsc",
     liveLink: "https://ashusnapx.vercel.app/",
   },
@@ -64,11 +64,12 @@ export const projectsData = [
   },
   {
     id: 0,
-    name: "Fooder (By Ashutosh Kumar) (Frontend with Swiggy's API)",
+    name: "Fooder",
     imageSrc: "https://i.postimg.cc/Z5kjQqXt/GNJ5-X53-Wc-AAps-I.jpg",
     techStacks:
       "NextJS, Tailwind CSS, ClerkJS (For authentication), Swiggy API",
-    // description: 'A project description goes here.',
+    description:
+      "Fooder is a food delivery app that integrates with the Swiggy API, allowing users to order meals with ease. The app features real-time food tracking, authentication via ClerkJS, and a sleek UI with Tailwind CSS.",
     githubLink:
       "https://img.freepik.com/free-vector/neon-style-coming-soon-glowing-background-design_1017-25516.jpg",
     liveLink:
@@ -81,7 +82,8 @@ export const projectsData = [
       "https://i.postimg.cc/8cjDyyMk/Screenshot-2024-05-13-at-3-36-02-AM.png",
     techStacks:
       "NextJS, Tailwind CSS, ClerkJS (For authentication), Google Gemini Pro API",
-    // description: 'A project description goes here.',
+    description:
+      "GenAI Apps Generator simplifies the creation of AI-powered applications by providing an easy-to-use interface for generating AI apps. The frontend leverages NextJS for smooth performance, along with Google Gemini Pro API for AI functionalities.",
     githubLink: "https://github.com/ashusnapx/genai-assignment-frontend",
     liveLink: "https://genai-assignment.vercel.app/",
   },
@@ -92,7 +94,8 @@ export const projectsData = [
       "https://i.postimg.cc/nz9Q61v2/Screenshot-2024-05-13-at-3-34-14-AM.png",
     techStacks:
       "NextJS, Tailwind CSS, ClerkJS (For authentication), Google Gemini Pro API",
-    // description: 'A project description goes here.',
+    description:
+      "The Jokes Generator uses Google Gemini Pro API to generate creative and hilarious jokes. It features user authentication via ClerkJS, and its responsive design makes it easy to enjoy on any device.",
     githubLink: "https://github.com/ashusnapx/ai-joke-generator",
     liveLink: "https://ai-joke-generator-zeta.vercel.app/",
   },
@@ -102,7 +105,8 @@ export const projectsData = [
     imageSrc:
       "https://i.postimg.cc/13WPDhLn/Screenshot-2024-05-13-at-3-30-42-AM.png",
     techStacks: "NextJS, Tailwind CSS, Shadcn UI",
-    description: "A project description goes here.",
+    description:
+      "Creator tools AI is a platform that offers AI-powered features for content creators. Built with NextJS and styled with Tailwind CSS and Shadcn UI, the app provides intuitive tools to enhance the content creation process.",
     githubLink: "https://github.com/ashusnapx/creator-tool-ai",
     liveLink: "https://creator-tool-ai.vercel.app/",
   },
@@ -112,7 +116,8 @@ export const projectsData = [
     imageSrc:
       "https://i.postimg.cc/nz3zBkKx/Screenshot-2024-01-22-at-11-46-59-PM.png",
     techStacks: "Python, Google Gemini Vision Pro, Streamlit",
-    // description: 'A project description goes here.',
+    description:
+      "Know About Your Food helps users analyze the ingredients in their meals using the Google Gemini Vision Pro API. It provides detailed nutritional information and suggestions for healthier alternatives, all through a Python and Streamlit-based platform.",
     githubLink: "https://github.com/ashusnapx/know-the-ingredient",
     liveLink: "https://know-your-food-ashusnapx.streamlit.app/",
   },
@@ -122,7 +127,8 @@ export const projectsData = [
     imageSrc:
       "https://i.postimg.cc/hjvk4njn/Screenshot-2024-01-22-at-3-42-41-PM.png",
     techStacks: "Python, Google Gemini Vision Pro, Streamlit",
-    // description: 'A project description goes here.',
+    description:
+      "AI Instagram Caption Generator helps users craft creative and engaging captions for their Instagram posts, powered by Google Gemini Vision Pro API. It's a user-friendly tool with seamless functionality, built using Python and Streamlit.",
     githubLink: "https://github.com/ashusnapx/ai-instagram-caption",
     liveLink: "https://ai-instagram-caption-ashusnapx.streamlit.app/",
   },
@@ -132,7 +138,8 @@ export const projectsData = [
     imageSrc:
       "https://i.postimg.cc/6pGxntLp/Screenshot-2024-01-22-at-3-33-22-PM.png",
     techStacks: "Python, Google Gemini Pro, Streamlit",
-    // description: 'A project description goes here.',
+    description:
+      "AI Coal Mines Laws is an AI-powered application that assists in navigating complex coal mining regulations. Using Google Gemini Pro, it provides a detailed breakdown of the legal frameworks surrounding coal mining in an interactive manner.",
     githubLink: "https://github.com/ashusnapx/gemini-mining",
     liveLink: "https://dgms-gemini-ashusnapx.streamlit.app/",
   },
@@ -140,9 +147,10 @@ export const projectsData = [
     id: 2,
     name: "Chatbot",
     imageSrc:
-      "https://i.postimg.cc/q7brn5HL/Screenshot-2024-01-21-at-11-18-23-AM.png", // Replace with actual image URL
-    techStacks: "Pyhton, Google Generative AI, Streamlit",
-    // description: 'A project description goes here.',
+      "https://i.postimg.cc/q7brn5HL/Screenshot-2024-01-21-at-11-18-23-AM.png",
+    techStacks: "Python, Google Generative AI, Streamlit",
+    description:
+      "Chatbot is an interactive assistant built using Google Generative AI and Streamlit, capable of holding meaningful conversations, answering queries, and providing support across various topics.",
     githubLink: "https://github.com/ashusnapx/gemini-chatbot",
     liveLink: "https://ashusnapx-gemini-chatbot-main-b5ybtn.streamlit.app/",
   },
@@ -150,9 +158,10 @@ export const projectsData = [
     id: 3,
     name: "Airbnb Clone",
     imageSrc:
-      "https://i.postimg.cc/nc7XGF4S/Screenshot-2023-10-07-at-1-03-54-AM.png", // Replace with actual image URL
+      "https://i.postimg.cc/nc7XGF4S/Screenshot-2023-10-07-at-1-03-54-AM.png",
     techStacks: "React, Tailwind CSS, Supabase, OAuth",
-    // description: 'A project description goes here.',
+    description:
+      "Airbnb Clone replicates the core functionalities of Airbnb, including user authentication, property listing, and booking. Built with React, it integrates Supabase for backend services and OAuth for user login.",
     githubLink: "https://github.com/ashusnapx/airbnb-x-oyo",
     liveLink: "https://airbnb-by-ashusnapx.vercel.app/",
   },
@@ -160,10 +169,11 @@ export const projectsData = [
     id: 4,
     name: "Swiggie - Food Ordering App",
     imageSrc:
-      "https://i.postimg.cc/8zd9ntRC/Screenshot-2023-08-30-at-4-39-38-PM.png", // Replace with actual image URL
+      "https://i.postimg.cc/8zd9ntRC/Screenshot-2023-08-30-at-4-39-38-PM.png",
     techStacks:
       "React, Tailwind CSS, React router dom, Redux toolkit, [Please enable CORS]",
-    // description: 'Another project description.',
+    description:
+      "Swiggie is a food ordering app inspired by Swiggy, featuring dynamic routing, state management with Redux, and sleek UI with Tailwind CSS. The app allows users to browse, order, and track meals seamlessly.",
     githubLink:
       "https://github.com/ashusnapx/react-final-revision/tree/main/DAY%20-%204",
     liveLink: "https://swiggie.vercel.app/",

@@ -1,19 +1,12 @@
-'use client';
-import Link from 'next/link';
-import { Mode } from './Mode';
-import { Button, buttonVariants } from './ui/button';
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
-import { CiMedicalCross, CiMenuKebab } from 'react-icons/ci';
-import { ImCross } from 'react-icons/im';
-import { usePathname } from 'next/navigation';
-
-const links = [
-  { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/skills', label: 'Skills' },
-  { href: '/internships', label: 'Internships' },
-];
+"use client";
+import Link from "next/link";
+import { Mode } from "./Mode";
+import { Button, buttonVariants } from "./ui/button";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { CiMedicalCross, CiMenuKebab } from "react-icons/ci";
+import { usePathname } from "next/navigation";
+import { links } from "@/constants/constant";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,11 +15,16 @@ const Navbar = () => {
   const handleMenuButton = () => setIsMenuOpen((prev) => !prev);
 
   const getLinkClass = (href: string) =>
-    pathName === href ? 'text-purple-700 dark:text-purple-400' : '';
+    pathName === href ? "text-purple-700 dark:text-purple-400" : "";
 
   const renderLinks = () =>
     links.map(({ href, label }) => (
-      <Link key={href} href={href} className={getLinkClass(href)}>
+      <Link
+        key={href}
+        href={href}
+        className={getLinkClass(href)}
+        onClick={() => setIsMenuOpen(false)}
+      >
         {label}
       </Link>
     ));
@@ -50,6 +48,8 @@ const Navbar = () => {
         <Button
           className='md:hidden border rounded-full'
           onClick={handleMenuButton}
+          aria-expanded={isMenuOpen}
+          aria-label='Toggle Menu'
         >
           {isMenuOpen ? (
             <CiMedicalCross className='text-white text-xl rotate-45' />
@@ -64,8 +64,8 @@ const Navbar = () => {
           <Link
             href='/contact-me'
             className={cn(
-              buttonVariants({ variant: 'default' }),
-              'rounded-full'
+              buttonVariants({ variant: "default" }),
+              "rounded-full"
             )}
           >
             Contact me &rarr;
@@ -75,7 +75,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className='fixed bg-opacity-95 mx-4 px-9 py-4 md:p-0 z-10 md:hidden text-white w-auto bg-black border rounded-3xl mt-1'>
+        <div className='fixed top-0 left-0 right-0 bg-opacity-95 mx-4 px-9 py-4 md:p-0 z-10 md:hidden text-white w-auto bg-black border rounded-3xl mt-1'>
           <div className='space-y-6'>
             {/* Links */}
             <div className='flex flex-col space-y-5'>{renderLinks()}</div>
@@ -86,9 +86,10 @@ const Navbar = () => {
               <Link
                 href='/contact-me'
                 className={cn(
-                  buttonVariants({ variant: 'default' }),
-                  'rounded-full'
+                  buttonVariants({ variant: "default" }),
+                  "rounded-full"
                 )}
+                onClick={() => setIsMenuOpen(false)} // Close the menu on link click
               >
                 Contact me &rarr;
               </Link>

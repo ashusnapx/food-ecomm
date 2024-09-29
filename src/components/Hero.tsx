@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { buttonVariants } from './ui/button';
-import { cn } from '@/lib/utils';
+import Image from "next/image";
+import Link from "next/link";
+import { buttonVariants } from "./ui/button";
+import { cn } from "@/lib/utils";
 import {
   SiGithub,
   SiHashnode,
@@ -10,15 +10,15 @@ import {
   SiLinkedin,
   SiMedium,
   SiTwitter,
-} from 'react-icons/si';
+} from "react-icons/si";
 const socialLinks = [
-  { href: 'https://github.com/ashusnapx', icon: <SiGithub /> },
-  { href: 'https://instagram.com/ashusnapx', icon: <SiInstagram /> },
-  { href: 'https://x.com/ashusnapx', icon: <SiTwitter /> },
-  { href: 'https://linkedin.com/in/ashusnapx', icon: <SiLinkedin /> },
-  { href: 'https://medium.com/@ashusnapx', icon: <SiMedium /> },
-  { href: 'https://leetcode.com/u/dollarSign/', icon: <SiLeetcode /> },
-  { href: 'https://hashnode.com/@ashusnapx', icon: <SiHashnode /> },
+  { href: "https://github.com/ashusnapx", icon: <SiGithub /> },
+  { href: "https://instagram.com/ashusnapx", icon: <SiInstagram /> },
+  { href: "https://x.com/ashusnapx", icon: <SiTwitter /> },
+  { href: "https://linkedin.com/in/ashusnapx", icon: <SiLinkedin /> },
+  { href: "https://medium.com/@ashusnapx", icon: <SiMedium /> },
+  { href: "https://leetcode.com/u/dollarSign/", icon: <SiLeetcode /> },
+  { href: "https://hashnode.com/@ashusnapx", icon: <SiHashnode /> },
 ];
 
 const Hero = () => {
@@ -58,9 +58,14 @@ const Hero = () => {
         loading='lazy'
         priority={false}
       />
-      <div className='flex flex-row md:flex-col items-center justify-between gap-3 md:space-y-3 mt-6 md:mt-0 mx-3 text-xl'>
+      <div className='flex flex-row md:flex-col items-center justify-between gap-3 md:space-y-3 mt-6 md:mt-0 mx-3 text-xl md:text-4xl text-primary '>
         {socialLinks.map((link, index) => (
-          <Link key={index} href={link.href} target='_blank'>
+          <Link
+            key={index}
+            href={link.href}
+            target='_blank'
+            className='hover:text-black dark:hover:text-white'
+          >
             {link.icon}
           </Link>
         ))}

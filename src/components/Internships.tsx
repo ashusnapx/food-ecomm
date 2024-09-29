@@ -2,11 +2,26 @@ import React from "react";
 import { internshipData } from "@/constants/constant";
 
 const Internships = () => {
+  const totalInternships = internshipData.length;
+  const totalTechStacks = Array.from(
+    new Set(internshipData.flatMap((internship) => internship.TechStack))
+  ).length;
+
   return (
     <div className='mx-9 mt-5'>
-      <h1 className='text-center text-4xl md:text-5xl text-purple-700 dark:text-purple-400 mb-8 font-extrabold tracking-wider'>
+      <h1 className='text-center text-4xl md:text-5xl text-purple-700 dark:text-purple-400 mb-5 font-extrabold tracking-wider'>
         Internships
       </h1>
+      <div className='mb-8 text-center text-lg text-gray-600 dark:text-gray-400'>
+        <p>
+          Total Internships:{" "}
+          <span className='font-semibold'>{totalInternships}</span>
+        </p>
+        <p>
+          Unique Tech Stacks:{" "}
+          <span className='font-semibold'>{totalTechStacks}</span>
+        </p>
+      </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
         {internshipData.map((internship, index) => (
           <div
@@ -26,6 +41,7 @@ const Internships = () => {
               <span className='font-semibold'>Mode:</span>{" "}
               {internship.modeOfWork}
             </p>
+
             <div className='mt-4'>
               <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2'>
                 Work Done
@@ -36,6 +52,7 @@ const Internships = () => {
                 ))}
               </ul>
             </div>
+
             <div className='mt-4'>
               <h3 className='text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2'>
                 Tech Stack
