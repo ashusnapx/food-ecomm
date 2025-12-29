@@ -1,42 +1,53 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
 export function Mode() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = React.useState(false);
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   // Ensure the component is mounted to prevent hydration mismatch
-  React.useEffect(() => {
+  useEffect(() => {
     setMounted(true);
   }, []);
 
   // Toggle between light and dark themes
   const toggleTheme = () => {
-    setTheme(theme === "light" ? "dark" : "light");
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
   };
 
-  // If the component is not mounted yet, return null to avoid hydration error
-  if (!mounted) return null;
+  // Skeleton button while not mounted
+  if (!mounted) {
+    return (
+      <Button
+        variant="outline"
+        size="icon"
+        className="rounded-full w-10 h-10"
+        disabled
+        aria-label="Loading theme toggle"
+      >
+        <div className="w-4 h-4 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />
+      </Button>
+    );
+  }
 
   return (
     <Button
-      variant='default'
-      size='icon'
-      className='rounded-full'
+      variant="outline"
+      size="icon"
+      className="rounded-full w-10 h-10 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
       onClick={toggleTheme}
+      aria-label={`Switch to ${resolvedTheme === "light" ? "dark" : "light"} mode`}
     >
-      {/* Toggle between Sun and Moon icons based on the current theme */}
-      {theme === "dark" ? (
-        <Moon className='h-[1.2rem] w-[1.2rem]' />
+      {resolvedTheme === "dark" ? (
+        <Moon className="h-4 w-4 text-gray-600 dark:text-gray-300" />
       ) : (
-        <Sun className='h-[1.2rem] w-[1.2rem]' />
+        <Sun className="h-4 w-4 text-gray-600 dark:text-gray-300" />
       )}
-      <span className='sr-only'>Toggle theme</span>
     </Button>
   );
 }

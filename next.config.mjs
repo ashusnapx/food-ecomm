@@ -11,7 +11,6 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  swcMinify: true,
   poweredByHeader: false, // Disable the X-Powered-By header for security
   compress: true, // Enable gzip compression
   headers: async () => {

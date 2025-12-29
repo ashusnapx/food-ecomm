@@ -1,4 +1,6 @@
 "use client";
+
+import type { Metadata } from "next";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,110 +13,119 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Send, RotateCcw } from "lucide-react";
 
 const ContactPage = () => {
-  // State to handle form inputs
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-  // Handle input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [id]: value,
-    });
+    }));
   };
 
-  // Handle form submission and redirect to mail client
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const { name, email, message } = formData;
-
-    // Mailto link with form data pre-filled
-    const mailtoLink = `mailto:ashu.kumarexam@gmail.com?subject=Contact from ${name}&body=Name: ${name}%0AEmail: ${email}%0AMessage: ${message}`;
-
-    // Redirect to mail client
+    const mailtoLink = `mailto:ashu.kumarexam@gmail.com?subject=Contact from ${encodeURIComponent(name)}&body=Name: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0A%0AMessage:%0A${encodeURIComponent(message)}`;
     window.location.href = mailtoLink;
   };
 
-  return (
-    <div className='flex flex-1 flex-col items-center justify-center px-4 py-10 text-gray-800 dark:text-gray-100'>
-      <div className='flex flex-col md:flex-row justify-between items-center'>
-        <div>
-          {/* Heading */}
-          <p className='text-3xl sm:text-5xl md:text-7xl text-left font-bold tracking-tight mb-6 leading-tight'>
-            Thanks for connecting!
-          </p>
+  const handleReset = () => {
+    setFormData({ name: "", email: "", message: "" });
+  };
 
-          
+  return (
+    <div className="flex flex-1 flex-col items-center justify-center px-4 py-12 md:py-20">
+      <div className="max-w-4xl w-full grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        {/* Left side - Message */}
+        <div className="text-center md:text-left">
+          <span className="inline-block px-4 py-1.5 text-sm font-medium text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30 rounded-full mb-4">
+            Get In Touch
+          </span>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
+            Let&apos;s work
+            <span className="block gradient-text">together</span>
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
+            Have a project in mind? Let&apos;s build something amazing together.
+          </p>
         </div>
 
-        {/* Contact Form */}
-        <Card className='w-full max-w-md p-6 bg-white dark:bg-gray-800 shadow-lg'>
+        {/* Right side - Form */}
+        <Card className="border-gray-200 dark:border-gray-800 shadow-xl">
           <CardHeader>
-            <CardTitle>Contact Me</CardTitle>
+            <CardTitle>Send a Message</CardTitle>
             <CardDescription>
-              Fill out the form to get in touch with me.
+              Fill out the form and I&apos;ll get back to you soon.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit}>
-              <div className='grid w-full items-center gap-4'>
-                {/* Name Input */}
-                <div className='flex flex-col space-y-1.5'>
-                  <Label htmlFor='name'>Name</Label>
-                  <Input
-                    id='name'
-                    placeholder='Your Name'
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="rounded-xl"
+                />
+              </div>
 
-                {/* Email Input */}
-                <div className='flex flex-col space-y-1.5'>
-                  <Label htmlFor='email'>Email</Label>
-                  <Input
-                    id='email'
-                    type='email'
-                    placeholder='Your Email'
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="rounded-xl"
+                />
+              </div>
 
-                {/* Message Input */}
-                <div className='flex flex-col space-y-1.5'>
-                  <Label htmlFor='message'>Message</Label>
-                  <textarea
-                    id='message'
-                    rows={4}
-                    placeholder='Your Message'
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    className='resize-none p-2 border rounded-md dark:bg-gray-700 dark:text-gray-200'
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="message">Message</Label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  placeholder="Tell me about your project..."
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  className="w-full resize-none p-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                />
               </div>
             </form>
           </CardContent>
-          <CardFooter className='flex justify-end space-x-2 w-full'>
+          <CardFooter className="flex justify-end gap-3">
             <Button
-              variant='outline'
-              onClick={() => setFormData({ name: "", email: "", message: "" })}
+              type="button"
+              variant="outline"
+              onClick={handleReset}
+              className="rounded-full gap-2"
             >
+              <RotateCcw className="w-4 h-4" />
               Reset
             </Button>
-            <Button onClick={handleSubmit}>Send Message</Button>
+            <Button 
+              onClick={handleSubmit}
+              className="rounded-full gap-2"
+            >
+              <Send className="w-4 h-4" />
+              Send Message
+            </Button>
           </CardFooter>
         </Card>
       </div>

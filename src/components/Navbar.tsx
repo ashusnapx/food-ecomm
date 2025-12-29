@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { Mode } from "./Mode";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { CiMedicalCross, CiMenuKebab } from "react-icons/ci";
+import { useState, useCallback } from "react";
+import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { links } from "@/constants/constant";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,114 +14,158 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathName = usePathname();
 
-  const handleMenuButton = () => setIsMenuOpen((prev) => !prev);
+  const toggleMenu = useCallback(() => setIsMenuOpen((prev) => !prev), []);
+  const closeMenu = useCallback(() => setIsMenuOpen(false), []);
 
-  const getLinkClass = (href: string) =>
-    pathName === href
-      ? "text-purple-700 dark:text-purple-400 font-semibold"
-      : "hover:text-purple-500 transition";
-
-  const renderLinks = () =>
-    links.map(({ href, label }) => (
-      <Link
-        key={href}
-        href={href}
-        className={`text-lg ${getLinkClass(href)}`}
-        onClick={() => setIsMenuOpen(false)}
-      >
-        {label}
-      </Link>
-    ));
+  const isActive = (href: string) => pathName === href;
 
   return (
     <>
-      {/* Common Navbar */}
-      <motion.div
-        className='flex items-center justify-between mx-3 md:mx-9 mt-5 px-6 py-3 rounded-full shadow-lg bg-white/40 dark:bg-black/40 backdrop-blur-lg border border-gray-300 dark:border-gray-700 transition top-5 sticky z-1'
-        initial={{ opacity: 0, y: -10 }}
+      <motion.header
+        className="sticky top-4 z-50 mx-3 md:mx-9"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
       >
-        {/* Logo */}
-        <div className='flex items-center space-x-5'>
-          <Link href='/' className='text-2xl font-bold tracking-tighter'>
-            Ashutosh<span className='italic text-purple-600'>Kumar</span>
-          </Link>
-        </div>
-
-        {/* Desktop Links */}
-        <div className='hidden md:flex space-x-9 font-medium'>
-          {renderLinks()}
-        </div>
-
-        {/* Toggle & Contact - Desktop */}
-        <div className='hidden md:flex items-center space-x-4'>
-          <Mode />
-          <Link
-            href='/contact-me'
-            className={cn(
-              buttonVariants({ variant: "default" }),
-              "rounded-full"
-            )}
-          >
-            Contact me &rarr;
-          </Link>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <Button
-          className='md:hidden border rounded-full p-2'
-          onClick={handleMenuButton}
-          aria-expanded={isMenuOpen}
-          aria-label='Toggle Menu'
+        <nav
+          className="flex items-center justify-between px-6 py-3 rounded-2xl 
+                     bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl
+                     border border-gray-200/50 dark:border-gray-800/50
+                     shadow-lg shadow-gray-100/20 dark:shadow-gray-900/20"
+          role="navigation"
+          aria-label="Main navigation"
         >
-          {isMenuOpen ? (
-            <CiMedicalCross className='text-xl rotate-45 transition-transform duration-300' />
-          ) : (
-            <CiMenuKebab className='text-xl transition-transform duration-300' />
-          )}
-        </Button>
-      </motion.div>
+          {/* Logo */}
+          <Link 
+            href="/" 
+            className="text-xl font-bold tracking-tight hover:opacity-80 transition-opacity"
+            aria-label="Go to homepage"
+          >
+            Ashutosh
+            <span className="italic text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-500">
+              Kumar
+            </span>
+          </Link>
 
-      {/* Mobile Menu */}
+          {/* Desktop Links */}
+          <div className="hidden md:flex items-center gap-8">
+            {links.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className={cn(
+                  "relative text-sm font-medium transition-colors",
+                  isActive(href)
+                    ? "text-purple-600 dark:text-purple-400"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                )}
+              >
+                {label}
+                {isActive(href) && (
+                  <motion.span
+                    layoutId="navbar-indicator"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-purple-600 dark:bg-purple-400 rounded-full"
+                    transition={{ type: "spring", bounce: 0.25, duration: 0.5 }}
+                  />
+                )}
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop Right Section */}
+          <div className="hidden md:flex items-center gap-3">
+            <Mode />
+            <Link
+              href="/contact-me"
+              className={cn(
+                buttonVariants({ variant: "default" }),
+                "rounded-full px-5"
+              )}
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl 
+                       bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300
+                       hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            onClick={toggleMenu}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </nav>
+      </motion.header>
+
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            className='fixed inset-0 bg-black/70 z-50 flex items-center justify-center'
+            id="mobile-menu"
+            className="fixed inset-0 z-40 md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
+            {/* Backdrop */}
             <motion.div
-              className='bg-white dark:bg-gray-900 p-6 rounded-3xl shadow-xl text-center w-5/6 md:w-1/3'
-              initial={{ y: -20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={closeMenu}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            />
+
+            {/* Menu Panel */}
+            <motion.div
+              className="absolute top-20 left-4 right-4 p-6 rounded-2xl 
+                         bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800
+                         shadow-2xl"
+              initial={{ opacity: 0, y: -20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
             >
-              <div className='space-y-6'>
-                <div className='flex flex-col space-y-5'>{renderLinks()}</div>
-
-                {/* Toggle & Contact - Mobile */}
-                <div className='flex items-center justify-center space-x-3'>
-                  <Mode />
+              {/* Navigation Links */}
+              <nav className="flex flex-col gap-2 mb-6" aria-label="Mobile navigation">
+                {links.map(({ href, label }) => (
                   <Link
-                    href='/contact-me'
+                    key={href}
+                    href={href}
+                    onClick={closeMenu}
                     className={cn(
-                      buttonVariants({ variant: "default" }),
-                      "rounded-full"
+                      "px-4 py-3 rounded-xl text-lg font-medium transition-colors",
+                      isActive(href)
+                        ? "bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                     )}
-                    onClick={() => setIsMenuOpen(false)}
                   >
-                    Contact me &rarr;
+                    {label}
                   </Link>
-                </div>
+                ))}
+              </nav>
 
-                {/* Close Button */}
-                <button
-                  onClick={() => setIsMenuOpen(false)}
-                  className='mt-5 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white transition'
+              {/* Divider */}
+              <div className="h-px bg-gray-200 dark:bg-gray-800 mb-6" />
+
+              {/* Actions */}
+              <div className="flex items-center gap-3">
+                <Mode />
+                <Link
+                  href="/contact-me"
+                  onClick={closeMenu}
+                  className={cn(
+                    buttonVariants({ variant: "default" }),
+                    "rounded-full flex-1 justify-center"
+                  )}
                 >
-                  Close Menu
-                </button>
+                  Contact Me
+                </Link>
               </div>
             </motion.div>
           </motion.div>

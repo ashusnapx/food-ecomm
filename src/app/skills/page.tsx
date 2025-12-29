@@ -1,12 +1,19 @@
-import { Skills } from '@/components'
-import React from 'react'
+import type { Metadata } from "next";
+import { Skills } from "@/components";
 
-const page = () => {
-  return (
-      <div>
-          <Skills/>
-    </div>
-  )
-}
+export const metadata: Metadata = {
+  title: "Skills",
+  description:
+    "My technical skills and expertise in programming languages, frontend development, backend development, and data analysis.",
+  openGraph: {
+    title: "Skills | Ashutosh Kumar",
+    description:
+      "My technical skills and expertise in programming languages, frontend development, backend development, and data analysis.",
+  },
+};
 
-export default page
+const SkillsPage = () => {
+  return <Skills />;
+};
+
+export default SkillsPage;

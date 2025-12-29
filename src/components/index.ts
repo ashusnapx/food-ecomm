@@ -3,6 +3,9 @@ import Hero from './Hero';
 import Internships from './Internships';
 import Projects from './Projects';
 import Skills from './Skills';
-import ContactForm from './ContactForm';
+import Footer from './Footer';
 
-export { Navbar, Hero, Internships, Projects, Skills, ContactForm };
+// Legacy alias for backwards compatibility
+export { Footer as ContactForm };
+
+export { Navbar, Hero, Internships, Projects, Skills, Footer };

@@ -1,12 +1,19 @@
-import { Projects } from '@/components'
-import React from 'react'
+import type { Metadata } from "next";
+import { Projects } from "@/components";
 
-const page = () => {
-  return (
-      <div>
-          <Projects/>
-    </div>
-  )
-}
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "Explore my portfolio of web development projects built with React, Next.js, and modern technologies.",
+  openGraph: {
+    title: "Projects | Ashutosh Kumar",
+    description:
+      "Explore my portfolio of web development projects built with React, Next.js, and modern technologies.",
+  },
+};
 
-export default page
+const ProjectsPage = () => {
+  return <Projects />;
+};
+
+export default ProjectsPage;

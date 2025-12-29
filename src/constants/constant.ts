@@ -22,15 +22,6 @@ import {
   SiPeakdesign,
   SiCodepen,
   SiNextdotjs,
-} from "react-icons/si";
-
-import {
-  LucideBadge,
-  LucideMousePointerClick,
-  LucidePhoneCall,
-} from "lucide-react";
-
-import {
   SiGithub,
   SiHashnode,
   SiInstagram,
@@ -38,9 +29,83 @@ import {
   SiLinkedin,
   SiMedium,
   SiTwitter,
+  SiFiverr,
 } from "react-icons/si";
+import type { IconType } from "react-icons";
 
-export const projectsData = [
+import {
+  LucideBadge,
+  LucideMousePointerClick,
+  LucidePhoneCall,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+
+// =============================================================================
+// TYPE DEFINITIONS
+// =============================================================================
+
+export interface SocialLink {
+  href: string;
+  icon: IconType;
+  label: string;
+}
+
+export interface Project {
+  id: number;
+  name: string;
+  imageSrc: string;
+  techStacks: string;
+  description?: string;
+  githubLink: string;
+  liveLink?: string;
+}
+
+export interface SkillItem {
+  icon: IconType;
+  label: string;
+}
+
+export interface SkillCategory {
+  title: string;
+  icon: IconType | LucideIcon;
+  skills: SkillItem[];
+}
+
+export interface Internship {
+  role: string;
+  companyName: string;
+  fromDate: string;
+  toDate: string;
+  modeOfWork: string;
+  workDone: string[];
+  TechStack: string[];
+}
+
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+// =============================================================================
+// SOCIAL LINKS - Single Source of Truth
+// =============================================================================
+
+export const socialLinks: SocialLink[] = [
+  { href: "https://github.com/ashusnapx", icon: SiGithub, label: "GitHub" },
+  { href: "https://instagram.com/ashusnapx", icon: SiInstagram, label: "Instagram" },
+  { href: "https://x.com/ashusnapx", icon: SiTwitter, label: "X (Twitter)" },
+  { href: "https://linkedin.com/in/ashusnapx", icon: SiLinkedin, label: "LinkedIn" },
+  { href: "https://medium.com/@ashusnapx", icon: SiMedium, label: "Medium" },
+  { href: "https://leetcode.com/u/dollarSign/", icon: SiLeetcode, label: "LeetCode" },
+  { href: "https://hashnode.com/@ashusnapx", icon: SiHashnode, label: "Hashnode" },
+  { href: "https://www.fiverr.com/ashusnapx", icon: SiFiverr, label: "Fiverr" },
+];
+
+// =============================================================================
+// PROJECTS DATA
+// =============================================================================
+
+export const projectsData: Project[] = [
   {
     id: 0,
     name: "Secourse",

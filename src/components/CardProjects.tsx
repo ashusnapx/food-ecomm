@@ -1,8 +1,10 @@
-import { VerifiedIcon, Github, Link2 } from "lucide-react";
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import React, { useMemo } from "react";
-import { SiChainlink, SiGithub } from "react-icons/si";
+import { Github, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 
 interface CardProps {
   imageSrc: string;
@@ -11,6 +13,7 @@ interface CardProps {
   techStack: string[];
   githubLink: string;
   liveLink?: string;
+  index?: number;
 }
 
 const CardProjects = ({
@@ -20,92 +23,143 @@ const CardProjects = ({
   techStack,
   githubLink,
   liveLink,
-}: CardProps): JSX.Element => {
-  // Memoizing tech stack to avoid re-rendering unless techStack changes
-  const memoizedTechStack = useMemo(() => {
-    return techStack.map((tech, index) => (
-      <li
-        key={index}
-        className='px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 rounded-full text-sm'
-      >
-        {tech}
-      </li>
-    ));
-  }, [techStack]);
+  index = 0,
+}: CardProps) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const isLongDescription = description && description.length > 150;
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 15,
+        delay: index * 0.1,
+      },
+    },
+  };
 
   return (
-    <div className='border border-gray-300 dark:border-gray-700 rounded-xl p-5 w-full h-auto hover:shadow-lg transition-shadow duration-300 bg-white dark:bg-gray-800'>
-      <div className='mb-4 border border-black rounded-md'>
+    <motion.article 
+      className="group relative flex flex-col h-full rounded-2xl overflow-hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+      whileHover={{ 
+        y: -8,
+        transition: { type: "spring", stiffness: 300, damping: 20 }
+      }}
+    >
+      {/* Image Container */}
+      <div className="relative aspect-video overflow-hidden bg-gray-100 dark:bg-gray-800">
         <Image
           src={imageSrc}
-          alt={projectName}
-          className='w-auto h-auto object-cover rounded-lg'
-          height={224}
-          width={400}
-          priority
+          alt={`Screenshot of ${projectName}`}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
+        {/* Overlay on hover */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+        
+        {/* Quick links overlay */}
+        <motion.div 
+          className="absolute bottom-4 left-4 right-4 flex gap-2"
+          initial={{ opacity: 0, y: 10 }}
+          whileHover={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Link
+            href={githubLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2 bg-white/90 dark:bg-gray-900/90 rounded-full text-sm font-medium hover:bg-white dark:hover:bg-gray-900 transition-colors"
+            aria-label={`View ${projectName} on GitHub`}
+          >
+            <Github className="w-4 h-4" />
+            Code
+          </Link>
+          {liveLink && (
+            <Link
+              href={liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-full text-sm font-medium hover:bg-purple-700 transition-colors"
+              aria-label={`View live demo of ${projectName}`}
+            >
+              <ExternalLink className="w-4 h-4" />
+              Live
+            </Link>
+          )}
+        </motion.div>
       </div>
-      <h1 className='text-2xl font-bold mb-3 text-gray-900 dark:text-gray-100 tracking-tight'>
-        <span className='flex items-center gap-2'>
+
+      {/* Content */}
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
           {projectName}
-          <VerifiedIcon className='text-primary' />
-        </span>
-      </h1>
-      {description ? (
-        <p className='text-md text-gray-600 dark:text-gray-300 mb-4 leading-relaxed tracking-tighter'>
-          {description}
-        </p>
-      ) : (
-        <p className='text-md text-red-600 dark:text-red-300 mb-4 leading-relaxed'>
-          Description not available
-        </p>
-      )}
-      <div className='mt-4 flex justify-between items-start'>
-        <div>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-200 mb-2'>
-            Tech Stack:
-          </h3>
-          <ul className='flex flex-wrap gap-2'>{memoizedTechStack}</ul>
-        </div>
-        <div className='ml-4'>
-          <h3 className='text-lg font-semibold text-gray-900 dark:text-gray-200 mb-2'>
-            Links:
-          </h3>
-          <ul className='space-y-2'>
-            <li>
-              <Link
-                href={githubLink}
-                className='text-purple-700 dark:text-purple-400 hover:underline'
-                target='_blank'
-                rel='noopener noreferrer'
+        </h3>
+        
+        {description ? (
+          <div className="mb-4 flex-1">
+            <motion.p 
+              className={`text-gray-600 dark:text-gray-400 text-sm leading-relaxed ${
+                !isExpanded && isLongDescription ? 'line-clamp-3' : ''
+              }`}
+              layout
+            >
+              {description}
+            </motion.p>
+            {isLongDescription && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="mt-2 flex items-center gap-1 text-xs font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
               >
-                <div className='flex items-center space-x-2'>
-                  <Github className='text-xl' />
-                  <span>Github </span>
-                </div>
-              </Link>
-            </li>
-            {liveLink && (
-              <li>
-                <Link
-                  href={liveLink}
-                  className='text-purple-700 dark:text-purple-400 hover:underline'
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <div className='flex items-center space-x-2'>
-                    <Link2 className='text-xl' />
-                    <span>Live </span>
-                  </div>
-                </Link>
-              </li>
+                {isExpanded ? (
+                  <>
+                    Show less <ChevronUp className="w-3 h-3" />
+                  </>
+                ) : (
+                  <>
+                    Read more <ChevronDown className="w-3 h-3" />
+                  </>
+                )}
+              </button>
             )}
-          </ul>
+          </div>
+        ) : (
+          <p className="text-gray-400 dark:text-gray-500 text-sm italic mb-4 flex-1">
+            Project description coming soon...
+          </p>
+        )}
+
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-2 mt-auto">
+          {techStack.map((tech, idx) => (
+            <motion.span
+              key={idx}
+              className="px-3 py-1 text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ delay: idx * 0.05 }}
+              viewport={{ once: true }}
+            >
+              {tech}
+            </motion.span>
+          ))}
         </div>
       </div>
-    </div>
+    </motion.article>
   );
 };
 
-// Memoizing the entire component to avoid unnecessary re-renders
-export default React.memo(CardProjects);
+export default CardProjects;

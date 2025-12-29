@@ -1,8 +1,19 @@
-import { Internships } from '@/components';
-import React from 'react';
+import type { Metadata } from "next";
+import { Internships } from "@/components";
 
-const page = () => {
+export const metadata: Metadata = {
+  title: "Experience",
+  description:
+    "My professional experience and internships in frontend development, teaching, and software engineering.",
+  openGraph: {
+    title: "Experience | Ashutosh Kumar",
+    description:
+      "My professional experience and internships in frontend development, teaching, and software engineering.",
+  },
+};
+
+const InternshipsPage = () => {
   return <Internships />;
 };
 
-export default page;
+export default InternshipsPage;
