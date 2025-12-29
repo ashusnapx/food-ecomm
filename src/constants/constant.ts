@@ -17,9 +17,9 @@ import {
   SiReact,
   SiNodedotjs,
   SiBun,
-  SiDataverse,
-  SiBackendless,
-  SiPeakdesign,
+  SiMysql,
+  SiRedis,
+  SiSupabase,
   SiCodepen,
   SiNextdotjs,
   SiGithub,
@@ -28,7 +28,7 @@ import {
   SiLeetcode,
   SiLinkedin,
   SiMedium,
-  SiTwitter,
+  SiX,
   SiFiverr,
 } from "react-icons/si";
 import type { IconType } from "react-icons";
@@ -93,7 +93,7 @@ export interface NavLink {
 export const socialLinks: SocialLink[] = [
   { href: "https://github.com/ashusnapx", icon: SiGithub, label: "GitHub" },
   { href: "https://instagram.com/ashusnapx", icon: SiInstagram, label: "Instagram" },
-  { href: "https://x.com/ashusnapx", icon: SiTwitter, label: "X (Twitter)" },
+  { href: "https://x.com/ashusnapx", icon: SiX, label: "X (Twitter)" },
   { href: "https://linkedin.com/in/ashusnapx", icon: SiLinkedin, label: "LinkedIn" },
   { href: "https://medium.com/@ashusnapx", icon: SiMedium, label: "Medium" },
   { href: "https://leetcode.com/u/dollarSign/", icon: SiLeetcode, label: "LeetCode" },
@@ -353,7 +353,7 @@ export const skillCategories = [
   },
   {
     title: "Frontend Development",
-    icon: SiPeakdesign,
+    icon: SiReact,
     skills: [
       { icon: SiHtml5, label: "HTML/HTML5" },
       { icon: SiCss3, label: "CSS/CSS3" },
@@ -364,7 +364,7 @@ export const skillCategories = [
   },
   {
     title: "Backend Development",
-    icon: SiBackendless,
+    icon: SiNodedotjs,
     skills: [
       { icon: SiNodedotjs, label: "Node.js" },
       { icon: SiExpress, label: "Express.js" },
@@ -378,7 +378,7 @@ export const skillCategories = [
     skills: [
       { icon: SiNumpy, label: "Numpy" },
       { icon: SiPandas, label: "Pandas" },
-      { icon: SiDataverse, label: "Bokeh" },
+      { icon: SiPlotly, label: "Bokeh" },
       { icon: SiPlotly, label: "Plotly" },
     ],
   },

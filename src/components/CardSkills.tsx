@@ -2,7 +2,7 @@
 
 import type { IconType } from "react-icons";
 import type { LucideIcon } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 interface SkillCategory {
   icon: IconType | LucideIcon;
@@ -18,13 +18,13 @@ interface SkillCardProps {
 const CardSkills = ({ skillCategory, index = 0 }: SkillCardProps) => {
   const CategoryIcon = skillCategory.icon;
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
         delay: index * 0.1,
@@ -49,7 +49,7 @@ const CardSkills = ({ skillCategory, index = 0 }: SkillCardProps) => {
         <motion.div 
           className="flex items-center justify-center w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400"
           whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          transition={{ type: "spring" as const, stiffness: 300 }}
         >
           <CategoryIcon className="w-6 h-6" />
         </motion.div>

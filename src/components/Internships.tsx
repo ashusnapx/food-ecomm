@@ -2,7 +2,7 @@
 
 import { internshipData } from "@/constants/constant";
 import { Calendar, MapPin, Briefcase } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -21,18 +21,17 @@ const Internships = () => {
     return acc + months;
   }, 0);
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
+    visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
-        delay: i * 0.2,
       },
-    }),
+    },
   };
 
   return (
@@ -83,11 +82,11 @@ const Internships = () => {
             className={`relative flex flex-col md:flex-row gap-6 mb-12 ${
               index % 2 === 0 ? "md:flex-row-reverse" : ""
             }`}
-            custom={index}
             variants={cardVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
+            transition={{ delay: index * 0.2 }}
           >
             {/* Timeline dot */}
             <motion.div 
@@ -95,7 +94,7 @@ const Internships = () => {
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.3 + index * 0.2, type: "spring" }}
+              transition={{ delay: 0.3 + index * 0.2, type: "spring" as const }}
             />
 
             {/* Content Card */}
@@ -107,7 +106,7 @@ const Internships = () => {
                 y: -5,
                 boxShadow: "0 20px 40px rgba(147, 51, 234, 0.1)"
               }}
-              transition={{ type: "spring", stiffness: 300 }}
+              transition={{ type: "spring" as const, stiffness: 300 }}
             >
               {/* Role & Company */}
               <div className="mb-4">
@@ -139,17 +138,13 @@ const Internships = () => {
                 </h4>
                 <ul className="space-y-2">
                   {internship.workDone.map((task, i) => (
-                    <motion.li 
+                    <li 
                       key={i}
                       className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400"
-                      initial={{ opacity: 0, x: -10 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 * i }}
                     >
                       <span className="mt-2 w-1.5 h-1.5 rounded-full bg-purple-500 flex-shrink-0" />
                       {task}
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
               </div>
@@ -157,16 +152,12 @@ const Internships = () => {
               {/* Tech Stack */}
               <div className="flex flex-wrap gap-2">
                 {internship.TechStack.map((tech, i) => (
-                  <motion.span
+                  <span
                     key={i}
                     className="px-3 py-1 text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.05 * i }}
                   >
                     {tech}
-                  </motion.span>
+                  </span>
                 ))}
               </div>
             </motion.article>

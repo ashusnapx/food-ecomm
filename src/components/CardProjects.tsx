@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Github, ExternalLink, ChevronDown, ChevronUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { useState } from "react";
 
 interface CardProps {
@@ -28,13 +28,13 @@ const CardProjects = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const isLongDescription = description && description.length > 150;
 
-  const cardVariants = {
+  const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 100,
         damping: 15,
         delay: index * 0.1,
@@ -51,7 +51,7 @@ const CardProjects = ({
       viewport={{ once: true, margin: "-50px" }}
       whileHover={{ 
         y: -8,
-        transition: { type: "spring", stiffness: 300, damping: 20 }
+        transition: { type: "spring" as const, stiffness: 300, damping: 20 }
       }}
     >
       {/* Image Container */}
@@ -64,20 +64,10 @@ const CardProjects = ({
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {/* Overlay on hover */}
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         {/* Quick links overlay */}
-        <motion.div 
-          className="absolute bottom-4 left-4 right-4 flex gap-2"
-          initial={{ opacity: 0, y: 10 }}
-          whileHover={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
           <Link
             href={githubLink}
             target="_blank"
@@ -100,7 +90,7 @@ const CardProjects = ({
               Live
             </Link>
           )}
-        </motion.div>
+        </div>
       </div>
 
       {/* Content */}
@@ -111,14 +101,13 @@ const CardProjects = ({
         
         {description ? (
           <div className="mb-4 flex-1">
-            <motion.p 
+            <p 
               className={`text-gray-600 dark:text-gray-400 text-sm leading-relaxed ${
                 !isExpanded && isLongDescription ? 'line-clamp-3' : ''
               }`}
-              layout
             >
               {description}
-            </motion.p>
+            </p>
             {isLongDescription && (
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -145,16 +134,12 @@ const CardProjects = ({
         {/* Tech Stack */}
         <div className="flex flex-wrap gap-2 mt-auto">
           {techStack.map((tech, idx) => (
-            <motion.span
+            <span
               key={idx}
               className="px-3 py-1 text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.05 }}
-              viewport={{ once: true }}
             >
               {tech}
-            </motion.span>
+            </span>
           ))}
         </div>
       </div>

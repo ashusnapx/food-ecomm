@@ -5,10 +5,10 @@ import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
 import { socialLinks } from "@/constants/constant";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Calendar } from "lucide-react";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -19,44 +19,31 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
       damping: 15,
     },
   },
 };
 
-const imageVariants = {
+const imageVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8 },
   visible: {
     opacity: 1,
     scale: 1,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 80,
       damping: 20,
       delay: 0.3,
     },
   },
-};
-
-const socialVariants = {
-  hidden: { opacity: 0, x: 20 },
-  visible: (i: number) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: 0.5 + i * 0.1,
-      type: "spring",
-      stiffness: 100,
-    },
-  }),
 };
 
 const Hero = () => {
@@ -227,10 +214,9 @@ const Hero = () => {
           return (
             <motion.div
               key={link.href}
-              custom={index}
-              variants={socialVariants}
-              initial="hidden"
-              animate="visible"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 + index * 0.1, type: "spring" as const, stiffness: 100 }}
             >
               <Link
                 href={link.href}
