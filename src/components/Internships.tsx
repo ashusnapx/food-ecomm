@@ -5,6 +5,7 @@ import { Calendar, MapPin, Briefcase } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
 
 const formatDate = (dateString: string) => {
+  if (dateString.toLowerCase() === "present") return "Present";
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", { 
     month: "short", 
@@ -15,11 +16,22 @@ const formatDate = (dateString: string) => {
 const Internships = () => {
   const totalMonths = internshipData.reduce((acc, internship) => {
     const start = new Date(internship.fromDate);
-    const end = new Date(internship.toDate);
+    const endStr = internship.toDate.toLowerCase();
+    const end = endStr === "present" ? new Date() : new Date(internship.toDate);
+    
+    // Calculate total months including partial months
     const months = (end.getFullYear() - start.getFullYear()) * 12 + 
                    (end.getMonth() - start.getMonth()) + 1;
-    return acc + months;
+    return acc + Math.max(0, months); // Ensure no negative months
   }, 0);
+
+  // Convert months to years and months string, handling the logic gracefully
+  const years = Math.floor(totalMonths / 12);
+  const remainingMonths = totalMonths % 12;
+  const experienceString = years > 0 
+    ? `${years} Year${years > 1 ? 's' : ''}${remainingMonths > 0 ? ` ${remainingMonths} Month${remainingMonths > 1 ? 's' : ''}` : ''}`
+    : `${totalMonths} Month${totalMonths !== 1 ? 's' : ''}`;
+
 
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 50 },
@@ -60,7 +72,7 @@ const Internships = () => {
           <span className="gradient-text">Experience</span>
         </h2>
         <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-          {internshipData.length} roles • {totalMonths}+ months of experience
+          {internshipData.length} roles • {experienceString} of experience
         </p>
       </motion.div>
 
