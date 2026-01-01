@@ -398,7 +398,7 @@ export const navigationItems = [
 
 export const internshipData = [
   {
-    role: "Associate System Engineer (Core ABAP)",
+    role: "Software Engineer (Core ABAP)",
     companyName: "Tata Consultancy Services (TCS)",
     fromDate: "2025-06-01",
     toDate: "Present",
