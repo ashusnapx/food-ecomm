@@ -22,9 +22,7 @@ export function LeetCodeStats() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(
-          "https://leetcode-stats-api.herokuapp.com/dollarSign"
-        );
+        const res = await fetch(`/api/leetcode?username=dollarSign`);
         if (!res.ok) throw new Error("Failed to fetch");
         const json = await res.json();
         if (json.status === "error") throw new Error(json.message);
