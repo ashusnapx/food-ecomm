@@ -92,12 +92,28 @@ export interface NavLink {
 
 export const socialLinks: SocialLink[] = [
   { href: "https://github.com/ashusnapx", icon: SiGithub, label: "GitHub" },
-  { href: "https://instagram.com/ashusnapx", icon: SiInstagram, label: "Instagram" },
+  {
+    href: "https://instagram.com/ashusnapx",
+    icon: SiInstagram,
+    label: "Instagram",
+  },
   { href: "https://x.com/ashusnapx", icon: SiX, label: "X (Twitter)" },
-  { href: "https://linkedin.com/in/ashusnapx", icon: SiLinkedin, label: "LinkedIn" },
+  {
+    href: "https://linkedin.com/in/ashusnapx",
+    icon: SiLinkedin,
+    label: "LinkedIn",
+  },
   { href: "https://medium.com/@ashusnapx", icon: SiMedium, label: "Medium" },
-  { href: "https://leetcode.com/u/dollarSign/", icon: SiLeetcode, label: "LeetCode" },
-  { href: "https://hashnode.com/@ashusnapx", icon: SiHashnode, label: "Hashnode" },
+  {
+    href: "https://leetcode.com/u/dollarSign/",
+    icon: SiLeetcode,
+    label: "LeetCode",
+  },
+  {
+    href: "https://hashnode.com/@ashusnapx",
+    icon: SiHashnode,
+    label: "Hashnode",
+  },
   { href: "https://www.fiverr.com/ashusnapx", icon: SiFiverr, label: "Fiverr" },
 ];
 
@@ -106,6 +122,28 @@ export const socialLinks: SocialLink[] = [
 // =============================================================================
 
 export const projectsData: Project[] = [
+  {
+    id: 101,
+    name: "PostGen",
+    imageSrc:
+      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1974&auto=format&fit=crop",
+    techStacks: "Typescript, NextJS, Tailwind CSS, Gemini",
+    description:
+      "Built an AI-driven LinkedIn post generator using LLM-based prompt orchestration. Implemented a multi-agent workflow for content planning and tone adaptation. Ensured feature correctness through iterative testing and manual validation.",
+    githubLink: "https://github.com/ashusnapx/linkedin-post-generator",
+    liveLink: "https://github.com/ashusnapx/linkedin-post-generator",
+  },
+  {
+    id: 102,
+    name: "AI Book Explorer",
+    imageSrc:
+      "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=2070&auto=format&fit=crop",
+    techStacks: "Typescript, NextJS, Redux, Prisma, PostgreSQL",
+    description:
+      "Developed an AI-powered web application for book discovery and summarization. Integrated conversational AI workflows using LangGraph and CopilotKit. Validated data handling and recommendations through manual testing.",
+    githubLink: "https://github.com/ashusnapx/ai-book-explorer",
+    liveLink: "https://github.com/ashusnapx/ai-book-explorer",
+  },
   {
     id: 0,
     name: "Secourse",
