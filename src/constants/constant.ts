@@ -131,7 +131,7 @@ export const projectsData: Project[] = [
     description:
       "Built an AI-driven LinkedIn post generator using LLM-based prompt orchestration. Implemented a multi-agent workflow for content planning and tone adaptation. Ensured feature correctness through iterative testing and manual validation.",
     githubLink: "https://github.com/ashusnapx/linkedin-post-generator",
-    liveLink: "https://github.com/ashusnapx/linkedin-post-generator",
+    liveLink: "https://postgen-ashusnapx.vercel.app/",
   },
   {
     id: 102,
