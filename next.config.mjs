@@ -1,51 +1,47 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Next 16: the React Compiler is stable and memoises components automatically.
+  // Worth it here because the page is animation-heavy — it removes the need to
+  // hand-place useMemo/useCallback around scroll and pointer handlers.
+  reactCompiler: true,
+
+  reactStrictMode: true,
+  poweredByHeader: false,
+
   images: {
+    // AVIF first, WebP as the fallback — meaningful LCP win on the project grid.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "i.postimg.cc",
-        port: "",
-        pathname: "/**", // Allow all paths
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-        port: "",
-        pathname: "/**",
-      },
+      { protocol: "https", hostname: "i.postimg.cc", pathname: "/**" },
+      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
     ],
   },
-  reactStrictMode: true,
-  poweredByHeader: false, // Disable the X-Powered-By header for security
-  compress: true, // Enable gzip compression
-  headers: async () => {
+
+  async headers() {
     return [
       {
-        // Custom security headers
-        source: "/(.*)", // Applies to all routes
+        source: "/(.*)",
         headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-          {
-            key: "X-XSS-Protection",
-            value: "1; mode=block",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "no-referrer",
-          },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          // `no-referrer` strips the Referer header entirely, which broke the
+          // LeetCode GraphQL call. same-origin keeps it for our own requests
+          // while still not leaking paths to third parties.
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
-            value: "microphone=(), camera=(), geolocation=()",
+            value: "microphone=(), camera=(), geolocation=(), interest-cohort=()",
           },
-          // Add more headers as needed
+        ],
+      },
+      {
+        // Generated OG cards and the static profile image never change per user.
+        source: "/:path*.(png|jpg|jpeg|svg|webp|avif|ico)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
         ],
       },
     ];

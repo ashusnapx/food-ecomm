@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ashutosh Kumar — Portfolio
 
-## Getting Started
+Single-page portfolio positioning **Ashutosh Kumar (ashusnapx)** as a Generative AI
+Engineer. Next.js App Router, statically rendered, with structured data built for
+both classic search and answer engines.
 
-First, run the development server:
+## Stack
+
+| | |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack, React Compiler) |
+| UI | React 19, Tailwind CSS 3, Framer Motion 13 |
+| Type | Archivo (display) · Inter Tight (body) · JetBrains Mono (labels) |
+| Hosting | Vercel |
+
+## Design system
+
+Swiss editorial: ink and bone, one acid-lime accent, hairline rules instead of
+shadows, square corners, oversized grotesque display type. Tokens live in
+`src/app/globals.css`; `tailwind.config.ts` **replaces** the default palette
+rather than extending it, so off-system colour cannot creep in.
+
+Motion is restrained by design — masked line reveals, rules that draw
+themselves, and hover wipes. Everything collapses cleanly under
+`prefers-reduced-motion`.
+
+## Content
+
+All copy, projects, skills and FAQ answers live in `src/constants/profile.ts`.
+`src/components/JsonLd.tsx` reads the same file, so the structured data Google
+sees can never drift from the copy a human reads. Edit one place.
+
+`src/constants/constant.ts` holds only the social links and the work history.
+
+## SEO / GEO
+
+- `@graph` JSON-LD: Person · WebSite · ProfilePage · ItemList · FAQPage · BreadcrumbList
+- Server-rendered metadata, canonical URL, `max-image-preview:large`
+- Generated 1200×630 OG and Twitter cards (`src/lib/og-card.tsx`)
+- `robots.ts` explicitly allows GPTBot, PerplexityBot, ClaudeBot and Google-Extended
+- `public/llms.txt` — plain-text brief for answer engines
+
+## Third-party data
+
+Both live-data panels degrade to a static state rather than an error:
+
+- **GitHub contributions** — `/api/github` proxies the public contributions API and
+  the heatmap is drawn in-house (no `react-github-calendar` dependency).
+- **LeetCode** — `/api/leetcode` tries LeetCode's GraphQL then a mirror. LeetCode
+  serves zeroed placeholder data to anonymous callers, so the panel usually falls
+  back to the self-reported total and says so.
+
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev        # http://localhost:3000
+npm run build      # production build
+npm run lint       # eslint (flat config)
+npm run typecheck  # tsc --noEmit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Before deploying
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Add Google Search Console + Bing verification tokens to `metadata.verification`
+   in `src/app/layout.tsx`.
+2. Submit `https://ashusnapx.vercel.app/sitemap.xml` in Search Console.
+3. Validate the structured data with Google's Rich Results Test.

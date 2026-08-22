@@ -1,120 +1,220 @@
 "use client";
-import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
-import { projectsData } from "@/constants/constant";
-import { Arrow } from "@/components/vectors";
-import { Github, ExternalLink } from "lucide-react";
+
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import {
+  categoryLabels,
+  categoryTone,
+  categoryToneInk,
+  projects,
+  type ProjectCategory,
+} from "@/constants/profile";
+import { Lift } from "@/components/ui/mask-reveal";
+import { SectionHeader } from "@/components/ui/section-header";
 
+type Filter = ProjectCategory | "all";
+const FILTERS: Filter[] = ["genai", "fullstack", "mobile", "all"];
+
+/**
+ * Work as an index, not a card grid.
+ *
+ * A list of ruled rows is how a printed catalogue would show this, and it lets
+ * fifteen projects breathe where fifteen cards would turn into wallpaper. The
+ * thumbnail is promoted to a preview that tracks the cursor, so the imagery
+ * still gets shown — just on demand rather than all at once.
+ */
 export function Work() {
-  const allProjects = projectsData;
+  const [filter, setFilter] = useState<Filter>("genai");
+  const [hovered, setHovered] = useState<string | null>(null);
+  const reduce = useReducedMotion();
 
-  return (
-    <section id='work' className='py-24 px-6 relative bg-muted/30'>
-      <div className='max-w-7xl mx-auto mb-12 flex justify-between items-end'>
-        <div>
-          <h2 className='text-4xl md:text-5xl font-display font-bold mb-4'>
-            Selected Work
-          </h2>
-          <p className='text-muted-foreground text-lg max-w-xl'>
-            A comprehensive list of my digital experiments and products.
-          </p>
-        </div>
-        <Arrow className='hidden md:block w-24 h-24 text-primary rotate-90' />
-      </div>
+  const px = useMotionValue(0);
+  const py = useMotionValue(0);
+  const x = useSpring(px, { stiffness: 260, damping: 30, mass: 0.5 });
+  const y = useSpring(py, { stiffness: 260, damping: 30, mass: 0.5 });
 
-      <BentoGrid className='max-w-7xl mx-auto'>
-        {allProjects.map((project, i) => (
-          <BentoGridItem
-            key={i}
-            title={project.name}
-            description={<ProjectDescription text={project.description} />}
-            header={
-              <div className='relative w-full h-48 md:h-60 rounded-xl overflow-hidden group'>
-                {/* 
-                        Use object-cover with top alignment to show the most relevant part (usually header/nav)
-                        Or object-contain with a blurred background to show full image.
-                        User requested "something better... they aren't complete".
-                        Let's try object-cover with object-top, which usually works best for web screenshots.
-                     */}
-                {project.imageSrc ? (
-                  <Image
-                    src={project.imageSrc}
-                    alt={project.name}
-                    fill
-                    sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
-                    className='object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-500 hover:scale-105'
-                    onError={(e) => {
-                      // Note: Next/Image onError is different, usually handled by checking src validity beforehand
-                      // but for simplicity in this generated code we'll stick to standard behavior or just let it fail gracefully
-                    }}
-                  />
-                ) : (
-                  <div className='absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center text-5xl font-display opacity-30'>
-                    {project.name.charAt(0)}
-                  </div>
-                )}
-
-                {/* Hover Overlay with Links hint */}
-                <div className='absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4'>
-                  {project.githubLink && (
-                    <div className='flex items-center gap-2 text-white font-medium px-4 py-2 bg-black/50 rounded-full backdrop-blur-sm'>
-                      <Github className='w-5 h-5' />
-                      <span>View Code</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            }
-            className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-            icon={
-              <div className='flex gap-2 mb-2 items-center'>
-                {project.techStacks
-                  .split(/,|and/)
-                  .slice(0, 3)
-                  .map((t, idx) => (
-                    <span
-                      key={idx}
-                      className='text-[10px] font-mono bg-primary/10 text-primary px-2 py-1 rounded-full border border-primary/20'
-                    >
-                      {t.trim()}
-                    </span>
-                  ))}
-              </div>
-            }
-            // Pass GitHub link as the main href for the card
-            href={project.githubLink}
-          />
-        ))}
-      </BentoGrid>
-    </section>
+  const visible = useMemo(
+    () =>
+      filter === "all"
+        ? projects
+        : projects.filter((p) => p.category === filter),
+    [filter]
   );
-}
 
-function ProjectDescription({ text }: { text?: string }) {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const counts = useMemo(() => {
+    const base: Record<Filter, number> = {
+      all: projects.length,
+      genai: 0,
+      fullstack: 0,
+      mobile: 0,
+    };
+    projects.forEach((p) => (base[p.category] += 1));
+    return base;
+  }, []);
 
-  if (!text) return null;
-
-  const shouldTruncate = text.length > 120;
+  const preview = visible.find((p) => p.id === hovered);
 
   return (
-    <div className='relative z-20' onClick={(e) => e.stopPropagation()}>
-      <p className='text-sm text-muted-foreground leading-relaxed'>
-        {isExpanded || !shouldTruncate ? text : `${text.slice(0, 120)}...`}
-      </p>
-      {shouldTruncate && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            setIsExpanded(!isExpanded);
-          }}
-          className='text-xs font-bold text-primary mt-1 hover:underline focus:outline-none'
+    <section
+      id="work"
+      className="gutter relative mx-auto max-w-page py-20 md:py-28"
+      onPointerMove={(e) => {
+        if (reduce) return;
+        px.set(e.clientX);
+        py.set(e.clientY);
+      }}
+    >
+      <SectionHeader
+        index="02"
+        label="Selected work"
+        tone="blue"
+        title={
+          <>
+            Things I built,
+            <br />
+            not things I read about.
+          </>
+        }
+        note="Every project below is live or open source. Start with the generative AI set — that is the work I want to be judged on."
+      />
+
+      {/* Filters */}
+      <Lift>
+        <div className="mt-14 flex flex-wrap items-center gap-x-7 gap-y-3 border-b border-rule pb-4 md:mt-20">
+          {FILTERS.map((f) => (
+            <button
+              key={f}
+              type="button"
+              onClick={() => setFilter(f)}
+              aria-pressed={filter === f}
+              className={`label flex items-baseline gap-1.5 transition-colors ${
+                filter === f ? "text-ink" : "text-faint hover:text-ink"
+              }`}
+            >
+              <span
+                aria-hidden
+                className="h-2.5 w-2.5"
+                style={{
+                  backgroundColor:
+                    filter === f ? `hsl(${categoryTone[f]})` : "hsl(var(--rule-strong))",
+                }}
+              />
+              {categoryLabels[f]}
+              <sup className="text-[9px] text-faint">{counts[f]}</sup>
+            </button>
+          ))}
+        </div>
+      </Lift>
+
+      {/* Index */}
+      <ul onMouseLeave={() => setHovered(null)}>
+        <AnimatePresence mode="popLayout" initial={false}>
+          {visible.map((project, i) => {
+            const href = project.live ?? project.github;
+            return (
+              <motion.li
+                key={project.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, delay: Math.min(i * 0.03, 0.25) }}
+                className="border-b border-rule"
+                onMouseEnter={() => setHovered(project.id)}
+              >
+                <a
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={
+                    {
+                      "--wipe": categoryTone[project.category],
+                      "--wipe-ink": categoryToneInk[project.category],
+                    } as React.CSSProperties
+                  }
+                  className="row-wipe row-wipe-tinted group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-6 transition-colors duration-300 hover:[color:hsl(var(--wipe-ink))] md:py-7"
+                >
+                  <span className="label col-span-2 text-faint transition-colors group-hover:[color:hsl(var(--wipe-ink)/0.65)] md:col-span-1">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <h3 className="type-lg col-span-10 md:col-span-4">
+                    {project.name}
+                  </h3>
+
+                  <p className="col-span-12 text-sm text-dim transition-colors group-hover:[color:hsl(var(--wipe-ink)/0.85)] md:col-span-3">
+                    {project.tagline}
+                  </p>
+
+                  <p className="label col-span-8 text-faint transition-colors group-hover:[color:hsl(var(--wipe-ink)/0.65)] md:col-span-3">
+                    {project.tags.slice(0, 3).join(" · ")}
+                  </p>
+
+                  <span className="label col-span-4 justify-self-end text-faint transition-colors group-hover:[color:hsl(var(--wipe-ink)/0.65)] md:col-span-1">
+                    {project.year} ↗
+                  </span>
+                </a>
+              </motion.li>
+            );
+          })}
+        </AnimatePresence>
+      </ul>
+
+      {/* Cursor-tracked preview. Hidden on touch, where there is no hover. */}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          style={{ x, y }}
+          className="pointer-events-none fixed left-0 top-0 z-30 hidden lg:block"
         >
-          {isExpanded ? "Show Less" : "Read More"}
-        </button>
+          <AnimatePresence>
+            {preview?.image && (
+              <motion.div
+                key={preview.id}
+                initial={{ opacity: 0, scale: 0.94 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                className="relative -translate-x-1/2 -translate-y-1/2"
+              >
+                <div className="relative h-[13rem] w-[19rem] border border-ink bg-raised">
+                  <Image
+                    src={preview.image}
+                    alt=""
+                    fill
+                    sizes="304px"
+                    className="object-cover object-top"
+                  />
+                </div>
+                <p className="label accent-block absolute -bottom-3 left-3 px-2 py-1.5">
+                  {preview.name}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       )}
-    </div>
+
+      <Lift>
+        <p className="label mt-8 text-faint">
+          Full source on{" "}
+          <a
+            href="https://github.com/ashusnapx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="link-wipe text-ink"
+          >
+            github.com/ashusnapx
+          </a>
+        </p>
+      </Lift>
+    </section>
   );
 }

@@ -2,113 +2,359 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   DESIGN TOKENS — Swiss editorial
+   Ink and bone. One accent. No gradients, no glass, no soft shadows.
+   Hierarchy comes from type scale, weight and rules — not from colour.
+   ========================================================================== */
+
 @layer base {
   :root {
-    /* Creative Light Mode */
-    --background: 0 0% 98%; /* Soft White */
-    --foreground: 240 10% 3.9%; /* Deep Gray/Black */
+    /* Paper */
+    --bg: 45 20% 94%;
+    --bg-raised: 45 16% 90%;
+    --fg: 60 4% 7%;
+    --fg-dim: 50 4% 30%;
+    --fg-faint: 50 4% 46%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    /* Hairline rules. Everything is separated by these, never by shadow. */
+    --rule: 50 6% 78%;
+    --rule-strong: 55 5% 62%;
 
-    /* Vibrant Accents */
-    --primary: 255 60% 60%; /* Vivid Purple */
-    --primary-foreground: 0 0% 98%;
+    /* Four flat inks. Each is used as a FILL with its paired text colour on
+       top — never as body text on the page ground, where lime in particular is
+       unreadable. Poster colour, not UI colour: no gradients, no tints. */
+    --accent: 72 100% 50%; /* acid lime   */
+    --accent-ink: 60 4% 7%;
+    --blue: 226 92% 54%; /* electric blue */
+    --blue-ink: 45 30% 97%;
+    --orange: 16 94% 51%; /* signal orange */
+    --orange-ink: 45 30% 97%;
+    --pink: 330 88% 52%; /* magenta       */
+    --pink-ink: 45 30% 97%;
 
-    --secondary: 170 70% 50%; /* Teal/Cyan */
-    --secondary-foreground: 240 5.9% 10%;
+    --danger: 8 78% 46%;
 
-    --accent: 320 70% 60%; /* Pink/Magenta */
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 255 60% 60%;
-
-    --radius: 1rem; /* Softer, larger radius */
+    --selection: 72 100% 50%;
+    --selection-ink: 60 4% 7%;
   }
 
   .dark {
-    /* Creative Dark Mode */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --bg: 60 3% 5%;
+    --bg-raised: 60 3% 9%;
+    --fg: 45 16% 92%;
+    --fg-dim: 45 8% 72%;
+    --fg-faint: 45 6% 54%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --rule: 50 4% 20%;
+    --rule-strong: 50 4% 34%;
 
-    --primary: 255 60% 60%;
-    --primary-foreground: 0 0% 98%;
+    --accent: 72 100% 56%;
+    --accent-ink: 60 4% 5%;
+    --blue: 224 100% 67%;
+    --blue-ink: 224 60% 8%;
+    --orange: 20 100% 60%;
+    --orange-ink: 20 60% 8%;
+    --pink: 332 92% 66%;
+    --pink-ink: 330 60% 8%;
 
-    --secondary: 170 70% 50%;
-    --secondary-foreground: 240 5.9% 10%;
+    --danger: 8 82% 62%;
 
-    --accent: 320 70% 60%;
-    --accent-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 255 60% 60%;
+    --selection: 72 100% 55%;
+    --selection-ink: 60 4% 5%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
+    border-color: hsl(var(--rule));
+    /* Zero radius everywhere. Corners are square in this system. */
+    border-radius: 0;
   }
 
-  /* Selection Color */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background-color: hsl(var(--bg));
+    color: hsl(var(--fg));
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
   ::selection {
-    @apply bg-primary/30 text-primary-foreground;
+    background-color: hsl(var(--selection));
+    color: hsl(var(--selection-ink));
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--bg));
+    border-left: 1px solid hsl(var(--rule));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--rule-strong));
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--accent));
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--accent));
+    outline-offset: 2px;
+  }
+
+  /* Numerals line up in tables and stat rows */
+  table,
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }
 
+/* ==========================================================================
+   TYPE
+   ========================================================================== */
+
 @layer utilities {
-  /* Dot Background Pattern */
-  .bg-grid-pattern {
-    background-image: radial-gradient(
-      circle,
-      hsl(var(--foreground)) 1px,
-      transparent 0
-    );
-    background-size: 40px 40px;
-    opacity: 0.05;
+  /* Oversized grotesque. Negative tracking is what makes it read as designed
+     rather than as default-large text. */
+  /* Sized so the longest word on the page ("GENERATIVE", 10 uppercase
+     characters) fits the full content width at every viewport. The previous
+     coefficient overflowed a 9-column container on laptops and the mask's
+     overflow:hidden clipped it. */
+  .type-display {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.5rem, 0.25rem + 10.5vw, 11.5rem);
+    line-height: 0.85;
+    letter-spacing: -0.055em;
   }
 
-  /* Vibrant Gradients */
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary;
+  .type-xl {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 800;
+    font-size: clamp(2.25rem, 1rem + 5.5vw, 5.5rem);
+    line-height: 0.88;
+    letter-spacing: -0.042em;
   }
 
-  /* Floating Animation */
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-10px);
+  .type-lg {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .type-md {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+  }
+
+  .type-body {
+    font-size: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem);
+    line-height: 1.55;
+  }
+
+  /* The mono label is the connective tissue of the whole layout: section
+     numbers, metadata, table headers, timestamps. */
+  .label {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .label-sm {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+/* ==========================================================================
+   STRUCTURE
+   ========================================================================== */
+
+@layer utilities {
+  /* Page gutter. One value, used everywhere, so every rule lines up. */
+  .gutter {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .gutter {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
     }
   }
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
+  @media (min-width: 1280px) {
+    .gutter {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
+  }
+
+  .rule-t {
+    border-top: 1px solid hsl(var(--rule));
+  }
+  .rule-b {
+    border-bottom: 1px solid hsl(var(--rule));
+  }
+
+  /* Colour blocks. Fill plus its paired text colour, always as a pair — this
+     is the only mechanism by which colour enters the page. */
+  .accent-block {
+    background-color: hsl(var(--accent));
+    color: hsl(var(--accent-ink));
+  }
+  .blue-block {
+    background-color: hsl(var(--blue));
+    color: hsl(var(--blue-ink));
+  }
+  .orange-block {
+    background-color: hsl(var(--orange));
+    color: hsl(var(--orange-ink));
+  }
+  .pink-block {
+    background-color: hsl(var(--pink));
+    color: hsl(var(--pink-ink));
+  }
+
+  /* Row wipe in a colour other than lime. Set --wipe on the element. */
+  .row-wipe-tinted::before {
+    background-color: hsl(var(--wipe, var(--accent)));
+  }
+}
+
+/* ==========================================================================
+   MOTION
+   Restrained on purpose: masked line reveals, rules that draw themselves,
+   and wipes on hover. No float, no bounce, no parallax blobs.
+   ========================================================================== */
+
+@layer utilities {
+  /* Underline that wipes in from the left on hover */
+  .link-wipe {
+    position: relative;
+    display: inline-block;
+  }
+  .link-wipe::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.15em;
+    height: 2px;
+    width: 100%;
+    background-color: hsl(var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-wipe:hover::after,
+  .link-wipe:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* Full lime wipe behind a row, left to right */
+  .row-wipe {
+    position: relative;
+    isolation: isolate;
+  }
+  .row-wipe::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: hsl(var(--accent));
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .row-wipe:hover::before,
+  .row-wipe:focus-within::before {
+    transform: scaleY(1);
+  }
+
+  .animate-marquee {
+    animation: marquee-x var(--marquee-duration, 46s) linear infinite;
+  }
+
+  .pause-on-hover:hover > * {
+    animation-play-state: paused;
+  }
+
+  .animate-caret {
+    animation: caret 1.05s step-end infinite;
+  }
+
+  /* Duotone treatment on project thumbnails — keeps the palette to two inks
+     until you hover, which is what stops the grid looking like a stock-photo
+     collage. */
+  .duotone {
+    filter: grayscale(1) contrast(1.12);
+    transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .group:hover .duotone,
+  .duotone:hover {
+    filter: grayscale(0);
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

@@ -1,67 +1,60 @@
 import type { Config } from "tailwindcss";
 
+/**
+ * Swiss editorial system.
+ *
+ * Deliberately small: two inks, one accent, one rule colour. If a component
+ * needs a colour that is not in here, the component is wrong.
+ */
 const config: Config = {
   darkMode: ["class"],
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
+    // Not extending — replacing. The default Tailwind palette is the single
+    // biggest source of off-system colour drift.
+    colors: {
+      transparent: "transparent",
+      current: "currentColor",
+      bg: "hsl(var(--bg))",
+      raised: "hsl(var(--bg-raised))",
+      ink: "hsl(var(--fg))",
+      dim: "hsl(var(--fg-dim))",
+      faint: "hsl(var(--fg-faint))",
+      rule: "hsl(var(--rule))",
+      "rule-strong": "hsl(var(--rule-strong))",
+      accent: "hsl(var(--accent))",
+      "accent-ink": "hsl(var(--accent-ink))",
+      blue: "hsl(var(--blue))",
+      "blue-ink": "hsl(var(--blue-ink))",
+      orange: "hsl(var(--orange))",
+      "orange-ink": "hsl(var(--orange-ink))",
+      pink: "hsl(var(--pink))",
+      "pink-ink": "hsl(var(--pink-ink))",
+      danger: "hsl(var(--danger))",
+    },
+    borderRadius: {
+      none: "0",
+      DEFAULT: "0",
+      full: "9999px",
+    },
+    boxShadow: {
+      none: "none",
+    },
     extend: {
       fontFamily: {
-        sans: ["var(--font-outfit)", "sans-serif"],
-        display: ["var(--font-syne)", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
-      colors: {
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
-        },
+      transitionTimingFunction: {
+        editorial: "cubic-bezier(0.16, 1, 0.3, 1)",
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      maxWidth: {
+        page: "104rem",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [],
 };
+
 export default config;

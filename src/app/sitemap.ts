@@ -1,38 +1,19 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/constants/profile";
 
+/**
+ * The previous sitemap listed /projects, /skills, /internships and
+ * /contact-me — none of which exist in the app. Submitting URLs that 404 wastes
+ * crawl budget and Search Console flags them, so this now lists only the one
+ * page that actually renders.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://ashusnapx.vercel.app";
-
   return [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/projects`,
+      url: SITE_URL,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/skills`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/internships`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/contact-me`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.7,
+      priority: 1,
     },
   ];
 }
