@@ -3,117 +3,96 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   DESIGN TOKENS — Swiss editorial
-   Ink and bone. One accent. No gradients, no glass, no soft shadows.
-   Hierarchy comes from type scale, weight and rules — not from colour.
+   PAPER
+   The page is a notebook. Light mode is cream stock with a blue rule and a red
+   margin; dark mode is a blackboard with chalk. Colour enters as pen ink, and
+   every pen has a job: blue annotates, red emphasises, green marks something
+   verified, orange is the crayon underline, yellow is the highlighter.
    ========================================================================== */
 
 @layer base {
   :root {
-    /* Paper */
-    --bg: 45 20% 94%;
-    --bg-raised: 45 16% 90%;
-    --fg: 60 4% 7%;
-    --fg-dim: 50 4% 30%;
-    --fg-faint: 50 4% 46%;
+    --paper: 45 24% 95%;
+    --paper-2: 45 20% 91%;
+    --ink: 40 8% 11%;
+    --ink-soft: 38 6% 34%;
+    --ink-faint: 38 5% 52%;
 
-    /* Hairline rules. Everything is separated by these, never by shadow. */
-    --rule: 50 6% 78%;
-    --rule-strong: 55 5% 62%;
+    /* Notebook furniture */
+    --rule: 210 45% 82%;
+    --margin: 2 62% 78%;
 
-    /* Four flat inks. Each is used as a FILL with its paired text colour on
-       top — never as body text on the page ground, where lime in particular is
-       unreadable. Poster colour, not UI colour: no gradients, no tints. */
-    --accent: 72 100% 50%; /* acid lime   */
-    --accent-ink: 60 4% 7%;
-    --blue: 226 92% 54%; /* electric blue */
-    --blue-ink: 45 30% 97%;
-    --orange: 16 94% 51%; /* signal orange */
-    --orange-ink: 45 30% 97%;
-    --pink: 330 88% 52%; /* magenta       */
-    --pink-ink: 45 30% 97%;
+    /* Pens */
+    --blue: 217 58% 42%;
+    --red: 0 65% 53%;
+    --green: 152 53% 36%;
+    --orange: 27 78% 52%;
+    --purple: 276 36% 47%;
+    --highlight: 48 100% 76%;
 
-    --danger: 8 78% 46%;
-
-    --selection: 72 100% 50%;
-    --selection-ink: 60 4% 7%;
+    --shadow: 40 20% 55%;
   }
 
   .dark {
-    --bg: 60 3% 5%;
-    --bg-raised: 60 3% 9%;
-    --fg: 45 16% 92%;
-    --fg-dim: 45 8% 72%;
-    --fg-faint: 45 6% 54%;
+    --paper: 220 12% 10%;
+    --paper-2: 220 12% 14%;
+    --ink: 42 22% 91%;
+    --ink-soft: 42 10% 70%;
+    --ink-faint: 42 7% 52%;
 
-    --rule: 50 4% 20%;
-    --rule-strong: 50 4% 34%;
+    --rule: 210 22% 30%;
+    --margin: 2 38% 42%;
 
-    --accent: 72 100% 56%;
-    --accent-ink: 60 4% 5%;
-    --blue: 224 100% 67%;
-    --blue-ink: 224 60% 8%;
-    --orange: 20 100% 60%;
-    --orange-ink: 20 60% 8%;
-    --pink: 332 92% 66%;
-    --pink-ink: 330 60% 8%;
+    /* Chalk versions: lighter and less saturated so they read on a board */
+    --blue: 210 78% 70%;
+    --red: 4 82% 70%;
+    --green: 150 55% 60%;
+    --orange: 28 88% 65%;
+    --purple: 275 60% 74%;
+    --highlight: 48 78% 60%;
 
-    --danger: 8 82% 62%;
-
-    --selection: 72 100% 55%;
-    --selection-ink: 60 4% 5%;
+    --shadow: 220 30% 2%;
   }
 }
 
 @layer base {
   * {
     border-color: hsl(var(--rule));
-    /* Zero radius everywhere. Corners are square in this system. */
-    border-radius: 0;
   }
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 5.5rem;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    background-color: hsl(var(--bg));
-    color: hsl(var(--fg));
-    font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
+    background-color: hsl(var(--paper));
+    color: hsl(var(--ink));
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: hsl(var(--selection));
-    color: hsl(var(--selection-ink));
+    background-color: hsl(var(--highlight));
+    color: hsl(40 8% 11%);
+  }
+
+  :focus-visible {
+    outline: 2.5px solid hsl(var(--blue));
+    outline-offset: 3px;
+    border-radius: 3px;
   }
 
   ::-webkit-scrollbar {
     width: 12px;
   }
   ::-webkit-scrollbar-track {
-    background: hsl(var(--bg));
-    border-left: 1px solid hsl(var(--rule));
+    background: hsl(var(--paper-2));
   }
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--rule-strong));
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--accent));
-  }
-
-  :focus-visible {
-    outline: 2px solid hsl(var(--accent));
-    outline-offset: 2px;
-  }
-
-  /* Numerals line up in tables and stat rows */
-  table,
-  .tabular {
-    font-variant-numeric: tabular-nums;
+    background: hsl(var(--ink-faint) / 0.5);
+    border-radius: 99px;
+    border: 3px solid hsl(var(--paper-2));
   }
 }
 
@@ -122,67 +101,29 @@
    ========================================================================== */
 
 @layer utilities {
-  /* Oversized grotesque. Negative tracking is what makes it read as designed
-     rather than as default-large text. */
-  /* Sized so the longest word on the page ("GENERATIVE", 10 uppercase
-     characters) fits the full content width at every viewport. The previous
-     coefficient overflowed a 9-column container on laptops and the mask's
-     overflow:hidden clipped it. */
-  .type-display {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.5rem, 0.25rem + 10.5vw, 11.5rem);
-    line-height: 0.85;
-    letter-spacing: -0.055em;
+  /* Handwriting, for headings and marginalia only. Body copy stays typeset so
+     the page survives a thirty-second skim. */
+  .hand {
+    font-family: var(--font-hand), ui-rounded, cursive;
+    font-weight: 600;
+    letter-spacing: 0.005em;
   }
 
-  .type-xl {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 800;
-    font-size: clamp(2.25rem, 1rem + 5.5vw, 5.5rem);
-    line-height: 0.88;
-    letter-spacing: -0.042em;
+  .type-hero {
+    font-size: clamp(2.75rem, 1rem + 8vw, 7rem);
+    line-height: 0.95;
   }
-
-  .type-lg {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 700;
-    font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  .type-title {
+    font-size: clamp(2rem, 1.2rem + 3.4vw, 3.75rem);
     line-height: 1;
-    letter-spacing: -0.03em;
   }
-
-  .type-md {
-    font-family: var(--font-display), system-ui, sans-serif;
-    font-weight: 700;
-    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
+  .type-sub {
+    font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+    line-height: 1.15;
   }
-
   .type-body {
-    font-size: clamp(1rem, 0.95rem + 0.35vw, 1.1875rem);
-    line-height: 1.55;
-  }
-
-  /* The mono label is the connective tissue of the whole layout: section
-     numbers, metadata, table headers, timestamps. */
-  .label {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    line-height: 1;
-  }
-
-  .label-sm {
-    font-family: var(--font-mono), ui-monospace, monospace;
-    font-size: 0.625rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
+    font-size: clamp(1rem, 0.96rem + 0.25vw, 1.125rem);
+    line-height: 1.65;
   }
 
   .text-balance {
@@ -191,134 +132,200 @@
   .text-pretty {
     text-wrap: pretty;
   }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 /* ==========================================================================
-   STRUCTURE
+   PAPER SURFACES
    ========================================================================== */
 
 @layer utilities {
-  /* Page gutter. One value, used everywhere, so every rule lines up. */
-  .gutter {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+  /* Faint fibre so the cream never reads as flat #fff */
+  .paper-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='0.055'/%3E%3C/svg%3E");
   }
-  @media (min-width: 768px) {
-    .gutter {
-      padding-left: 2.5rem;
-      padding-right: 2.5rem;
-    }
-  }
-  @media (min-width: 1280px) {
-    .gutter {
-      padding-left: 4rem;
-      padding-right: 4rem;
-    }
+  .dark .paper-grain::before {
+    mix-blend-mode: screen;
+    opacity: 0.32;
   }
 
-  .rule-t {
-    border-top: 1px solid hsl(var(--rule));
-  }
-  .rule-b {
-    border-bottom: 1px solid hsl(var(--rule));
-  }
-
-  /* Colour blocks. Fill plus its paired text colour, always as a pair — this
-     is the only mechanism by which colour enters the page. */
-  .accent-block {
-    background-color: hsl(var(--accent));
-    color: hsl(var(--accent-ink));
-  }
-  .blue-block {
-    background-color: hsl(var(--blue));
-    color: hsl(var(--blue-ink));
-  }
-  .orange-block {
-    background-color: hsl(var(--orange));
-    color: hsl(var(--orange-ink));
-  }
-  .pink-block {
-    background-color: hsl(var(--pink));
-    color: hsl(var(--pink-ink));
+  /* Ruled notebook lines */
+  .ruled {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 1.95rem,
+      hsl(var(--rule) / 0.55) 1.95rem 2rem
+    );
   }
 
-  /* Row wipe in a colour other than lime. Set --wipe on the element. */
-  .row-wipe-tinted::before {
-    background-color: hsl(var(--wipe, var(--accent)));
+  /* Graph paper */
+  .grid-paper {
+    background-image: linear-gradient(
+        to right,
+        hsl(var(--rule) / 0.34) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, hsl(var(--rule) / 0.34) 1px, transparent 1px);
+    background-size: 1.5rem 1.5rem;
+  }
+
+  /* The red vertical margin down the left of a page */
+  .margin-rule {
+    background-image: linear-gradient(
+      to right,
+      transparent calc(2.5rem - 1px),
+      hsl(var(--margin) / 0.75) calc(2.5rem - 1px),
+      hsl(var(--margin) / 0.75) 2.5rem,
+      transparent 2.5rem
+    );
+  }
+
+  /* A card that looks like something stuck onto the page */
+  .card-paper {
+    background-color: hsl(var(--paper));
+    border: 1px solid hsl(var(--rule));
+    box-shadow: 0 1px 0 hsl(var(--shadow) / 0.14),
+      0 10px 22px -18px hsl(var(--shadow) / 0.55);
+  }
+  .dark .card-paper {
+    background-color: hsl(var(--paper-2));
+    box-shadow: 0 1px 0 hsl(0 0% 100% / 0.04),
+      0 14px 30px -20px hsl(var(--shadow) / 0.9);
+  }
+
+  /* Strip of masking tape across the top edge */
+  .taped::after {
+    content: "";
+    position: absolute;
+    top: -0.6rem;
+    left: 50%;
+    width: 5.5rem;
+    height: 1.35rem;
+    transform: translateX(-50%) rotate(-2.2deg);
+    background: hsl(48 46% 78% / 0.72);
+    border-left: 1px dashed hsl(48 30% 62% / 0.6);
+    border-right: 1px dashed hsl(48 30% 62% / 0.6);
+    pointer-events: none;
+  }
+  .dark .taped::after {
+    background: hsl(48 20% 62% / 0.34);
+  }
+
+  /* Slight rotations, so a grid of cards reads as things laid on a desk */
+  .tilt-l {
+    transform: rotate(-0.7deg);
+  }
+  .tilt-r {
+    transform: rotate(0.6deg);
+  }
+  .tilt-none {
+    transform: rotate(0deg);
+  }
+}
+
+/* ==========================================================================
+   PEN MARKS
+   Hand-drawn marks are the brief here, so these are deliberate, not decoration
+   for its own sake.
+   ========================================================================== */
+
+@layer utilities {
+  /* Highlighter swipe behind a word. Uneven edges and a slight skew keep it
+     from looking like a rectangle of background colour. */
+  .marker {
+    position: relative;
+    display: inline;
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--highlight) / 0) 0%,
+      hsl(var(--highlight) / 0.9) 2%,
+      hsl(var(--highlight) / 0.85) 96%,
+      hsl(var(--highlight) / 0) 100%
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 0.62em;
+    background-position: 0 0.72em;
+    padding: 0 0.12em;
+  }
+  .dark .marker {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--highlight) / 0) 0%,
+      hsl(var(--highlight) / 0.38) 2%,
+      hsl(var(--highlight) / 0.34) 96%,
+      hsl(var(--highlight) / 0) 100%
+    );
+  }
+
+  /* Crayon underline: a thick, slightly wobbly stroke */
+  .crayon {
+    background-image: linear-gradient(
+      to right,
+      hsl(var(--orange) / 0.85),
+      hsl(var(--orange) / 0.5) 60%,
+      hsl(var(--orange) / 0.8)
+    );
+    background-repeat: no-repeat;
+    background-size: 100% 0.22em;
+    background-position: 0 100%;
+    padding-bottom: 0.06em;
+  }
+
+  /* Ballpoint underline that draws itself on hover */
+  .pen-underline {
+    position: relative;
+  }
+  .pen-underline::after {
+    content: "";
+    position: absolute;
+    left: -0.1em;
+    right: -0.1em;
+    bottom: -0.12em;
+    height: 2px;
+    background: hsl(var(--blue));
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .pen-underline:hover::after,
+  a:hover .pen-underline::after,
+  .pen-underline:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* Sticky-note block, used for the strongest callouts */
+  .sticky-note {
+    background: hsl(var(--highlight) / 0.62);
+    color: hsl(40 8% 11%);
+    box-shadow: 0 10px 20px -16px hsl(var(--shadow) / 0.9);
+  }
+  .dark .sticky-note {
+    background: hsl(var(--highlight) / 0.82);
   }
 }
 
 /* ==========================================================================
    MOTION
-   Restrained on purpose: masked line reveals, rules that draw themselves,
-   and wipes on hover. No float, no bounce, no parallax blobs.
    ========================================================================== */
 
 @layer utilities {
-  /* Underline that wipes in from the left on hover */
-  .link-wipe {
-    position: relative;
-    display: inline-block;
-  }
-  .link-wipe::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -0.15em;
-    height: 2px;
-    width: 100%;
-    background-color: hsl(var(--accent));
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .link-wipe:hover::after,
-  .link-wipe:focus-visible::after {
-    transform: scaleX(1);
-  }
-
-  /* Full lime wipe behind a row, left to right */
-  .row-wipe {
-    position: relative;
-    isolation: isolate;
-  }
-  .row-wipe::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background-color: hsl(var(--accent));
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .row-wipe:hover::before,
-  .row-wipe:focus-within::before {
-    transform: scaleY(1);
-  }
-
-  .animate-marquee {
-    animation: marquee-x var(--marquee-duration, 46s) linear infinite;
-  }
-
-  .pause-on-hover:hover > * {
-    animation-play-state: paused;
-  }
-
   .animate-caret {
     animation: caret 1.05s step-end infinite;
   }
-
-  /* Duotone treatment on project thumbnails — keeps the palette to two inks
-     until you hover, which is what stops the grid looking like a stock-photo
-     collage. */
-  .duotone {
-    filter: grayscale(1) contrast(1.12);
-    transition: filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  .animate-marquee {
+    animation: marquee-x var(--marquee-duration, 52s) linear infinite;
   }
-  .group:hover .duotone,
-  .duotone:hover {
-    filter: grayscale(0);
+  .pause-on-hover:hover > * {
+    animation-play-state: paused;
   }
 }
 
@@ -342,9 +349,12 @@
   }
 }
 
-/* ==========================================================================
-   ACCESSIBILITY
-   ========================================================================== */
+/* Ink drawing itself along a hand-drawn path */
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -356,5 +366,9 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  .tilt-l,
+  .tilt-r {
+    transform: none;
   }
 }

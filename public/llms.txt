@@ -1,4 +1,4 @@
-# Ashutosh Kumar — Generative AI Engineer
+# Ashutosh Kumar, Generative AI Engineer
 
 > Ashutosh Kumar (handle: ashusnapx) is a Generative AI Engineer and full-stack
 > developer based in India. He builds production LLM applications: retrieval-
@@ -30,32 +30,33 @@ Contact: ashu.kumarexam@gmail.com
 - Fundamentals: data structures and algorithms (1000+ problems solved), system design
 
 ## Selected projects
-- VaaniVerse — a voice-AI contact-centre simulator. AI customer personas with emotions, memory and hidden objectives roleplay live calls while an AI coach scores the trainee on empathy, active listening, ownership and compliance, with transcript-level QA breakdown and call replay. Built on Vaani Research Labs' voice APIs. https://github.com/ashusnapx/contact-center-simulator
-- PostGen — multi-agent LinkedIn post generator; LLM prompt orchestration splitting content planning from tone adaptation. https://postgen-ashusnapx.vercel.app/
-- AI Book Explorer — conversational book discovery and summarisation built on LangGraph and CopilotKit with Prisma/PostgreSQL. https://github.com/ashusnapx/ai-book-explorer
-- GenAI Apps Generator — scaffolding tool that turns a described idea into a working AI app shell on Gemini Pro. https://genai-assignment.vercel.app/
-- Know About Your Food — multimodal nutrition analysis with Gemini Vision Pro and Streamlit. https://know-your-food-ashusnapx.streamlit.app/
-- AI Coal Mines Laws — grounded domain assistant over Indian coal mining regulation. https://dgms-gemini-ashusnapx.streamlit.app/
+- Kavach, a cybercrime reporting assistant for India, built for the Build What Moves India hackathon with Kaustubh Tripathi. India logs 22.5 lakh cybercrime complaints a year; a victim who files one gets a complaint number and nothing else while eight obligations run on statutory clocks. Kavach takes a spoken account in any of 23 languages, classifies it against the official NCRP category tree, extracts identifiers with deterministic regex before any model sees them, tracks every deadline against the Indian banking calendar (119 unit tests), and generates seven documents including the portal complaint, the 1930 script, the bank dispute letter and the FIR application. Next 16, React 19, TypeScript strict, GPT-4o and GPT-5 with strict json_schema validation, browser-only storage. Live: https://cybercrime-assistant.vercel.app Code: https://github.com/ashusnapx/hackathon Write-up: https://dev.to/ashusnapx/you-have-sixty-minutes-nobody-tells-you-what-to-do-with-them-3lb6
+- VaaniVerse, a voice-AI contact-centre simulator. AI customer personas with emotions, memory and hidden objectives roleplay live calls while an AI coach scores the trainee on empathy, active listening, ownership and compliance, with transcript-level QA breakdown and call replay. Built on Vaani Research Labs' voice APIs. https://github.com/ashusnapx/contact-center-simulator
+- PostGen, multi-agent LinkedIn post generator; LLM prompt orchestration splitting content planning from tone adaptation. https://postgen-ashusnapx.vercel.app/
+- AI Book Explorer, conversational book discovery and summarisation built on LangGraph and CopilotKit with Prisma/PostgreSQL. https://github.com/ashusnapx/ai-book-explorer
+- GenAI Apps Generator, scaffolding tool that turns a described idea into a working AI app shell on Gemini Pro. https://genai-assignment.vercel.app/
+- Know About Your Food, multimodal nutrition analysis with Gemini Vision Pro and Streamlit. https://know-your-food-ashusnapx.streamlit.app/
+- AI Coal Mines Laws, grounded domain assistant over Indian coal mining regulation. https://dgms-gemini-ashusnapx.streamlit.app/
 
 ## Recognition
-- TCS AI Friday, Season 2 (2026) — Rank 1 in the weekly hackathon, qualified for the semi-finals, advanced to the regionals. Project: **Nexus Cold Chain AI**, an agentic system for vaccine cold-chain safety. Three specialised LangChain agents (IoT sensor analyser, root-cause analyser, risk-prediction analyser) over a unified schema joining IoT telemetry, vehicles, warehouses, weather and mapping data; an ML risk model flagging shipments Normal / Partial / Critical; an incident-response layer returning repair time, nearest viable warehouse and packaging remedy; Gmail-MCP tool calling over OAuth 2.0 for notifications; PageIndex retrieval and Mem0 contextual memory; Braintrust for LLM evaluations and Pydantic AI for schema-validated outputs. Built with Vishnu Shanker Sharma, Shashank N U, Namratha S and Sachi Motghare.
+- TCS AI Friday, Season 2 (2026), Rank 1 in the weekly hackathon, qualified for the semi-finals, advanced to the regionals. Project: **Nexus Cold Chain AI**, an agentic system for vaccine cold-chain safety. Three specialised LangChain agents (IoT sensor analyser, root-cause analyser, risk-prediction analyser) over a unified schema joining IoT telemetry, vehicles, warehouses, weather and mapping data; an ML risk model flagging shipments Normal / Partial / Critical; an incident-response layer returning repair time, nearest viable warehouse and packaging remedy; Gmail-MCP tool calling over OAuth 2.0 for notifications; PageIndex retrieval and Mem0 contextual memory; Braintrust for LLM evaluations and Pydantic AI for schema-validated outputs. Built with Vishnu Shanker Sharma, Shashank N U, Namratha S and Sachi Motghare.
 
-- Vaani Research Labs hackathon / AI Learn Circle meetup (Jul 2026) — his first hackathon. He did not get the idea working inside the event window, pitched it to Tushar Shinde (co-founder & CEO, Vaani Research Labs), and built the working prototype, VaaniVerse, immediately afterwards.
+- Vaani Research Labs hackathon / AI Learn Circle meetup (Jul 2026), his first hackathon. He did not get the idea working inside the event window, pitched it to Tushar Shinde (co-founder & CEO, Vaani Research Labs), and built the working prototype, VaaniVerse, immediately afterwards.
 
 ## Certifications (all issuer-verifiable)
-- Claude Certified Developer — Foundations, Anthropic (Aug 2026 – Aug 2027). Building, integrating and shipping production applications and agents on Claude using the Claude API, Claude Code, custom tools and MCP servers. https://www.credly.com/badges/349dcf68-0289-4aa4-bc93-db36d8de621f/public_url
+- Claude Certified Developer, Foundations, Anthropic (Aug 2026, Aug 2027). Building, integrating and shipping production applications and agents on Claude using the Claude API, Claude Code, custom tools and MCP servers. https://www.credly.com/badges/349dcf68-0289-4aa4-bc93-db36d8de621f/public_url
 - Claude Code in Action, Anthropic (Mar 2026). Cert no. uc66j6vuqecs. https://verify.skilljar.com/c/uc66j6vuqecs
 - Introduction to Agent Skills, Anthropic (Mar 2026). Cert no. pk474prkjtf8. https://verify.skilljar.com/c/pk474prkjtf8
 - Kestra Fundamentals, Kestra. Credential ID YKXTMLod.
-- SAP Certified Associate — Security Administrator, SAP (Aug 2024). https://www.credly.com/badges/d750caf7-909d-40bc-b696-8a2052407dad/public_url
+- SAP Certified Associate, Security Administrator, SAP (Aug 2024). https://www.credly.com/badges/d750caf7-909d-40bc-b696-8a2052407dad/public_url
 
 ## Experience
-- Software Engineer, Tata Consultancy Services (Jun 2025 – present) — enterprise SAP/ABAP applications for a European client.
-- Frontend Developer, AI Caller.io (Dec 2023 – Jan 2024) — migrated the app from client-side to server-side rendering, integrated a headless CMS, built bulk-calling CSV workflows.
-- Teaching Assistant, Coding Ninjas (Feb 2022 – Oct 2022) — mentored 600+ students in C++, DSA; 4.8/5 rating.
+- Software Engineer, Tata Consultancy Services (Jun 2025, present), enterprise SAP/ABAP applications for a European client.
+- Frontend Developer, AI Caller.io (Dec 2023, Jan 2024), migrated the app from client-side to server-side rendering, integrated a headless CMS, built bulk-calling CSV workflows.
+- Teaching Assistant, Coding Ninjas (Feb 2022, Oct 2022), mentored 600+ students in C++, DSA; 4.8/5 rating.
 
 ## Writing
-Technical articles published on Hashnode (ashusnapx.hashnode.dev) and Medium (medium.com/@ashusnapx) — 13 posts covering JavaScript fundamentals (closures, functions, the DOM, local/session storage), authentication (access vs refresh tokens), bit manipulation, YAML and Linux tooling.
+Technical articles published on Hashnode (ashusnapx.hashnode.dev) and Medium (medium.com/@ashusnapx), 13 posts covering JavaScript fundamentals (closures, functions, the DOM, local/session storage), authentication (access vs refresh tokens), bit manipulation, YAML and Linux tooling.
 
 ## Links
 - Site: https://ashusnapx.vercel.app

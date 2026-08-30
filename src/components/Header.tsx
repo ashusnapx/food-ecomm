@@ -5,17 +5,16 @@ import { useEffect, useState } from "react";
 import { navLinks, person } from "@/constants/profile";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
+const PEN = ["var(--red)", "var(--blue)", "var(--green)", "var(--purple)", "var(--orange)", "var(--ink)"];
+
 export function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
 
-  // Scroll-spy. The band is biased to the upper third so the marker moves when
-  // a section arrives rather than when it crosses the exact middle.
   useEffect(() => {
     const sections = navLinks
       .map((l) => document.getElementById(l.href.slice(1)))
       .filter((el): el is HTMLElement => Boolean(el));
-
     if (!sections.length) return;
 
     const observer = new IntersectionObserver(
@@ -27,7 +26,6 @@ export function Header() {
       },
       { rootMargin: "-15% 0px -70% 0px" }
     );
-
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, []);
@@ -49,18 +47,17 @@ export function Header() {
     <>
       <a
         href="#main"
-        className="label sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:accent-block focus:px-3 focus:py-2"
+        className="hand sr-only rounded-md focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-highlight focus:px-4 focus:py-2 focus:text-lg focus:text-ink"
       >
         Skip to content
       </a>
 
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-rule bg-bg/95 backdrop-blur-[2px]">
+      <header className="sticky top-0 z-50 border-b border-rule bg-paper">
         <nav
           aria-label="Primary"
-          className="gutter mx-auto flex h-14 max-w-page items-center justify-between gap-6"
+          className="mx-auto flex h-16 max-w-page items-center justify-between gap-6 px-5 md:px-10"
         >
-          <a href="#top" className="label flex items-center gap-2.5 text-ink">
-            <span aria-hidden className="h-2.5 w-2.5 bg-accent" />
+          <a href="#top" className="hand text-2xl leading-none text-ink">
             {person.name}
           </a>
 
@@ -72,38 +69,42 @@ export function Header() {
                   <a
                     href={link.href}
                     aria-current={isActive ? "true" : undefined}
-                    className={`label flex items-baseline gap-1.5 transition-colors ${
-                      isActive ? "text-ink" : "text-faint hover:text-ink"
-                    }`}
+                    className="hand relative text-xl leading-none text-ink-soft transition-colors hover:text-ink"
+                    style={isActive ? { color: `hsl(${PEN[i % PEN.length]})` } : undefined}
                   >
-                    <span className={isActive ? "text-accent" : "text-rule-strong"}>
-                      0{i + 1}
-                    </span>
                     {link.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-scribble"
+                        className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full"
+                        style={{ background: `hsl(${PEN[i % PEN.length]})` }}
+                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      />
+                    )}
                   </a>
                 </li>
               );
             })}
           </ul>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             <ThemeToggle />
             <a
               href={person.resumeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="label hidden accent-block px-3 py-2 transition-opacity hover:opacity-80 sm:block"
+              className="hand sticky-note hidden rounded-md px-3.5 py-1.5 text-lg leading-none sm:block"
             >
-              Résumé ↗
+              Résumé
             </a>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
               aria-label={open ? "Close menu" : "Open menu"}
-              className="label text-ink lg:hidden"
+              className="hand text-xl leading-none text-ink lg:hidden"
             >
-              {open ? "CLOSE" : "MENU"}
+              {open ? "close" : "menu"}
             </button>
           </div>
         </nav>
@@ -112,33 +113,39 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            animate={{ clipPath: "inset(0 0 0% 0)" }}
-            exit={{ clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-bg pt-14 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
+            className="ruled fixed inset-0 z-40 bg-paper pt-16 lg:hidden"
           >
-            <ul className="gutter border-t border-rule">
+            <ul className="px-6 py-8">
               {navLinks.map((link, i) => (
-                <li key={link.href} className="border-b border-rule">
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, x: -14 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.05 + i * 0.05 }}
+                  className="border-b border-rule"
+                >
                   <a
                     href={link.href}
                     onClick={() => setOpen(false)}
-                    className="row-wipe flex items-baseline justify-between py-5 transition-colors hover:text-accent-ink"
+                    className="hand block py-4 text-4xl leading-none"
+                    style={{ color: `hsl(${PEN[i % PEN.length]})` }}
                   >
-                    <span className="type-lg">{link.label}</span>
-                    <span className="label text-faint">0{i + 1}</span>
+                    {link.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
               <li className="pt-8">
                 <a
                   href={person.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="label accent-block block px-4 py-4 text-center"
+                  className="hand sticky-note block rounded-md px-4 py-3 text-center text-2xl leading-none"
                 >
-                  Download résumé ↗
+                  Résumé
                 </a>
               </li>
             </ul>

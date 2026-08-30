@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         // /api is data, not content; /_next is build output.
         disallow: ["/api/", "/_next/"],
       },
-      // Answer engines are explicitly welcome — being quoted by them is the
+      // Answer engines are explicitly welcome, being quoted by them is the
       // point of the FAQ and structured data on this site.
       {
         userAgent: [

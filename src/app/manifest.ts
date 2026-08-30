@@ -3,7 +3,7 @@ import { person } from "@/constants/profile";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: `${person.name} — ${person.role}`,
+    name: `${person.name}, ${person.role}`,
     short_name: person.name,
     description: person.headline,
     start_url: "/",

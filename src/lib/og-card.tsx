@@ -2,19 +2,22 @@ import { ImageResponse } from "next/og";
 import { person } from "@/constants/profile";
 
 export const OG_SIZE = { width: 1200, height: 630 };
-export const OG_ALT = `${person.name} — Generative AI Engineer`;
+export const OG_ALT = `${person.name}, Generative AI Engineer`;
 
-const INK = "#0D0D0C";
-const BONE = "#EDEBE6";
-const LIME = "#CCFF1A";
-const RULE = "rgba(237,235,230,0.18)";
+const PAPER = "#F3F1E9";
+const INK = "#1B1A16";
+const RULE = "#C3D4E8";
+const MARGIN = "#E8A9A9";
+const HIGHLIGHT = "#FFE9A3";
+const RED = "#D23B3B";
 
 /**
- * Shared social card for the Open Graph and Twitter image routes.
+ * Share card, drawn as a page torn from the same notebook: cream stock, blue
+ * rule, red margin, highlighted role.
  *
- * Same system as the page: ink ground, hairline rules, mono labels, one lime
- * mark. Layout stays primitive because Satori supports only a flexbox subset
- * of CSS — every container declares `display: flex` explicitly.
+ * Satori supports a flexbox subset of CSS, so every container declares
+ * `display: flex` and the rule lines are stacked divs rather than a repeating
+ * background.
  */
 export function renderOgCard() {
   return new ImageResponse(
@@ -24,69 +27,83 @@ export function renderOgCard() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          background: INK,
-          color: BONE,
+          background: PAPER,
+          color: INK,
           fontFamily: "sans-serif",
+          position: "relative",
         }}
       >
-        {/* Top rule + colophon */}
+        {/* Ruled lines */}
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 92 + i * 46,
+              height: 1,
+              background: RULE,
+              opacity: 0.55,
+              display: "flex",
+            }}
+          />
+        ))}
+
+        {/* Red margin */}
         <div
           style={{
+            position: "absolute",
+            left: 96,
+            top: 0,
+            bottom: 0,
+            width: 2,
+            background: MARGIN,
             display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "28px 56px",
-            borderBottom: `1px solid ${RULE}`,
-            fontSize: 18,
-            letterSpacing: 4,
-            textTransform: "uppercase",
-            color: "rgba(237,235,230,0.55)",
           }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <div style={{ display: "flex", width: 12, height: 12, background: LIME }} />
-            {person.name}
-          </div>
-          <div style={{ display: "flex" }}>Bengaluru, IN</div>
-        </div>
+        />
 
-        {/* Headline */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
-            flex: 1,
             justifyContent: "center",
-            padding: "0 56px",
+            paddingLeft: 140,
+            paddingRight: 72,
           }}
         >
-          <div
-            style={{
-              display: "flex",
-              fontSize: 108,
-              fontWeight: 800,
-              lineHeight: 0.88,
-              letterSpacing: -5,
-              textTransform: "uppercase",
-            }}
-          >
-            Generative
+          <div style={{ display: "flex", fontSize: 30, color: "#4A6FA8" }}>
+            {person.name}
           </div>
+
           <div
             style={{
               display: "flex",
-              alignItems: "center",
-              gap: 20,
-              fontSize: 108,
-              fontWeight: 800,
-              lineHeight: 0.88,
-              letterSpacing: -5,
-              textTransform: "uppercase",
+              marginTop: 14,
+              fontSize: 96,
+              fontWeight: 700,
+              lineHeight: 1.05,
+              letterSpacing: -2,
             }}
           >
-            AI Engineer
-            <div style={{ display: "flex", width: 44, height: 44, background: LIME }} />
+            Generative AI
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", marginTop: 4 }}>
+            <div
+              style={{
+                display: "flex",
+                fontSize: 96,
+                fontWeight: 700,
+                lineHeight: 1.05,
+                letterSpacing: -2,
+                background: HIGHLIGHT,
+                paddingLeft: 12,
+                paddingRight: 12,
+              }}
+            >
+              Engineer
+            </div>
           </div>
 
           <div
@@ -94,36 +111,22 @@ export function renderOgCard() {
               display: "flex",
               marginTop: 34,
               fontSize: 27,
-              lineHeight: 1.35,
-              color: "rgba(237,235,230,0.62)",
-              maxWidth: 860,
+              lineHeight: 1.4,
+              color: "#57534A",
+              maxWidth: 780,
             }}
           >
-            Production LLM systems — retrieval pipelines, multi-agent workflows
-            and the full-stack products they ship inside.
+            Production LLM applications. Retrieval pipelines, multi-agent
+            workflows, and the products they ship inside.
           </div>
-        </div>
 
-        {/* Bottom rule + stack */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "26px 56px",
-            borderTop: `1px solid ${RULE}`,
-            fontSize: 18,
-            letterSpacing: 3,
-            textTransform: "uppercase",
-            color: "rgba(237,235,230,0.5)",
-          }}
-        >
-          <div style={{ display: "flex", gap: 34 }}>
+          <div style={{ display: "flex", gap: 26, marginTop: 40, fontSize: 22, color: RED }}>
             <div style={{ display: "flex" }}>RAG</div>
-            <div style={{ display: "flex" }}>LangGraph</div>
             <div style={{ display: "flex" }}>Agents</div>
+            <div style={{ display: "flex" }}>MCP</div>
             <div style={{ display: "flex" }}>Next.js</div>
+            <div style={{ display: "flex" }}>ashusnapx.vercel.app</div>
           </div>
-          <div style={{ display: "flex" }}>ashusnapx.vercel.app</div>
         </div>
       </div>
     ),

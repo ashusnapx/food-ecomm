@@ -1,122 +1,82 @@
 import Image from "next/image";
 import { certifications } from "@/constants/profile";
-import { Lift } from "@/components/ui/mask-reveal";
-import { SectionHeader } from "@/components/ui/section-header";
+import { CheckMark } from "@/components/ui/marks";
+import { Lay } from "@/components/ui/reveal";
+import { SectionTitle } from "@/components/ui/section-title";
 
 /**
- * Licences and certifications, with the real artwork.
- *
- * Badges are square and course certificates are landscape, so every tile uses
- * one fixed frame with `object-contain` on a neutral panel — nothing gets
- * cropped, and the row still lines up. Entries without artwork fall back to a
- * typographic tile rather than a grey box.
- *
- * The section removes itself when the list is empty.
+ * Credentials, shown as the actual badges and certificates rather than a list
+ * of names. Badges are square and course certificates are landscape, so every
+ * tile uses one frame with object-contain: nothing is cropped, the row lines up.
  */
 export function Certifications() {
   if (certifications.length === 0) return null;
 
-  const issuers = [...new Set(certifications.map((c) => c.issuer))];
-
   return (
-    <section
-      id="certifications"
-      className="gutter mx-auto max-w-page py-20 md:py-28"
-    >
-      <SectionHeader
-        index="04"
-        label="Certifications"
-        tone="pink"
-        title={
-          <>
-            Credentials, and
-            <br />
-            the link to check them.
-          </>
-        }
-        note={`${certifications.length} licences and certifications from ${issuers.join(
-          ", "
-        )}. Every one links to the issuer so you can verify it rather than take my word for it.`}
+    <section id="certs" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
+      <SectionTitle
+        title="Certified, and checkable"
+        pen="var(--purple)"
+        note="Every one links to its issuer, so you can verify it rather than take my word for it."
       />
 
-      <ul className="mt-14 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3 md:mt-20">
+      <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {certifications.map((cert, i) => (
-          <li key={`${cert.name}-${cert.issuer}`} className="flex bg-bg">
-            <Lift delay={Math.min(i * 0.05, 0.25)} className="flex w-full">
-              <article className="flex w-full flex-col p-6 md:p-7">
-                {/* Artwork */}
-                <div className="relative mb-6 flex aspect-[4/3] w-full items-center justify-center border border-rule bg-raised p-4">
+          <li key={cert.name}>
+            <Lay delay={i * 0.05} tilt={i % 2 === 0 ? -0.5 : 0.45}>
+              <article className="card-paper flex h-full flex-col rounded-md p-5 transition-transform duration-500 ease-paper hover:rotate-0 hover:-translate-y-1">
+                <div className="relative mb-5 flex aspect-[4/3] w-full items-center justify-center rounded-sm border border-rule bg-paper-2 p-4">
                   {cert.image ? (
                     <Image
                       src={cert.image}
-                      alt={`${cert.name} — issued by ${cert.issuer} to Ashutosh Kumar`}
+                      alt={`${cert.name}, issued by ${cert.issuer}`}
                       fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      sizes="(max-width: 640px) 100vw, 33vw"
                       className="object-contain p-4"
                     />
                   ) : (
-                    <span className="type-lg text-center leading-none text-rule-strong">
-                      {cert.issuer}
-                    </span>
+                    <span className="hand text-4xl text-ink-faint">{cert.issuer}</span>
                   )}
                 </div>
 
-                {/* Meta */}
-                <div className="mb-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-                  <span className="label pink-block px-2 py-1">
-                    {cert.issuer}
-                  </span>
-                  {cert.issued && (
-                    <span className="label text-faint">
-                      {cert.issued}
-                      {cert.expires ? ` — ${cert.expires}` : ""}
-                    </span>
-                  )}
-                </div>
+                <p className="hand text-xl leading-none text-purple">{cert.issuer}</p>
+                <h3 className="mt-2 font-medium leading-snug text-ink">{cert.name}</h3>
 
-                <h3 className="type-md">{cert.name}</h3>
+                {cert.issued && (
+                  <p className="mt-1 font-mono text-[11px] text-ink-faint">
+                    {cert.issued}
+                    {cert.expires ? ` to ${cert.expires}` : ""}
+                  </p>
+                )}
 
                 {cert.blurb && (
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-dim text-pretty">
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft text-pretty">
                     {cert.blurb}
                   </p>
                 )}
 
-                {cert.skills && cert.skills.length > 0 && (
-                  <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
-                    {cert.skills.map((skill) => (
-                      <li
-                        key={skill}
-                        className="label flex items-center gap-2 text-dim"
-                      >
-                        <span aria-hidden className="h-[6px] w-[6px] bg-pink" />
-                        {skill}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-
-                <div className="mt-6 flex items-baseline justify-between gap-3 border-t border-rule pt-4">
+                <div className="mt-5 flex items-center justify-between gap-3 border-t border-rule pt-3">
                   {cert.credentialUrl ? (
                     <a
                       href={cert.credentialUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="label link-wipe text-ink"
+                      className="hand flex items-center gap-1.5 text-lg text-ink-soft hover:text-ink"
                     >
-                      Verify ↗
+                      <CheckMark pen="var(--green)" className="h-4 w-4" />
+                      <span className="pen-underline">verify</span>
                     </a>
                   ) : (
-                    <span className="label text-faint">Issuer-verified</span>
+                    <span className="hand text-lg text-ink-faint">issuer verified</span>
                   )}
                   {cert.credentialId && (
-                    <span className="label-sm text-faint">
-                      ID {cert.credentialId}
+                    <span className="font-mono text-[10px] text-ink-faint">
+                      {cert.credentialId}
                     </span>
                   )}
                 </div>
               </article>
-            </Lift>
+            </Lay>
           </li>
         ))}
       </ul>

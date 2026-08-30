@@ -4,14 +4,14 @@ import { NextResponse } from "next/server";
  * Merged article feed: Hashnode + Medium.
  *
  * Hashnode's GraphQL API (gql.hashnode.com) now 301s to a docs page, so both
- * sources are read as RSS. RSS is also the more durable contract — it has not
+ * sources are read as RSS. RSS is also the more durable contract, it has not
  * changed under either platform in years.
  *
  * Parsing is done with narrow regexes rather than an XML dependency: these are
  * two known, well-formed feeds, not arbitrary user input.
  */
 
-export const revalidate = 21600; // 6h — these feeds change rarely.
+export const revalidate = 21600; // 6h, these feeds change rarely.
 
 type Source = "Hashnode" | "Medium";
 

@@ -1,23 +1,22 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Caveat, JetBrains_Mono, Outfit } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/JsonLd";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SITE_URL, keywords, person } from "@/constants/profile";
 
 /**
- * Type system: one grotesque set oversized and tight for display, a narrower
- * companion for reading, and a mono for every label, number and piece of
- * metadata on the page.
+ * Caveat carries the headings and marginalia. Outfit carries every word a
+ * recruiter actually has to read. JetBrains Mono carries numbers and code.
  */
-const archivo = Archivo({
+const caveat = Caveat({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-hand",
   display: "swap",
-  weight: ["600", "700", "800", "900"],
+  weight: ["500", "600", "700"],
 });
 
-const interTight = Inter_Tight({
+const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-sans",
   display: "swap",
@@ -30,12 +29,11 @@ const jetbrains = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
-const TITLE = `${person.name} — Generative AI Engineer | LLM, RAG & AI Agents`;
+const TITLE = `${person.name}, Generative AI Engineer | LLM, RAG & AI Agents`;
 const DESCRIPTION =
-  "Ashutosh Kumar (ashusnapx) is a Generative AI Engineer building production LLM applications — RAG pipelines, LangGraph multi-agent workflows and the full-stack Next.js products they ship inside. Open to GenAI engineering roles.";
+  "Ashutosh Kumar (ashusnapx) is a Generative AI Engineer building production LLM applications: RAG pipelines, multi-agent workflows and the full-stack products they ship inside. Open to GenAI engineering roles.";
 
 export const metadata: Metadata = {
-  // Required for OG/Twitter images and canonical URLs to resolve absolutely.
   metadataBase: new URL(SITE_URL),
   title: { default: TITLE, template: `%s | ${person.name}` },
   description: DESCRIPTION,
@@ -49,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "profile",
     url: SITE_URL,
-    siteName: `${person.name} — ${person.role}`,
+    siteName: `${person.name}, ${person.role}`,
     title: TITLE,
     description: DESCRIPTION,
     locale: "en_US",
@@ -67,7 +65,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    // Without these Google may truncate the snippet and shrink the preview.
     googleBot: {
       index: true,
       follow: true,
@@ -77,16 +74,14 @@ export const metadata: Metadata = {
     },
   },
   manifest: "/manifest.webmanifest",
-  // Fill in once verified in Search Console / Bing Webmaster Tools.
-  // verification: { google: "…", other: { "msvalidate.01": "…" } },
 };
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#F0EEE9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0D0D0C" },
+    { media: "(prefers-color-scheme: light)", color: "#F3F1E9" },
+    { media: "(prefers-color-scheme: dark)", color: "#16171B" },
   ],
-  colorScheme: "dark light",
+  colorScheme: "light dark",
   width: "device-width",
   initialScale: 1,
 };
@@ -99,15 +94,14 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://i.postimg.cc" />
-        <link rel="dns-prefetch" href="https://github-contributions-api.jogruber.de" />
         <JsonLd />
       </head>
       <body
-        className={`${archivo.variable} ${interTight.variable} ${jetbrains.variable} min-h-screen overflow-x-hidden bg-bg font-sans text-ink antialiased`}
+        className={`${caveat.variable} ${outfit.variable} ${jetbrains.variable} paper-grain relative min-h-[100dvh] overflow-x-hidden bg-paper font-sans text-ink antialiased`}
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >

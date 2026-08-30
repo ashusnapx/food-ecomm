@@ -18,32 +18,35 @@ export default function Error({
     <main
       role="alert"
       aria-live="assertive"
-      className="gutter mx-auto flex min-h-screen max-w-page flex-col justify-center"
+      className="ruled grid min-h-[100dvh] place-items-center px-5"
     >
-      <p className="label text-danger">Runtime error</p>
-      <h1 className="type-xl mt-6">Something broke.</h1>
-      <p className="type-body mt-6 max-w-md text-dim">
-        An unexpected error stopped this view rendering. Retrying usually clears
-        it.
-      </p>
-      <div className="mt-10 flex flex-wrap gap-3">
-        <button
-          type="button"
-          onClick={reset}
-          className="label accent-block px-5 py-3.5"
-        >
-          Try again
-        </button>
-        <Link
-          href="/"
-          className="label border border-rule-strong px-5 py-3.5 text-ink transition-colors hover:border-ink"
-        >
-          Go home
-        </Link>
+      <div className="max-w-md">
+        <h1 className="hand text-5xl leading-tight text-red">Something went wrong</h1>
+        <p className="type-body mt-4 text-ink-soft">
+          An unexpected error stopped this view rendering. Retrying usually
+          clears it.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-4">
+          <button
+            type="button"
+            onClick={reset}
+            className="hand sticky-note rounded-md px-6 py-3 text-2xl leading-none"
+          >
+            Try again
+          </button>
+          <Link
+            href="/"
+            className="hand rounded-md border-2 border-ink px-6 py-3 text-2xl leading-none text-ink transition-colors hover:bg-ink hover:text-paper"
+          >
+            Go home
+          </Link>
+        </div>
+        {error.digest && (
+          <p className="mt-8 font-mono text-[11px] text-ink-faint">
+            digest {error.digest}
+          </p>
+        )}
       </div>
-      {error.digest && (
-        <p className="label mt-10 text-faint">Digest {error.digest}</p>
-      )}
     </main>
   );
 }

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
  * We used to render the calendar with `react-github-calendar`, which is
  * ESM-only and was failing to load its browser chunk. It only ever wrapped the
  * jogruber contributions endpoint, so we call that directly and draw the grid
- * ourselves — one less dependency, no chunk to fail, full design control.
+ * ourselves, one less dependency, no chunk to fail, full design control.
  *
  * The GitHub REST calls are unauthenticated (60 req/hour/IP). With a six-hour
  * revalidate that is one request per window per region, comfortably inside the
@@ -80,7 +80,7 @@ async function getRepos(username: string) {
   if (!res.ok) throw new Error(`repos ${res.status}`);
 
   const all = (await res.json()) as Repo[];
-  // Forks and archives are noise on a portfolio — they say nothing about what
+  // Forks and archives are noise on a portfolio, they say nothing about what
   // this person writes.
   const own = all.filter((r) => !r.fork && !r.archived);
 
@@ -100,7 +100,7 @@ async function getRepos(username: string) {
       share: Math.round((count / counted) * 100),
     }));
 
-  // Rank by stars, then by how recently it was touched — with few stars in
+  // Rank by stars, then by how recently it was touched, with few stars in
   // play, recency is the more honest signal.
   const featured = [...own]
     .sort(

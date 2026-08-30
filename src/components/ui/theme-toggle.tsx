@@ -3,13 +3,8 @@
 import { useTheme } from "next-themes";
 
 /**
- * Text toggle rather than a sun/moon icon — in a typographic system a mono
- * label is more at home than a pictogram, and it needs no icon library.
- *
- * Both labels are rendered and swapped with the `dark:` variant rather than
- * gated on a `mounted` flag. next-themes has already put the right class on
- * <html> before paint, so CSS resolves this with no hydration mismatch, no
- * effect, and no layout shift.
+ * Paper or blackboard. Both labels render and CSS swaps them on the `dark`
+ * class, so there is no mounted flag, no hydration mismatch and no layout jump.
  */
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -18,17 +13,11 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-      aria-label="Toggle colour theme"
-      className="label group flex items-center gap-1.5 text-dim transition-colors hover:text-ink"
+      aria-label="Switch between paper and blackboard"
+      className="hand rounded-md border border-rule px-3 py-1.5 text-lg leading-none text-ink-soft transition-colors hover:border-ink hover:text-ink"
     >
-      <span
-        aria-hidden
-        className="h-[9px] w-[9px] border border-current transition-colors group-hover:border-accent group-hover:bg-accent"
-      />
-      <span className="w-[2.6rem] text-left">
-        <span className="dark:hidden">DARK</span>
-        <span className="hidden dark:inline">LIGHT</span>
-      </span>
+      <span className="dark:hidden">blackboard?</span>
+      <span className="hidden dark:inline">paper?</span>
     </button>
   );
 }

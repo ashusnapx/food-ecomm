@@ -8,26 +8,21 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="gutter mx-auto flex min-h-screen max-w-page flex-col justify-center">
-      <p className="label text-faint">Error 404</p>
-      <h1 className="type-display mt-6 uppercase">
-        Not
-        <br />
-        found
-      </h1>
-      <p className="type-body mt-8 max-w-md text-dim text-pretty">
-        That URL doesn&apos;t exist. Everything lives on one page here — the
-        work, the stack and the contact details are all a scroll away.
-      </p>
-      <div className="mt-10 flex flex-wrap gap-3">
-        <Link href="/" className="label accent-block px-5 py-3.5">
-          ← Back home
-        </Link>
+    <main className="ruled margin-rule grid min-h-[100dvh] place-items-center px-5">
+      <div className="max-w-md pl-8 md:pl-16">
+        <p className="hand text-[7rem] leading-none text-red">404</p>
+        <h1 className="hand mt-2 text-4xl leading-tight text-ink">
+          Nothing written on this page
+        </h1>
+        <p className="type-body mt-4 text-ink-soft text-pretty">
+          Everything lives on one page here. The work, the stack and the contact
+          details are all a scroll away.
+        </p>
         <Link
-          href="/#work"
-          className="label border border-rule-strong px-5 py-3.5 text-ink transition-colors hover:border-ink"
+          href="/"
+          className="hand sticky-note mt-8 inline-block rounded-md px-6 py-3 text-2xl leading-none"
         >
-          See the work
+          Back to the start
         </Link>
       </div>
     </main>

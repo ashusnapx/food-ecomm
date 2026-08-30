@@ -1,9 +1,8 @@
 import { socialLinks } from "@/constants/constant";
 import {
   SITE_URL,
-  awards,
+  hackathons,
   certifications,
-  faqs,
   keywords,
   marqueeSkills,
   person,
@@ -19,7 +18,7 @@ import {
  * makes a Knowledge-Panel-style result possible for a personal name.
  *
  * This renders on the server inside the App Router layout, so it is present in
- * the initial HTML — structured data injected after hydration is frequently
+ * the initial HTML, structured data injected after hydration is frequently
  * missed by crawlers.
  */
 export function JsonLd() {
@@ -41,7 +40,7 @@ export function JsonLd() {
       image: {
         "@type": "ImageObject",
         url: person.image,
-        caption: `${person.name} — ${person.role}`,
+        caption: `${person.name}, ${person.role}`,
       },
       jobTitle: person.role,
       description: person.headline,
@@ -69,8 +68,10 @@ export function JsonLd() {
       sameAs: socialLinks.map((l) => l.href),
       // Externally-judged results and verifiable credentials are exactly the
       // kind of corroboration Google weighs for a person entity.
-      award: awards.map(
-        (a) => `${a.rank}, ${a.event} ${a.season} (${a.year}) — ${a.project}`
+      award: hackathons.map((h) =>
+        h.rank
+          ? `Rank ${h.rank}, ${h.event} (${h.detail}): ${h.project}`
+          : `${h.event} (${h.detail}): ${h.project}`
       ),
       ...(certifications.length > 0 && {
         hasCredential: certifications.map((c) => ({
@@ -91,7 +92,7 @@ export function JsonLd() {
       "@type": "WebSite",
       "@id": siteId,
       url: SITE_URL,
-      name: `${person.name} — ${person.role}`,
+      name: `${person.name}, ${person.role}`,
       description: person.headline,
       inLanguage: "en",
       publisher: { "@id": personId },
@@ -102,7 +103,7 @@ export function JsonLd() {
       "@type": "ProfilePage",
       "@id": pageId,
       url: SITE_URL,
-      name: `${person.name} — ${person.role}`,
+      name: `${person.name}, ${person.role}`,
       isPartOf: { "@id": siteId },
       about: { "@id": personId },
       mainEntity: { "@id": personId },
@@ -128,16 +129,6 @@ export function JsonLd() {
           author: { "@id": personId },
           dateCreated: project.year,
         },
-      })),
-    },
-    {
-      "@type": "FAQPage",
-      "@id": `${SITE_URL}/#faq`,
-      isPartOf: { "@id": siteId },
-      mainEntity: faqs.map((faq) => ({
-        "@type": "Question",
-        name: faq.q,
-        acceptedAnswer: { "@type": "Answer", text: faq.a },
       })),
     },
     {

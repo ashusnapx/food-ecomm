@@ -1,13 +1,11 @@
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { Approach } from "@/components/sections/Approach";
 import { Certifications } from "@/components/sections/Certifications";
-import { Faq } from "@/components/sections/Faq";
-import { Featured } from "@/components/sections/Featured";
 import { Github } from "@/components/sections/Github";
+import { Hackathons } from "@/components/sections/Hackathons";
 import { Hero } from "@/components/sections/Hero";
 import { Journey } from "@/components/sections/Journey";
-import { Recognition } from "@/components/sections/Recognition";
+import { Notes } from "@/components/sections/Notes";
 import { Stack } from "@/components/sections/Stack";
 import { Work } from "@/components/sections/Work";
 import { Writing } from "@/components/sections/Writing";
@@ -18,16 +16,14 @@ export default function Home() {
       <Header />
       <main id="main">
         <Hero />
-        <Approach />
+        <Notes />
         <Work />
-        <Recognition />
+        <Hackathons />
         <Certifications />
         <Stack />
         <Journey />
         <Github />
         <Writing />
-        <Featured />
-        <Faq />
       </main>
       <Footer />
     </>
