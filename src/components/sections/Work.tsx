@@ -138,7 +138,11 @@ function Card({ project, index }: { project: (typeof projects)[number]; index: n
                 href={primary}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="after:absolute after:inset-0 after:content-['']"
+                // Cards with a player keep a plain link: a full-card overlay
+                // would sit on top of the video controls.
+                className={
+                  project.videoSrc ? "" : "after:absolute after:inset-0 after:content-['']"
+                }
               >
                 {project.name}
               </a>

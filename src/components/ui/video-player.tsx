@@ -74,8 +74,15 @@ export function VideoPlayer({
   const toggleMute = useCallback(() => {
     const video = ref.current;
     if (!video) return;
+
+    const wasPlaying = !video.paused;
     video.muted = !video.muted;
     setMuted(video.muted);
+
+    // Turning sound on can trip the browser's autoplay policy and pause the
+    // clip. The toggle is a user gesture, so resuming here is permitted and
+    // keeps "unmute" from reading as "stop".
+    if (wasPlaying && video.paused) video.play().catch(() => {});
   }, []);
 
   const seek = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +96,10 @@ export function VideoPlayer({
   }, []);
 
   return (
-    <figure className={`group/vid relative ${className}`}>
+    // z-20 keeps the controls above the card's stretched title link, whose
+    // ::after covers the whole card. Without it every click on play, mute or
+    // the scrubber navigated to the project instead.
+    <figure className={`group/vid relative z-20 ${className}`}>
       <div className="relative w-full overflow-hidden rounded-sm border border-rule bg-paper-2">
         <video
           ref={ref}
