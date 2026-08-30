@@ -29,9 +29,10 @@ const jetbrains = JetBrains_Mono({
   weight: ["400", "500", "700"],
 });
 
-const TITLE = `${person.name}, Generative AI Engineer | LLM, RAG & AI Agents`;
+const TITLE = `${person.name} (${person.handle}), Generative AI Engineer`;
+// Kept under ~160 characters so Google shows it whole instead of truncating.
 const DESCRIPTION =
-  "Ashutosh Kumar (ashusnapx) is a Generative AI Engineer building production LLM applications: RAG pipelines, multi-agent workflows and the full-stack products they ship inside. Open to GenAI engineering roles.";
+  "Ashutosh Kumar (ashusnapx), Generative AI Engineer. I build production LLM apps: RAG pipelines, multi-agent workflows, and the products they ship inside.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -44,6 +45,17 @@ export const metadata: Metadata = {
   publisher: person.name,
   category: "technology",
   alternates: { canonical: "/" },
+  // Next generates these from icon.svg / icon.png / apple-icon.png in app/,
+  // but declaring them keeps the order explicit: SVG first for modern
+  // browsers, 96px PNG for Google's SERP favicon, ICO for legacy.
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon.png", type: "image/png", sizes: "96x96" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-icon.png",
+  },
   openGraph: {
     type: "profile",
     url: SITE_URL,
@@ -54,6 +66,14 @@ export const metadata: Metadata = {
     firstName: "Ashutosh",
     lastName: "Kumar",
     username: person.handle,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${person.name}, Generative AI Engineer`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -74,6 +94,9 @@ export const metadata: Metadata = {
     },
   },
   manifest: "/manifest.webmanifest",
+  // Fill these in from Search Console and Bing Webmaster Tools. Verification
+  // is what unlocks indexing reports and the URL inspection tool.
+  // verification: { google: "…", other: { "msvalidate.01": "…" } },
 };
 
 export const viewport: Viewport = {

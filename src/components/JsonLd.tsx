@@ -43,6 +43,14 @@ export function JsonLd() {
         caption: `${person.name}, ${person.role}`,
       },
       jobTitle: person.role,
+      hasOccupation: {
+        "@type": "Occupation",
+        name: "Generative AI Engineer",
+        occupationalCategory: "15-1252.00",
+        skills: marqueeSkills.join(", "),
+      },
+      identifier: person.handle,
+      mainEntityOfPage: { "@id": pageId },
       description: person.headline,
       email: `mailto:${person.email}`,
       knowsAbout,
@@ -108,6 +116,13 @@ export function JsonLd() {
       about: { "@id": personId },
       mainEntity: { "@id": personId },
       inLanguage: "en",
+      dateModified: new Date().toISOString(),
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+      },
     },
     {
       "@type": "ItemList",
