@@ -17,6 +17,7 @@ export const person = {
   headline:
     "I build production LLM applications: retrieval pipelines, multi-agent workflows and the products they ship inside.",
   email: "ashu.kumarexam@gmail.com",
+  /** Home base, and the one the structured data declares. */
   location: { city: "Bengaluru", region: "Karnataka", country: "India", countryCode: "IN" },
   currentEmployer: "Tata Consultancy Services",
   jobTitle: "Software Engineer",
@@ -25,6 +26,16 @@ export const person = {
     "https://drive.google.com/file/d/1QC2FPE0nrS45xwPMofP6TjlcABXAYpCE/view?usp=sharing",
   availability: "Open to Generative AI engineering roles",
 } as const;
+
+/**
+ * Everywhere he works from. Bengaluru is home and carries the postal address in
+ * the JSON-LD; San Francisco is listed so a US search and a US recruiter both
+ * find him.
+ */
+export const locations = [
+  { city: "Bengaluru", region: "Karnataka", country: "India", countryCode: "IN" },
+  { city: "San Francisco", region: "California", country: "United States", countryCode: "US" },
+] as const;
 
 export const keywords = [
   "Ashutosh Kumar",
@@ -99,11 +110,15 @@ export const categoryLabels: Record<ProjectCategory | "all", string> = {
   mobile: "Mobile",
 };
 
+/**
+ * Category accents. The palette carries one accent, so categories separate by
+ * tint of it rather than by hue, and "all" falls back to the body ink.
+ */
 export const categoryPen: Record<ProjectCategory | "all", string> = {
   all: "var(--ink)",
-  genai: "var(--red)",
-  fullstack: "var(--blue)",
-  mobile: "var(--green)",
+  genai: "var(--accent)",
+  fullstack: "#4aa9f7",
+  mobile: "#7cc0f8",
 };
 
 export const projects: ShowcaseProject[] = [
@@ -116,7 +131,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["GPT-4o", "Strict JSON schema", "Next 16", "119 unit tests"],
     year: "2026",
-    image: "/kavach/case-dashboard.png",
+    image: "/previews/kavach.png",
     videoSrc: "/kavach/demo.mp4",
     videoPoster: "/kavach/demo-poster.jpg",
     github: "https://github.com/ashusnapx/hackathon",
@@ -161,8 +176,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["Gemini", "Multi-agent", "Next.js"],
     year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1600&auto=format&fit=crop",
+    image: "/previews/postgen.png",
     github: "https://github.com/ashusnapx/linkedin-post-generator",
     live: "https://postgen-ashusnapx.vercel.app/",
   },
@@ -175,8 +189,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["LangGraph", "CopilotKit", "Prisma"],
     year: "2025",
-    image:
-      "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=1600&auto=format&fit=crop",
+    image: "/previews/ai-book-explorer.png",
     github: "https://github.com/ashusnapx/ai-book-explorer",
   },
   {
@@ -188,7 +201,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["Gemini Vision", "Python", "Streamlit"],
     year: "2024",
-    image: "https://i.postimg.cc/nz3zBkKx/Screenshot-2024-01-22-at-11-46-59-PM.png",
+    image: "/previews/know-your-food.png",
     github: "https://github.com/ashusnapx/know-the-ingredient",
     live: "https://know-your-food-ashusnapx.streamlit.app/",
   },
@@ -201,7 +214,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["Gemini Pro", "Domain RAG", "Python"],
     year: "2024",
-    image: "https://i.postimg.cc/6pGxntLp/Screenshot-2024-01-22-at-3-33-22-PM.png",
+    image: "/previews/coal-mines-laws.png",
     github: "https://github.com/ashusnapx/gemini-mining",
     live: "https://dgms-gemini-ashusnapx.streamlit.app/",
   },
@@ -214,7 +227,7 @@ export const projects: ShowcaseProject[] = [
     category: "genai",
     tags: ["Gemini Pro", "Next.js", "Clerk"],
     year: "2024",
-    image: "https://i.postimg.cc/8cjDyyMk/Screenshot-2024-05-13-at-3-36-02-AM.png",
+    image: "/previews/genai-apps-generator.png",
     github: "https://github.com/ashusnapx/genai-assignment-frontend",
     live: "https://genai-assignment.vercel.app/",
   },
@@ -227,7 +240,7 @@ export const projects: ShowcaseProject[] = [
     category: "fullstack",
     tags: ["Next.js", "Appwrite", "shadcn/ui"],
     year: "2024",
-    image: "https://i.postimg.cc/sgx4bKbg/Screenshot-2024-08-26-at-1-54-25-AM.png",
+    image: "/previews/habit-ai.png",
     github: "https://github.com/ashusnapx/habit-builder",
     live: "https://habit-ai-lake.vercel.app/",
   },
@@ -240,7 +253,7 @@ export const projects: ShowcaseProject[] = [
     category: "fullstack",
     tags: ["React", "Supabase", "OAuth"],
     year: "2023",
-    image: "https://i.postimg.cc/nc7XGF4S/Screenshot-2023-10-07-at-1-03-54-AM.png",
+    image: "/previews/airbnb-clone.png",
     github: "https://github.com/ashusnapx/airbnb-x-oyo",
     live: "https://airbnb-by-ashusnapx.vercel.app/",
   },
@@ -253,7 +266,7 @@ export const projects: ShowcaseProject[] = [
     category: "fullstack",
     tags: ["Python", "Django"],
     year: "2023",
-    image: "https://i.postimg.cc/L6dbbDP4/Screenshot-2023-10-07-at-1-10-10-AM.png",
+    image: "/previews/yt-analytics.png",
     github: "https://github.com/ashusnapx/youtube-playlist-length",
     live: "https://yt-playlist-length-4nzq.onrender.com/",
   },
@@ -266,7 +279,7 @@ export const projects: ShowcaseProject[] = [
     category: "mobile",
     tags: ["React Native", "Nativewind", "Appwrite"],
     year: "2024",
-    image: "https://i.postimg.cc/k4jTV467/Untitled-design.png",
+    image: "/previews/secourse.png",
     github: "https://github.com/ashusnapx/abhi-start-upsc",
   },
 ];
@@ -475,13 +488,25 @@ export const certifications: Certification[] = [
   },
 ];
 
+/**
+ * Four links, like the reference. Six never fitted the pill at the width the
+ * links appear at, and the footer carries the full index anyway.
+ */
 export const navLinks = [
   { href: "#work", label: "Work" },
+  { href: "#kavach", label: "Case study" },
+  { href: "#services", label: "Services" },
+  { href: "#contact", label: "Contact" },
+];
+
+/** The full index, which only the footer needs room for. */
+export const footerLinks = [
+  { href: "#work", label: "Work" },
+  { href: "#kavach", label: "Case study" },
   { href: "#hackathons", label: "Hackathons" },
   { href: "#certs", label: "Certified" },
   { href: "#stack", label: "Stack" },
   { href: "#github", label: "GitHub" },
-  { href: "#contact", label: "Contact" },
 ];
 
 export const writingProfiles = [

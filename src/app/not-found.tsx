@@ -1,5 +1,6 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -8,23 +9,25 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <main className="ruled margin-rule grid min-h-[100dvh] place-items-center px-5">
-      <div className="max-w-md pl-8 md:pl-16">
-        <p className="hand text-[7rem] leading-none text-red">404</p>
-        <h1 className="hand mt-2 text-4xl leading-tight text-ink">
-          Nothing written on this page
-        </h1>
-        <p className="type-body mt-4 text-ink-soft text-pretty">
-          Everything lives on one page here. The work, the stack and the contact
+    <main className="relative grid min-h-[100dvh] place-items-center overflow-hidden px-5 text-center">
+      <div className="scene scene-sky scene-clouds fade-bottom" />
+
+      <div className="max-w-md">
+        <p className="t-hero text-ink">404</p>
+        <h1 className="t-h3 mt-4">Nothing lives on this page</h1>
+        <p className="t-lead mt-4">
+          Everything is on one page here. The work, the stack and the contact
           details are all a scroll away.
         </p>
-        <Link
-          href="/"
-          className="hand sticky-note mt-8 inline-block rounded-md px-6 py-3 text-2xl leading-none"
-        >
-          Back to the start
-        </Link>
+        <div className="mt-9 flex justify-center">
+          <Button href="/">Back to the start</Button>
+        </div>
       </div>
+
+      {/* Keeps the crawler on a real anchor even if the button markup changes. */}
+      <Link href="/" className="sr-only">
+        Home
+      </Link>
     </main>
   );
 }

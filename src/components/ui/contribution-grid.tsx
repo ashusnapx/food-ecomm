@@ -6,19 +6,20 @@ type Day = { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 };
 
 /**
  * Contribution heatmap drawn by hand rather than by react-github-calendar,
- * which is ESM only and was failing to load its browser chunk. Cells step up in
- * green ink so the grid belongs to this palette instead of GitHub's.
+ * which is ESM only and was failing to load its browser chunk. Cells step up
+ * through tints of the one accent blue so the grid belongs to this palette
+ * instead of GitHub's green.
  *
  * Data is passed in: the parent already loads the whole GitHub aggregate, and
  * two components hitting the same endpoint would double the requests against a
  * sixty per hour budget.
  */
 const LEVEL: Record<number, string> = {
-  0: "bg-rule/45",
-  1: "bg-green/25",
-  2: "bg-green/50",
-  3: "bg-green/75",
-  4: "bg-green",
+  0: "bg-white",
+  1: "bg-accent/25",
+  2: "bg-accent/50",
+  3: "bg-accent/75",
+  4: "bg-accent",
 };
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -52,16 +53,14 @@ export function ContributionGrid({ days, total }: { days: Day[] | null; total: n
 
   if (!days) {
     return (
-      <p className="hand flex h-28 items-center text-xl text-ink-faint">
-        counting commits<span className="animate-caret">_</span>
-      </p>
+      <p className="t-body flex h-28 items-center">Counting commits&hellip;</p>
     );
   }
 
   if (!weeks.length) {
     return (
-      <p className="hand flex h-28 items-center text-xl text-ink-faint">
-        contribution data is unavailable right now
+      <p className="t-body flex h-28 items-center">
+        Contribution data is unavailable right now.
       </p>
     );
   }
@@ -76,7 +75,7 @@ export function ContributionGrid({ days, total }: { days: Day[] | null; total: n
             style={{ gridTemplateColumns: `repeat(${weeks.length}, 11px)` }}
           >
             {weeks.map((_, i) => (
-              <span key={i} className="h-3 whitespace-nowrap font-mono text-[9px] text-ink-faint">
+              <span key={i} className="h-3 whitespace-nowrap font-mono text-[10px] text-faint">
                 {marks.find((m) => m.col === i)?.label ?? ""}
               </span>
             ))}
@@ -103,15 +102,15 @@ export function ContributionGrid({ days, total }: { days: Day[] | null; total: n
       </div>
 
       <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-4">
-        <span className="hand text-xl text-ink-soft">
+        <span className="t-small tabular">
           {total.toLocaleString()} contributions this year
         </span>
         <span className="flex items-center gap-1.5" aria-hidden>
-          <span className="font-mono text-[10px] text-ink-faint">less</span>
+          <span className="font-mono text-[11px] text-faint">Less</span>
           {[0, 1, 2, 3, 4].map((l) => (
             <span key={l} className={`h-[11px] w-[11px] rounded-sm ${LEVEL[l]}`} />
           ))}
-          <span className="font-mono text-[10px] text-ink-faint">more</span>
+          <span className="font-mono text-[11px] text-faint">More</span>
         </span>
       </figcaption>
     </figure>

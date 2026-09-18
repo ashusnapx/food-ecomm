@@ -38,10 +38,27 @@ export const socialLinks: SocialLink[] = [
 
 export const internshipData: Internship[] = [
   {
+    role: "Computer Vision Engineer",
+    companyName: "Tata Consultancy Services (TCS)",
+    fromDate: "2026-09-20",
+    toDate: "Present",
+    modeOfWork: "Full-time, Onsite",
+    workDone: [
+      "Moving from Core ABAP onto computer vision work, applying the same production discipline to a model layer that fails in ways a business rule never does.",
+      "Building and evaluating vision models, and the pipelines that keep their outputs checked before anything downstream consumes them.",
+    ],
+    TechStack: [
+      "Computer Vision",
+      "Python",
+      "Deep Learning",
+      "Model Evaluation",
+    ],
+  },
+  {
     role: "Software Engineer (Core ABAP)",
     companyName: "Tata Consultancy Services (TCS)",
     fromDate: "2025-06-01",
-    toDate: "Present",
+    toDate: "2026-09-19",
     modeOfWork: "Full-time, Onsite",
     workDone: [
       "Developing and maintaining enterprise-grade business applications for a European client (Bayer) using Core ABAP.",

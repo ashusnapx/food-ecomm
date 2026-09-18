@@ -9,12 +9,9 @@ const nextConfig = {
   poweredByHeader: false,
 
   images: {
-    // AVIF first, WebP as the fallback — meaningful LCP win on the project grid.
+    // AVIF first, WebP as the fallback: a meaningful LCP win on the project
+    // grid. Every image is local now, so there is no remote allowlist.
     formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      { protocol: "https", hostname: "i.postimg.cc", pathname: "/**" },
-      { protocol: "https", hostname: "images.unsplash.com", pathname: "/**" },
-    ],
   },
 
   async headers() {

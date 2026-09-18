@@ -1,56 +1,60 @@
-import { skillStack } from "@/constants/profile";
+import { Marquee } from "@/components/ui/marquee";
 import { Lay } from "@/components/ui/reveal";
-import { SectionTitle } from "@/components/ui/section-title";
-
-const PEN: Record<string, string> = {
-  red: "var(--red)",
-  blue: "var(--blue)",
-  green: "var(--green)",
-  purple: "var(--purple)",
-  orange: "var(--orange)",
-};
+import { marqueeSkills, skillStack } from "@/constants/profile";
 
 /**
- * The stack, grouped into five clusters rather than one long ruled list.
- * Each cluster gets its own pen, so the eye can find the model layer without
- * reading every word.
+ * The stack, as a bento of five clusters over a running ticker.
+ *
+ * The model layer gets the tall cell because that is where the interesting
+ * problems are; everything under it exists to make the model layer usable.
  */
 export function Stack() {
+  const [lead, ...rest] = skillStack;
+
   return (
-    <section
-      id="stack"
-      className="border-y border-rule bg-paper-2/40"
-    >
-      <div className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
-        <SectionTitle
-          title="What I reach for"
-          pen="var(--green)"
-          note="Model layer first, because that is where the interesting problems are. Everything under it exists to make the model layer usable."
-        />
+    <section id="stack" className="relative px-5 py-24 md:px-10 md:py-32">
+      <div className="mx-auto max-w-page">
+        <Lay className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="eyebrow">The stack</span>
+            <h2 className="t-h2 mt-6">
+              What I reach for,
+              <br />
+              and what it is for.
+            </h2>
+          </div>
+          <p className="t-lead max-w-md md:text-right">
+            Model layer first. The rest exists to make it usable.
+          </p>
+        </Lay>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {skillStack.map((group, i) => (
-            <Lay key={group.id} delay={i * 0.05} tilt={i % 2 === 0 ? -0.4 : 0.35}>
-              <div
-                className={`card-paper h-full rounded-md p-5 ${
-                  group.id === "genai" ? "md:col-span-2 lg:col-span-1 lg:row-span-2" : ""
-                }`}
-              >
-                <h3
-                  className="hand text-3xl leading-none"
-                  style={{ color: `hsl(${PEN[group.pen]})` }}
-                >
-                  {group.title}
-                </h3>
-                <p className="mt-1.5 text-sm text-ink-faint">{group.caption}</p>
+        <div className="mt-14 grid gap-5 lg:grid-cols-3">
+          {/* The model layer leads, and gets the black card for it. */}
+          <Lay>
+            <div className="card-black h-full p-8">
+              <h3 className="t-h3 text-white">{lead.title}</h3>
+              <p className="t-small mt-1.5">{lead.caption}</p>
+              <ul className="mt-7 flex flex-wrap gap-2">
+                {lead.skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-[13px] text-white/85"
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Lay>
 
-                <ul className="mt-5 flex flex-wrap gap-2">
+          {rest.map((group, i) => (
+            <Lay key={group.id} delay={(i + 1) * 0.05}>
+              <div className="card-surface h-full p-8">
+                <h3 className="t-h3">{group.title}</h3>
+                <p className="t-small mt-1.5">{group.caption}</p>
+                <ul className="mt-7 flex flex-wrap gap-2">
                   {group.skills.map((skill) => (
-                    <li
-                      key={skill}
-                      className="rounded-md border px-2.5 py-1 text-sm text-ink-soft transition-colors"
-                      style={{ borderColor: `hsl(${PEN[group.pen]} / 0.35)` }}
-                    >
+                    <li key={skill} className="chip-outline">
                       {skill}
                     </li>
                   ))}
@@ -59,6 +63,23 @@ export function Stack() {
             </Lay>
           ))}
         </div>
+      </div>
+
+      {/* Full-bleed ticker, masked at both edges so it fades rather than cuts. */}
+      <div
+        className="pause-hover relative mt-16 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]"
+        aria-hidden
+      >
+        <Marquee duration={54}>
+          {marqueeSkills.map((skill) => (
+            <span
+              key={skill}
+              className="mx-3 whitespace-nowrap rounded-full bg-surface px-5 py-2.5 text-[15px] font-medium text-muted"
+            >
+              {skill}
+            </span>
+          ))}
+        </Marquee>
       </div>
     </section>
   );

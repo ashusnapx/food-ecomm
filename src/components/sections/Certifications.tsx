@@ -1,85 +1,112 @@
 import Image from "next/image";
-import { certifications } from "@/constants/profile";
-import { CheckMark } from "@/components/ui/marks";
+import { ArrowUpRight, Check } from "@/components/ui/icons";
 import { Lay } from "@/components/ui/reveal";
-import { SectionTitle } from "@/components/ui/section-title";
+import { certifications } from "@/constants/profile";
 
 /**
- * Credentials, shown as the actual badges and certificates rather than a list
- * of names. Badges are square and course certificates are landscape, so every
- * tile uses one frame with object-contain: nothing is cropped, the row lines up.
+ * Credentials, shown as the actual badges rather than a list of names.
+ *
+ * Badges are square and course certificates are landscape, so every tile uses
+ * one frame with object-contain: nothing is cropped and the row still lines up.
  */
 export function Certifications() {
   if (certifications.length === 0) return null;
 
   return (
-    <section id="certs" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
-      <SectionTitle
-        title="Certified, and checkable"
-        pen="var(--purple)"
-        note="Every one links to its issuer, so you can verify it rather than take my word for it."
-      />
+    <section id="certs" className="relative px-5 py-24 md:px-10 md:py-32">
+      <div className="mx-auto max-w-page">
+        <Lay className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <span className="eyebrow">Credentials</span>
+            <h2 className="t-h2 mt-6">
+              Certified,
+              <br />
+              and checkable.
+            </h2>
+          </div>
+          <p className="t-lead max-w-md md:text-right">
+            Every one links to its issuer. Go and check.
+          </p>
+        </Lay>
 
-      <ul className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {certifications.map((cert, i) => (
-          <li key={cert.name}>
-            <Lay delay={i * 0.05} tilt={i % 2 === 0 ? -0.5 : 0.45}>
-              <article className="card-paper flex h-full flex-col rounded-md p-5 transition-transform duration-500 ease-paper hover:rotate-0 hover:-translate-y-1">
-                <div className="relative mb-5 flex aspect-[4/3] w-full items-center justify-center rounded-sm border border-rule bg-paper-2 p-4">
-                  {cert.image ? (
-                    <Image
-                      src={cert.image}
-                      alt={`${cert.name}, issued by ${cert.issuer}`}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 33vw"
-                      className="object-contain p-4"
-                    />
-                  ) : (
-                    <span className="hand text-4xl text-ink-faint">{cert.issuer}</span>
-                  )}
-                </div>
+        <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {certifications.map((cert, i) => {
+            const Frame = cert.credentialUrl ? "a" : "div";
 
-                <p className="hand text-xl leading-none text-purple">{cert.issuer}</p>
-                <h3 className="mt-2 font-medium leading-snug text-ink">{cert.name}</h3>
+            return (
+              <li key={cert.name}>
+                <Lay delay={i * 0.05} className="h-full min-w-0">
+                  <Frame
+                    {...(cert.credentialUrl
+                      ? {
+                          href: cert.credentialUrl,
+                          target: "_blank",
+                          rel: "noopener noreferrer",
+                        }
+                      : {})}
+                    className="card-surface group flex h-full flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1"
+                  >
+                    <div className="relative mb-6 flex aspect-[4/3] w-full items-center justify-center overflow-hidden rounded-lg bg-white">
+                      {cert.image ? (
+                        <Image
+                          src={cert.image}
+                          alt={`${cert.name}, issued by ${cert.issuer}`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-contain p-6"
+                        />
+                      ) : (
+                        <span className="font-display text-2xl font-bold text-faint">
+                          {cert.issuer}
+                        </span>
+                      )}
 
-                {cert.issued && (
-                  <p className="mt-1 font-mono text-[11px] text-ink-faint">
-                    {cert.issued}
-                    {cert.expires ? ` to ${cert.expires}` : ""}
-                  </p>
-                )}
+                      {cert.credentialUrl && (
+                        <span
+                          className="absolute right-3 top-3 grid h-7 w-7 place-items-center rounded-full bg-ink text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                          aria-hidden
+                        >
+                          <ArrowUpRight className="h-3.5 w-3.5" />
+                        </span>
+                      )}
+                    </div>
 
-                {cert.blurb && (
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-ink-soft text-pretty">
-                    {cert.blurb}
-                  </p>
-                )}
+                    <p className="text-[13px] font-semibold uppercase tracking-widest text-accent">
+                      {cert.issuer}
+                    </p>
+                    <h3 className="mt-2 font-display text-[17px] font-semibold leading-snug text-ink">
+                      {cert.name}
+                    </h3>
 
-                <div className="mt-5 flex items-center justify-between gap-3 border-t border-rule pt-3">
-                  {cert.credentialUrl ? (
-                    <a
-                      href={cert.credentialUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hand flex items-center gap-1.5 text-lg text-ink-soft hover:text-ink"
-                    >
-                      <CheckMark pen="var(--green)" className="h-4 w-4" />
-                      <span className="pen-underline">verify</span>
-                    </a>
-                  ) : (
-                    <span className="hand text-lg text-ink-faint">issuer verified</span>
-                  )}
-                  {cert.credentialId && (
-                    <span className="font-mono text-[10px] text-ink-faint">
-                      {cert.credentialId}
-                    </span>
-                  )}
-                </div>
-              </article>
-            </Lay>
-          </li>
-        ))}
-      </ul>
+                    {cert.issued && (
+                      <p className="t-small mt-1.5 tabular">
+                        {cert.issued}
+                        {cert.expires ? ` to ${cert.expires}` : ""}
+                      </p>
+                    )}
+
+                    {cert.blurb && (
+                      <p className="t-small mt-4 flex-1">{cert.blurb}</p>
+                    )}
+
+                    <div className="mt-6 flex items-center justify-between gap-3 border-t border-line pt-4">
+                      <span className="flex items-center gap-1.5 text-[13px] font-medium text-ink">
+                        <Check className="h-3.5 w-3.5 text-positive" />
+                        {cert.credentialUrl ? "Verify" : "Issuer verified"}
+                      </span>
+                      {cert.credentialId && (
+                        <span className="font-mono text-[11px] text-faint">
+                          {cert.credentialId}
+                        </span>
+                      )}
+                    </div>
+                  </Frame>
+                </Lay>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </section>
   );
 }

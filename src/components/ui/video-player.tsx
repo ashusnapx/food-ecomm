@@ -100,7 +100,7 @@ export function VideoPlayer({
     // ::after covers the whole card. Without it every click on play, mute or
     // the scrubber navigated to the project instead.
     <figure className={`group/vid relative z-20 ${className}`}>
-      <div className="relative w-full overflow-hidden rounded-sm border border-rule bg-paper-2">
+      <div className="relative w-full overflow-hidden rounded-lg bg-surface">
         <video
           ref={ref}
           src={src}
@@ -124,25 +124,26 @@ export function VideoPlayer({
         />
       </div>
 
-      {/* Controls. Words rather than glyphs, to stay in the same hand as the
-          rest of the page and to say what the next click will do. */}
+      {/* Controls. Words rather than glyphs, so each one says what the next
+          click will do. */}
       <figcaption className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-2">
         <button
           type="button"
           onClick={togglePlay}
-          className="hand w-[3.4rem] text-left text-lg leading-none text-ink-soft transition-colors hover:text-ink"
+          className="w-[3.4rem] text-left text-[14px] font-medium text-muted transition-colors hover:text-ink"
         >
-          {playing ? "pause" : "play"}
+          {playing ? "Pause" : "Play"}
         </button>
 
         <button
           type="button"
           onClick={toggleMute}
           aria-pressed={!muted}
-          className="hand w-[4.6rem] text-left text-lg leading-none transition-colors"
-          style={{ color: muted ? "hsl(var(--ink-faint))" : "hsl(var(--green))" }}
+          className={`w-[4.6rem] text-left text-[14px] font-medium transition-colors ${
+            muted ? "text-faint" : "text-accent"
+          }`}
         >
-          {muted ? "unmute" : "sound on"}
+          {muted ? "Unmute" : "Sound on"}
         </button>
 
         <label className="flex flex-1 items-center gap-2">
@@ -154,20 +155,20 @@ export function VideoPlayer({
             step={0.1}
             value={progress}
             onChange={seek}
-            className="h-1 w-full min-w-[6rem] cursor-pointer appearance-none rounded-full bg-rule accent-red"
+            className="h-1 w-full min-w-[6rem] cursor-pointer appearance-none rounded-full bg-line accent-accent"
           />
         </label>
 
-        <span className="font-mono text-[11px] tabular text-ink-faint">
+        <span className="tabular font-mono text-[11px] text-faint">
           {clock(current)} / {clock(duration)}
         </span>
 
         <button
           type="button"
           onClick={fullscreen}
-          className="hand text-lg leading-none text-ink-soft transition-colors hover:text-ink"
+          className="text-[14px] font-medium text-muted transition-colors hover:text-ink"
         >
-          full screen
+          Full screen
         </button>
       </figcaption>
     </figure>

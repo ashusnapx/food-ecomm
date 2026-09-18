@@ -1,144 +1,106 @@
-import Image from "next/image";
-import { hackathons } from "@/constants/profile";
-import { CheckMark } from "@/components/ui/marks";
+import { person, hackathons } from "@/constants/profile";
+import { Button } from "@/components/ui/button";
+import { ArrowUpRight, Quote } from "@/components/ui/icons";
 import { Lay } from "@/components/ui/reveal";
-import { SectionTitle } from "@/components/ui/section-title";
-
-const PEN: Record<string, string> = {
-  red: "var(--red)",
-  blue: "var(--blue)",
-  green: "var(--green)",
-  purple: "var(--purple)",
-  orange: "var(--orange)",
-};
 
 /**
- * Hackathons and the results someone else scored.
+ * Judged work, laid out as testimonial cards.
  *
- * Awards and event posts used to be two sections, which meant the TCS result
- * appeared twice. One entry per event, ranked ones carry a marked rank.
+ * The reference floats white quote cards over a painted landscape, and that is
+ * exactly the right container for a hackathon result: someone outside the work
+ * scored it, so it reads as a quote rather than a claim. The middle card drops
+ * on large screens so the row is a scatter, not a strip.
  */
+
+/**
+ * The stories in `profile.ts` are written at full length for the case study
+ * pages. A floating card only has room for the hook, so take the first
+ * sentence and let the card link carry the rest.
+ */
+function opening(story: string) {
+  const sentences = story.match(/[^.!?]+[.!?]+(?:\s|$)/g);
+  if (!sentences) return story;
+  return sentences.slice(0, 1).join("").trim();
+}
+
 export function Hackathons() {
   return (
-    <section
-      id="hackathons"
-      className="grid-paper border-y border-rule bg-paper-2/40"
-    >
-      <div className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
-        <SectionTitle
-          title="Judged by other people"
-          pen="var(--orange)"
-          note="Internal work is easy to describe and hard to verify. These are the weekends that got scored."
-        />
+    <section id="hackathons" className="relative px-5 py-24 md:px-10 md:py-32">
 
-        <div className="mt-14 space-y-8">
-          {hackathons.map((h, i) => (
-            <Lay key={h.id} delay={i * 0.07} tilt={i % 2 === 0 ? -0.35 : 0.3}>
-              <article className="card-paper rounded-md p-5 md:p-8">
-                <div className="grid gap-7 md:grid-cols-[1fr_1.25fr] md:gap-10">
-                  {/* Photograph */}
-                  {h.image && (
-                    <div>
-                      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm border border-rule bg-paper-2">
-                        <Image
-                          src={h.image}
-                          alt={`${h.project} at ${h.event}`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 40vw"
-                          className="object-cover"
-                        />
-                      </div>
+      <div className="mx-auto max-w-page">
+        <Lay>
+          <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+            <h2 className="t-h2">
+              Built under a clock,
+              <br />
+              and it still shipped.
+            </h2>
 
-                      {h.gallery && h.gallery.length > 0 && (
-                        <div className="mt-2 grid grid-cols-2 gap-2">
-                          {h.gallery.map((src, gi) => (
-                            <div
-                              key={src}
-                              className="relative aspect-[4/3] overflow-hidden rounded-sm border border-rule bg-paper-2"
-                            >
-                              <Image
-                                src={src}
-                                alt={`${h.event}, photo ${gi + 2}`}
-                                fill
-                                sizes="(max-width: 768px) 50vw, 20vw"
-                                className="object-cover"
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+            <div className="shrink-0">
+              <Button href={person.resumeUrl} variant="dark">
+                See the resume
+              </Button>
+            </div>
+          </div>
+        </Lay>
 
-                  {/* Story */}
-                  <div>
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                      <h3
-                        className="hand text-4xl leading-none"
-                        style={{ color: `hsl(${PEN[h.pen]})` }}
-                      >
-                        {h.event}
-                      </h3>
-                      {h.rank && (
-                        <span className="hand sticky-note rounded-md px-3 py-1 text-xl leading-none">
-                          Rank {h.rank}
-                        </span>
-                      )}
-                    </div>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {hackathons.map((hackathon, i) => {
+            const body = (
+              <>
+                <Quote className="h-5 w-5 text-ink" />
 
-                    <p className="mt-2 font-mono text-[11px] uppercase tracking-wider text-ink-faint">
-                      {h.detail}
-                    </p>
+                <h3 className="t-h3 mt-6">{hackathon.result}</h3>
 
-                    <p className="hand mt-5 text-2xl leading-tight text-ink">
-                      {h.project}
-                    </p>
+                <p className="t-small mt-2">
+                  {hackathon.event}, {hackathon.detail}
+                </p>
 
-                    <p className="type-body mt-3 text-ink-soft text-pretty">
-                      {h.story}
-                    </p>
+                <p className="mt-5 text-[15px] leading-relaxed text-ink">
+                  {opening(hackathon.story)}
+                </p>
 
-                    {h.progression && (
-                      <ul className="mt-6 space-y-2">
-                        {h.progression.map((step) => (
-                          <li key={step} className="flex items-center gap-2.5 text-sm text-ink-soft">
-                            <CheckMark pen="var(--green)" className="h-4 w-4 shrink-0" />
-                            {step}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    <ul className="mt-6 flex flex-wrap gap-x-4 gap-y-1.5">
-                      {h.stack.map((tech) => (
-                        <li key={tech} className="font-mono text-[11px] text-ink-faint">
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="mt-6 flex flex-wrap items-baseline justify-between gap-4 border-t border-rule pt-4">
-                      {h.team && h.team.length > 0 && (
-                        <p className="max-w-sm text-xs text-ink-faint">
-                          built with {h.team.join(", ")}
-                        </p>
-                      )}
-                      {h.url && (
-                        <a
-                          href={h.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hand text-lg text-ink-soft hover:text-ink"
-                        >
-                          <span className="pen-underline">read the write-up</span>
-                        </a>
-                      )}
-                    </div>
-                  </div>
+                <div className="mt-auto flex flex-wrap gap-2 pt-7">
+                  {hackathon.stack.slice(0, 3).map((tool) => (
+                    <span key={tool} className="chip-outline">
+                      {tool}
+                    </span>
+                  ))}
                 </div>
+              </>
+            );
+
+            const shell = hackathon.url ? (
+              <a
+                href={hackathon.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card-white group flex h-full flex-col rounded-xl p-8"
+              >
+                <span
+                  className="pointer-events-none absolute right-6 top-6 text-muted opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+                  aria-hidden
+                >
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
+                {body}
+              </a>
+            ) : (
+              <article className="card-white flex h-full flex-col rounded-xl p-8">
+                {body}
               </article>
-            </Lay>
-          ))}
+            );
+
+            return (
+              <Lay
+                key={hackathon.id}
+                delay={i * 0.08}
+                className={`h-full ${i === 1 ? "lg:mt-10" : ""}`}
+              >
+                {shell}
+              </Lay>
+            );
+          })}
         </div>
       </div>
     </section>

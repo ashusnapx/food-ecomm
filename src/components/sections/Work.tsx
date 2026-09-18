@@ -1,200 +1,225 @@
-"use client";
-
-import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import {
-  categoryLabels,
-  categoryPen,
-  projects,
-  type ProjectCategory,
-} from "@/constants/profile";
-import { StarMark } from "@/components/ui/marks";
-import { VideoPlayer } from "@/components/ui/video-player";
+import { ArrowUpRight } from "@/components/ui/icons";
 import { Lay } from "@/components/ui/reveal";
-import { SectionTitle } from "@/components/ui/section-title";
-
-type Filter = ProjectCategory | "all";
-const FILTERS: Filter[] = ["genai", "fullstack", "mobile", "all"];
+import { projects, type ShowcaseProject } from "@/constants/profile";
 
 /**
- * Work as things pinned to a board: cards with a real screenshot, a slight
- * tilt, and a tape strip. Lead projects take the full width and a bigger image
- * so the board has rhythm instead of twelve identical tiles.
+ * Selected work, laid out as the reference's feature bento.
+ *
+ * Every card is the same object: a centred title at the top and, below it, the
+ * project's own site rendered inside a small browser frame. The previews are
+ * real screenshots of each live deployment rather than stock imagery, so the
+ * grid shows what was actually built. Only the card body changes, grey or
+ * black, which is what gives the bento its rhythm.
  */
-export function Work() {
-  const [filter, setFilter] = useState<Filter>("genai");
 
-  const visible = useMemo(
-    () => (filter === "all" ? projects : projects.filter((p) => p.category === filter)),
-    [filter]
-  );
+type Tone = "surface" | "black";
 
-  const counts = useMemo(() => {
-    const base: Record<Filter, number> = { all: projects.length, genai: 0, fullstack: 0, mobile: 0 };
-    projects.forEach((p) => (base[p.category] += 1));
-    return base;
-  }, []);
+/** The one link a card points at, in order of what a visitor would rather see. */
+function cardHref(project: ShowcaseProject) {
+  return project.live ?? project.github ?? project.writeup;
+}
+
+/** What the browser frame's address bar shows. */
+function displayHost(project: ShowcaseProject) {
+  const url = cardHref(project);
+  if (!url) return null;
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
+
+/** Chrome around the preview, so a screenshot reads as a live site. */
+function BrowserFrame({
+  project,
+  sizes,
+}: {
+  project: ShowcaseProject;
+  sizes: string;
+}) {
+  if (!project.image) return null;
+  const host = displayHost(project);
 
   return (
-    <section id="work" className="mx-auto max-w-page px-5 py-20 md:px-10 md:py-28">
-      <SectionTitle
-        title="Things I actually built"
-        pen="var(--red)"
-        note="Every one is live or open source. The generative AI set is the work I want to be judged on."
-      />
-
-      <Lay delay={0.1}>
-        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              type="button"
-              onClick={() => setFilter(f)}
-              aria-pressed={filter === f}
-              className="hand text-xl leading-none transition-colors"
-              style={{ color: filter === f ? `hsl(${categoryPen[f]})` : "hsl(var(--ink-faint))" }}
-            >
-              {categoryLabels[f]}
-              <sup className="ml-1 text-[0.6em]">{counts[f]}</sup>
-              {filter === f && (
-                <motion.span
-                  layoutId="work-mark"
-                  className="mt-1 block h-[3px] rounded-full"
-                  style={{ background: `hsl(${categoryPen[f]})` }}
-                  transition={{ type: "spring", stiffness: 400, damping: 34 }}
-                />
-              )}
-            </button>
-          ))}
+    <div className="mt-auto px-3 pb-3 sm:px-4 sm:pb-4">
+      <div className="overflow-hidden rounded-lg bg-white shadow-[0_1px_0_rgba(0,0,0,.05),0_10px_24px_-16px_rgba(29,29,29,.4)]">
+        <div className="flex items-center gap-2 border-b border-line px-3 py-2">
+          <span className="flex shrink-0 gap-1" aria-hidden>
+            <span className="block h-2 w-2 rounded-full bg-line" />
+            <span className="block h-2 w-2 rounded-full bg-line" />
+            <span className="block h-2 w-2 rounded-full bg-line" />
+          </span>
+          {host ? (
+            <span className="min-w-0 flex-1 truncate rounded-full bg-surface px-2.5 py-0.5 text-center font-mono text-[11px] text-muted">
+              {host}
+            </span>
+          ) : null}
         </div>
-      </Lay>
 
-      <motion.ul layout className="mt-12 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-        <AnimatePresence mode="popLayout">
-          {visible.map((project, i) => (
-            <motion.li
-              key={project.id}
-              layout
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ duration: 0.34, delay: Math.min(i * 0.04, 0.24) }}
-              className={project.lead ? "sm:col-span-2" : ""}
-            >
-              <Card project={project} index={i} />
-            </motion.li>
-          ))}
-        </AnimatePresence>
-      </motion.ul>
-    </section>
+        <div className="relative aspect-[16/10] w-full bg-surface">
+          <Image
+            src={project.image}
+            alt={`${project.name}: ${project.tagline}`}
+            fill
+            sizes={sizes}
+            className="object-cover object-top"
+          />
+        </div>
+      </div>
+    </div>
   );
 }
 
-function Card({ project, index }: { project: (typeof projects)[number]; index: number }) {
-  const tilt = index % 3 === 0 ? "tilt-l" : index % 3 === 1 ? "tilt-r" : "tilt-none";
-  const pen = categoryPen[project.category];
-  const primary = project.live ?? project.github ?? project.writeup;
+function ProjectCard({
+  project,
+  tone = "surface",
+  sizes,
+  showTags = false,
+  className = "",
+}: {
+  project: ShowcaseProject;
+  tone?: Tone;
+  /** Passed straight to next/image, so each placement downloads its own width. */
+  sizes: string;
+  showTags?: boolean;
+  className?: string;
+}) {
+  const href = cardHref(project);
+  const body = tone === "black" ? "card-black" : "card-surface";
 
-  return (
-    <article
-      className={`card-paper ${tilt} group relative flex h-full flex-col rounded-md p-4 transition-transform duration-500 ease-paper hover:rotate-0 hover:-translate-y-1`}
-    >
-      {project.lead && (
-        <StarMark
-          pen="var(--orange)"
-          delay={0.2}
-          className="absolute -right-3 -top-3 z-10 h-9 w-9 rotate-12"
-        />
-      )}
+  const content = (
+    <>
+      <span
+        className="absolute right-4 top-4 z-10 grid h-8 w-8 place-items-center
+          rounded-full bg-white text-ink opacity-0 shadow-card transition-opacity
+          duration-300 group-hover:opacity-100"
+        aria-hidden
+      >
+        <ArrowUpRight className="h-4 w-4" />
+      </span>
 
-      {project.videoSrc ? (
-        <VideoPlayer
-          src={project.videoSrc}
-          poster={project.videoPoster}
-          label={`${project.name} demo walkthrough`}
-        />
-      ) : project.image ? (
-        <div
-          className={`relative w-full overflow-hidden rounded-sm border border-rule bg-paper-2 ${
-            project.lead ? "aspect-[16/9]" : "aspect-[4/3]"
-          }`}
-        >
-          <Image
-            src={project.image}
-            alt={`${project.name}, ${project.tagline}`}
-            fill
-            sizes={project.lead ? "(max-width: 640px) 100vw, 66vw" : "(max-width: 640px) 100vw, 33vw"}
-            className="object-cover object-top transition-transform duration-700 ease-paper group-hover:scale-[1.03]"
-          />
+      <div className="px-5 pb-5 pt-7 text-center sm:px-7">
+        <h3 className="t-h3">{project.name}</h3>
+        <p className="t-small mx-auto mt-2 max-w-sm">{project.tagline}</p>
+      </div>
+
+      <BrowserFrame project={project} sizes={sizes} />
+
+      {showTags ? (
+        <div className="flex flex-wrap items-center justify-center gap-1.5 px-4 pb-5">
+          {project.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="chip-outline">
+              {tag}
+            </span>
+          ))}
         </div>
       ) : null}
+    </>
+  );
 
-      <div className="flex flex-1 flex-col pt-4">
-        <div className="flex items-baseline justify-between gap-3">
-          <h3 className="hand text-3xl leading-none" style={{ color: `hsl(${pen})` }}>
-            {primary ? (
-              <a
-                href={primary}
-                target="_blank"
-                rel="noopener noreferrer"
-                // Cards with a player keep a plain link: a full-card overlay
-                // would sit on top of the video controls.
-                className={
-                  project.videoSrc ? "" : "after:absolute after:inset-0 after:content-['']"
-                }
-              >
-                {project.name}
-              </a>
-            ) : (
-              project.name
-            )}
-          </h3>
-          <span className="font-mono text-[11px] text-ink-faint">{project.year}</span>
+  const shell = `${body} group flex h-full flex-col transition-transform
+    duration-300 ease-out hover:-translate-y-1 ${className}`;
+
+  if (!href) return <div className={shell}>{content}</div>;
+
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={shell}>
+      {content}
+    </a>
+  );
+}
+
+export function Work() {
+  const leads = projects.filter((p) => p.lead);
+  const others = projects.filter((p) => !p.lead);
+
+  /* Row one: the two lead builds and the next project.
+     Row two: one wide card and one normal one. Everything after that runs
+     three up as compact cards with their tags showing. */
+  const [rowOneA, rowOneB] = leads;
+  const rowOneC = others[0];
+  const wide = others[1];
+  const beside = others[2];
+  const rest = others.slice(3);
+
+  const thirdSizes = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
+  const wideSizes = "(min-width: 1024px) 66vw, 100vw";
+
+  return (
+    <section id="work" className="relative px-5 py-20 md:px-10 md:py-32">
+      <div className="mx-auto max-w-page">
+        <Lay>
+          <span className="eyebrow">Selected work</span>
+        </Lay>
+
+        <div className="mt-6 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+          <Lay>
+            <h2 className="t-h2">
+              Things I built,
+              <br />
+              and what they had to survive.
+            </h2>
+          </Lay>
+
+          <Lay delay={0.08} className="max-w-md">
+            <p className="t-lead md:text-right">
+              Every one shipped. Rank 1 at TCS AI Friday, 119 unit tests on
+              Kavach.
+            </p>
+          </Lay>
         </div>
 
-        <p className="mt-1.5 text-sm text-ink-soft">{project.tagline}</p>
+        {/* Bento: two rows of large cards. */}
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+          {rowOneA ? (
+            <Lay delay={0} className="h-full min-w-0">
+              <ProjectCard project={rowOneA} tone="surface" sizes={thirdSizes} />
+            </Lay>
+          ) : null}
 
-        <p
-          className={`mt-3 flex-1 text-sm leading-relaxed text-ink-soft text-pretty ${
-            project.lead ? "" : "line-clamp-4"
-          }`}
-        >
-          {project.description}
-        </p>
+          {rowOneB ? (
+            <Lay delay={0.05} className="h-full min-w-0">
+              <ProjectCard project={rowOneB} tone="surface" sizes={thirdSizes} />
+            </Lay>
+          ) : null}
 
-        <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
-          {project.tags.map((tag) => (
-            <li key={tag} className="font-mono text-[11px] text-ink-faint">
-              {tag}
-            </li>
-          ))}
-        </ul>
+          {rowOneC ? (
+            <Lay delay={0.1} className="h-full min-w-0 sm:col-span-2 lg:col-span-1">
+              <ProjectCard project={rowOneC} tone="black" sizes={thirdSizes} />
+            </Lay>
+          ) : null}
 
-        {/* Secondary links sit above the stretched card link */}
-        <div className="relative z-10 mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-rule pt-3">
-          {project.github && (
-            <a href={project.github} target="_blank" rel="noopener noreferrer" className="hand text-lg text-ink-soft hover:text-ink">
-              <span className="pen-underline">code</span>
-            </a>
-          )}
-          {project.writeup && (
-            <a href={project.writeup} target="_blank" rel="noopener noreferrer" className="hand text-lg text-ink-soft hover:text-ink">
-              <span className="pen-underline">write-up</span>
-            </a>
-          )}
-          {project.video && (
-            <a href={project.video} target="_blank" rel="noopener noreferrer" className="hand text-lg text-ink-soft hover:text-ink">
-              <span className="pen-underline">video</span>
-            </a>
-          )}
-          {project.live && (
-            <a href={project.live} target="_blank" rel="noopener noreferrer" className="hand text-lg text-ink-soft hover:text-ink">
-              <span className="pen-underline">live</span>
-            </a>
-          )}
+          {wide ? (
+            <Lay delay={0.15} className="h-full min-w-0 sm:col-span-2">
+              <ProjectCard project={wide} tone="surface" sizes={wideSizes} />
+            </Lay>
+          ) : null}
+
+          {beside ? (
+            <Lay delay={0.2} className="h-full min-w-0 sm:col-span-2 lg:col-span-1">
+              <ProjectCard project={beside} tone="surface" sizes={thirdSizes} />
+            </Lay>
+          ) : null}
         </div>
+
+        {/* Everything else, three up and compact. */}
+        {rest.length > 0 ? (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {rest.map((project, i) => (
+              <Lay key={project.id} delay={i * 0.05} className="h-full min-w-0">
+                <ProjectCard
+                  project={project}
+                  tone="surface"
+                  sizes={thirdSizes}
+                  showTags
+                />
+              </Lay>
+            ))}
+          </div>
+        ) : null}
       </div>
-    </article>
+    </section>
   );
 }

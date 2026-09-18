@@ -1,9 +1,14 @@
 export default function Loading() {
   return (
-    <div role="status" aria-label="Loading" className="ruled grid min-h-[100dvh] place-items-center">
-      <p className="hand text-3xl text-ink-faint">
-        writing<span className="animate-caret">_</span>
-      </p>
+    <div
+      role="status"
+      aria-label="Loading"
+      className="grid min-h-[100dvh] place-items-center bg-white"
+    >
+      <span
+        aria-hidden
+        className="h-8 w-8 animate-spin rounded-full border-2 border-line border-t-accent"
+      />
     </div>
   );
 }

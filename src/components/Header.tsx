@@ -1,16 +1,30 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { ArrowUpRight, Cross } from "@/components/ui/icons";
 import { navLinks, person } from "@/constants/profile";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-const PEN = ["var(--red)", "var(--blue)", "var(--green)", "var(--purple)", "var(--orange)", "var(--ink)"];
+const EASE = [0.16, 1, 0.3, 1] as const;
 
+/**
+ * The floating pill nav.
+ *
+ * A single white capsule that hangs clear of the page rather than a full-bleed
+ * bar: brand tile on the left, links in the middle, one dark call to action
+ * inset on the right. The link for whichever section is currently on screen
+ * carries `aria-current`, which is what `.nav-link[aria-current="true"]` paints
+ * as the light grey active pill, so the highlight costs no extra markup.
+ */
 export function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const reduce = useReducedMotion();
 
+  /* Scroll spy. The band is biased to the top of the viewport so a heading
+     sitting just under the floating pill counts as the current section. */
   useEffect(() => {
     const sections = navLinks
       .map((l) => document.getElementById(l.href.slice(1)))
@@ -30,125 +44,163 @@ export function Header() {
     return () => observer.disconnect();
   }, []);
 
+  /* The panel covers the page, so the page must not scroll behind it. */
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    if (!open) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previous;
     };
   }, [open]);
 
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [open]);
+
+  /* Growing past the lg breakpoint puts the real links back on screen, so the
+     panel would otherwise be left stranded over a nav that already works. */
+  useEffect(() => {
+    if (!open) return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => mq.matches && setOpen(false);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [open]);
+
+  const wordmark = person.name.split(" ")[0];
 
   return (
     <>
       <a
         href="#main"
-        className="hand sr-only rounded-md focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-highlight focus:px-4 focus:py-2 focus:text-lg focus:text-ink"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-5 focus:top-5 focus:z-[70] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-[15px] focus:font-medium focus:text-white"
       >
         Skip to content
       </a>
 
-      <header className="sticky top-0 z-50 border-b border-rule bg-paper">
+      <motion.header
+        initial={reduce ? false : { opacity: 0, y: -18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: EASE }}
+        className="fixed inset-x-0 top-4 z-50 px-4 md:px-6"
+      >
         <nav
           aria-label="Primary"
-          className="mx-auto flex h-16 max-w-page items-center justify-between gap-6 px-5 md:px-10"
+          className="nav-pill mx-auto w-full max-w-[880px] justify-between"
         >
-          <a href="#top" className="hand text-2xl leading-none text-ink">
-            {person.name}
+          <a
+            href="#top"
+            onClick={() => setOpen(false)}
+            className="flex shrink-0 items-center gap-2.5 rounded-full pr-1"
+          >
+            <Image
+              src="/avatar.png"
+              alt=""
+              width={72}
+              height={72}
+              priority
+              className="h-9 w-9 rounded-full object-cover ring-1 ring-line"
+            />
+            <span className="font-display text-[17px] font-semibold tracking-tight text-ink">
+              {wordmark}
+            </span>
           </a>
 
-          <ul className="hidden items-center gap-6 lg:flex">
-            {navLinks.map((link, i) => {
-              const isActive = active === link.href.slice(1);
-              return (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    aria-current={isActive ? "true" : undefined}
-                    className="hand relative text-xl leading-none text-ink-soft transition-colors hover:text-ink"
-                    style={isActive ? { color: `hsl(${PEN[i % PEN.length]})` } : undefined}
-                  >
-                    {link.label}
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-scribble"
-                        className="absolute -bottom-1 left-0 right-0 h-[2.5px] rounded-full"
-                        style={{ background: `hsl(${PEN[i % PEN.length]})` }}
-                        transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                      />
-                    )}
-                  </a>
-                </li>
-              );
-            })}
+          <ul className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="nav-link block"
+                  aria-current={
+                    active === link.href.slice(1) ? "true" : undefined
+                  }
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
 
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <a
+          <div className="ml-auto flex shrink-0 items-center gap-1 lg:ml-0">
+            <Button
               href={person.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hand sticky-note hidden rounded-md px-3.5 py-1.5 text-lg leading-none sm:block"
+              variant="dark"
+              external
+              className="hidden shadow-none sm:inline-flex"
             >
-              Résumé
-            </a>
+              Resume
+            </Button>
+
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               aria-expanded={open}
+              aria-controls="site-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="hand text-xl leading-none text-ink lg:hidden"
+              className="grid h-10 w-10 place-items-center rounded-full text-ink transition-colors duration-200 hover:bg-surface lg:hidden"
             >
-              {open ? "close" : "menu"}
+              {open ? (
+                <Cross className="h-5 w-5" />
+              ) : (
+                <span className="flex flex-col gap-[5px]" aria-hidden>
+                  <span className="block h-[1.5px] w-[18px] rounded-full bg-ink" />
+                  <span className="block h-[1.5px] w-[18px] rounded-full bg-ink" />
+                </span>
+              )}
             </button>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
-            className="ruled fixed inset-0 z-40 bg-paper pt-16 lg:hidden"
+            id="site-menu"
+            key="site-menu"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: 0.26, ease: EASE }}
+            className="fixed inset-0 z-40 overflow-y-auto bg-white px-6 pb-12 pt-28 lg:hidden"
           >
-            <ul className="px-6 py-8">
-              {navLinks.map((link, i) => (
-                <motion.li
-                  key={link.href}
-                  initial={{ opacity: 0, x: -14 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.05 }}
-                  className="border-b border-rule"
-                >
-                  <a
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="hand block py-4 text-4xl leading-none"
-                    style={{ color: `hsl(${PEN[i % PEN.length]})` }}
+            <nav aria-label="Site">
+              <ul>
+                {navLinks.map((link, i) => (
+                  <motion.li
+                    key={link.href}
+                    initial={reduce ? false : { opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.45, delay: 0.04 + i * 0.05, ease: EASE }}
+                    className="border-b border-line"
                   >
-                    {link.label}
-                  </a>
-                </motion.li>
-              ))}
-              <li className="pt-8">
-                <a
-                  href={person.resumeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hand sticky-note block rounded-md px-4 py-3 text-center text-2xl leading-none"
-                >
-                  Résumé
-                </a>
-              </li>
-            </ul>
+                    <a
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={
+                        active === link.href.slice(1) ? "true" : undefined
+                      }
+                      className="t-h3 flex items-center justify-between gap-4 py-5 text-ink"
+                    >
+                      {link.label}
+                      <ArrowUpRight className="h-5 w-5 text-faint" />
+                    </a>
+                  </motion.li>
+                ))}
+              </ul>
+
+              <div className="pt-9">
+                <Button href={person.resumeUrl} variant="dark" external>
+                  Resume
+                </Button>
+              </div>
+            </nav>
           </motion.div>
         )}
       </AnimatePresence>
